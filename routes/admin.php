@@ -82,6 +82,7 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('products/is_active/{product}', [ProductsController::class, 'is_active'])->name('products.is_active'); // Done
     Route::get('products/remove_main_image/{product}', [ProductsController::class, 'remove_main_image'])->name('products.remove_main_image'); // Done
     Route::get('products/remove_images/{product}', [ProductsController::class, 'remove_images'])->name('products.remove_images'); // Done
+    Route::get('products/remove_files/{product}', [ProductsController::class, 'remove_files'])->name('products.remove_files'); // Done
 
     // Banners Area
     Route::resource('banners', BannersController::class); // Done

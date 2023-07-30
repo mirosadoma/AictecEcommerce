@@ -102,6 +102,7 @@
     "Cover Deleted Successfully": "تم حذف الغلاف بنجاح",
     "Image Deleted Successfully": "تم حذف الصورة بنجاح",
     "Video Deleted Successfully": "تم حذف الفيديو بنجاح",
+    "File Deleted Successfully": "تم حذف الملف بنجاح",
     "Status Updated Successfully": "تم تعديل الحالة بنجاح",
     "Are you sure you want to delete this image?": "هل أنت متأكد من حذف هذه الصورة ؟",
     "You Are Not Active From Administrator": "أنت لست مفعل من قبل الإدارة",
@@ -506,5 +507,7 @@
     "The activation code has been confirmed successfully": "تم تأكيد كود التفعيل بنجاح",
     "Invalid verification code": "كود التفعيل غير صحيح",
     "Successfully Reset Password, Go To Login Now": "تم إعادة تعيين كلمة المرور بنجاح, إذهب وقم بتسجيل الدخول الآن",
-    "Missing data": "بيانات مفقوده"
+    "Missing data": "بيانات مفقوده",
+    "Basic Features": "مميزات أساسيه",
+    "Add New Feature": "إضافة ميزه جديده"
 }

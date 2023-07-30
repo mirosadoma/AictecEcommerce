@@ -6,7 +6,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use App\Models\Products\Product;
 use App\Models\Products\BasicFeatures;
-use App\Models\Products\Specifications;
+use App\Models\Products\ProductOptions;
+use App\Models\Products\ProductFiles;
 use App\Models\Brands\Brand;
 use App\Models\Categories\Category;
 use App\Models\User;
@@ -65,7 +66,6 @@ class ProductsSeeder extends Seeder
                 'created_at'            => Carbon::now(),
                 'updated_at'            => Carbon::now(),
             ],
-            'is_active'             => 1,
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
@@ -85,7 +85,6 @@ class ProductsSeeder extends Seeder
                 'created_at'            => Carbon::now(),
                 'updated_at'            => Carbon::now(),
             ],
-            'is_active'             => 1,
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
@@ -105,70 +104,46 @@ class ProductsSeeder extends Seeder
                 'created_at'            => Carbon::now(),
                 'updated_at'            => Carbon::now(),
             ],
-            'is_active'             => 1,
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
-        Specifications::create([
-            'ar'                        => [
-                'title'                 => 'وصف 1',
-                'locale'                => 'ar',
-                'spec_id'               => 1,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
-            'en'                        => [
-                'title'                 => 'Specification 1',
-                'locale'                => 'en',
-                'spec_id'               => 1,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
+        ProductOptions::create([
+            'ar_name'               => 'الوزن',
+            'en_name'               => 'weaight',
             'value'                 => 'value 1',
-            'is_active'             => 1,
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
-        Specifications::create([
-            'ar'                        => [
-                'title'                 => 'وصف 2',
-                'locale'                => 'ar',
-                'spec_id'               => 2,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
-            'en'                        => [
-                'title'                 => 'Specification 2',
-                'locale'                => 'en',
-                'spec_id'               => 2,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
-            'value'                 => 'value 2',
-            'is_active'             => 1,
+        ProductOptions::create([
+            'ar_name'               => 'الوزن',
+            'en_name'               => 'weaight',
+            'value'                 => 'value 1',
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
-        Specifications::create([
-            'ar'                        => [
-                'title'                 => 'وصف 3',
-                'locale'                => 'ar',
-                'spec_id'               => 3,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
-            'en'                        => [
-                'title'                 => 'Specification 3',
-                'locale'                => 'en',
-                'spec_id'               => 3,
-                'created_at'            => Carbon::now(),
-                'updated_at'            => Carbon::now(),
-            ],
-            'value'                 => 'value 3',
-            'is_active'             => 1,
+        ProductOptions::create([
+            'ar_name'               => 'الوزن',
+            'en_name'               => 'weaight',
+            'value'                 => 'value 1',
+            'product_id'            => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+        ProductOptions::create([
+            'ar_name'               => 'الوزن',
+            'en_name'               => 'weaight',
+            'value'                 => 'value 1',
+            'product_id'            => 1,
+            'created_at'            => Carbon::now(),
+            'updated_at'            => Carbon::now(),
+        ]);
+        ProductOptions::create([
+            'ar_name'               => 'الوزن',
+            'en_name'               => 'weaight',
+            'value'                 => 'value 1',
             'product_id'            => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),

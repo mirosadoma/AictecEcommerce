@@ -5,17 +5,18 @@ namespace App\Models\Products;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Products\Product;
 
-class ProductImages extends Model {
+class ProductFiles extends Model {
 
-    protected $table = "product_images";
+    protected $table = "products_files";
     protected $guarded = ['id'];
 
-    public function getImagePathAttribute()
+    public function getFilePathAttribute()
     {
-        return ($this->image && file_exists(str_replace('/', '\\',public_path($this->image)))) ? url($this->image) : url('assets/logo.png');
+        return ($this->file && file_exists(str_replace('/', '\\',public_path($this->file)))) ? url($this->file) : " ";
     }
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
 }

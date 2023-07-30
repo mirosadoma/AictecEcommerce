@@ -51,7 +51,6 @@ class CreateProductsTable extends Migration
         });
         Schema::create('pro_basic_features', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('is_active')->default(0);
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
@@ -65,21 +64,20 @@ class CreateProductsTable extends Migration
             $table->unique(['feature_id', 'locale']);
             $table->timestamps();
         });
-        Schema::create('pro_specifications', function (Blueprint $table) {
+        Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('value')->nullable();
-            $table->tinyInteger('is_active')->default(0);
-            $table->unsignedBigInteger('product_id')->nullable();
+            $table->string('image')->nullable();
+            $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
-        Schema::create('pro_specifications_translations', function (Blueprint $table) {
+        Schema::create('products_files', function (Blueprint $table) {
             $table->id();
-            $table->longText('title')->nullable();
-            $table->string('locale')->index();
-            $table->unsignedBigInteger('spec_id')->nullable();
-            $table->foreign('spec_id')->references('id')->on('pro_specifications')->onUpdate('cascade')->onDelete('cascade');
-            $table->unique(['spec_id', 'locale']);
+            $table->string('name')->nullable();
+            $table->string('size')->nullable();
+            $table->string('file')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -97,8 +95,8 @@ class CreateProductsTable extends Migration
         Schema::dropIfExists('products_options');
         Schema::dropIfExists('pro_basic_features');
         Schema::dropIfExists('pro_basic_features_translations');
-        Schema::dropIfExists('pro_specifications');
-        Schema::dropIfExists('pro_specifications_translations');
+        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('products_files');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

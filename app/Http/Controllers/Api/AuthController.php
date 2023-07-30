@@ -30,17 +30,20 @@ class AuthController extends Controller {
                 ->isError(__('This user not found'))
                 ->build();
         }
-        if($user->is_active == 0) {
-            return (new API)
-                ->isError(__('This user not active from adminstrator'))
-                ->build();
-        }
-        if(is_null($user->phone_verified_at)) {
-            return (new API)
-                ->isError(__('This user not active from adminstrator'))
-                ->build();
-        }
+
         if($token=Auth::guard('api')->attempt(['email' => request('email'), 'password' => request('password')])){
+            if($user->is_active == 0) {
+                auth('api')->logout();
+                return (new API)
+                    ->isError(__('This user not active from adminstrator'))
+                    ->build();
+            }
+            // if(is_null($user->phone_verified_at)) {
+            //     auth('api')->logout();
+            //     return (new API)
+            //         ->isError(__('This user not active from adminstrator'))
+            //         ->build();
+            // }
             $auth_data = $this->CreateNewToken($token);
             $user = Auth::guard('api')->user();
 
@@ -86,6 +89,7 @@ class AuthController extends Controller {
             'name'              =>  $request->name,
             'email'             =>  $request->email,
             'phone'             =>  $request->phone,
+            'is_active'         =>  1,
             'password'          =>  Hash::make($request->password),
         ];
         $info['type'] = 'client';
@@ -201,7 +205,7 @@ class AuthController extends Controller {
     }
 
     // ---------------------- Socials ----------------------
-    
+
     public function redirectToGoogle(){
         return Socialite::driver('google')->redirect();
     }

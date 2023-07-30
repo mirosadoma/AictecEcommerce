@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use App\Models\Categories\Category;
 use App\Models\Products\ProductImages;
+use App\Models\Products\BasicFeatures;
+use App\Models\Products\ProductFiles;
 use App\Models\Brands\Brand;
 use App\Models\User;
 
@@ -45,6 +47,16 @@ class Product extends Model {
     public function product_options()
     {
         return $this->hasMany(ProductOptions::class, 'product_id');
+    }
+
+    public function product_features()
+    {
+        return $this->hasMany(BasicFeatures::class, 'product_id');
+    }
+
+    public function product_files()
+    {
+        return $this->hasMany(ProductFiles::class, 'product_id');
     }
 
     public function favourates()

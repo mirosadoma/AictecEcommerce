@@ -94,6 +94,51 @@
                         {!! Inputs('file', 'images[]', 'Images', 'file-input images form-control', '', false, true) !!}
                     </div>
                 </div>
+                {{-- features --}}
+                <hr>
+                <div class="form-body">
+                    <div class="card-header">
+                        <h5 class="card-title" style="text-decoration: underline"> @lang("Basic Features") </h5>
+                    </div>
+                    @if($features->count())
+                        @foreach($features as $feature)
+                            <div class="form-group row feature_{{ $feature->id }}">
+                                <div class="col-sm-5">
+                                    <input value="{{$feature->translate('ar')->title}}" class="form-control" name="features[ar_title][]" type="text" placeholder="{{__('Arabic Title')}}">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input value="{{$feature->translate('en')->title}}" class="form-control" name="features[en_title][]" type="text" placeholder="{{__('English Title')}}">
+                                </div>
+                                <div class="col-sm-1">
+                                    <a class="btn btn-danger remove-contact" data-id="{{ $feature->id }}">
+                                        <center><b>X</b></center>
+                                    </a>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                    <div class="form-group row">
+                        <div class="add-other-feature">
+                            <?php $n = rand(1,50); ?>
+                            <div class="row feature_{{ $n }}">
+                                <div class="col-sm-5">
+                                    <input class="form-control" name="features[ar_title][]" type="text" placeholder="{{__('Arabic Title')}}">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input class="form-control" name="features[en_title][]" type="text" placeholder="{{__('English Title')}}">
+                                </div>
+                                <div class="col-sm-1">
+                                    <a class="btn btn-danger remove-feature" data-id="{{$n}}">
+                                        <center><b>X</b></center>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="other-features"></div>
+                        <a class="btn btn-success add-new-feature col-sm-3" style="margin: 10px 40px;"> + @lang("Add New Feature")</a>
+                    </div>
+                </div>
+                {{-- options --}}
                 <hr>
                 <div class="form-body">
                     <div class="card-header">
@@ -101,7 +146,7 @@
                     </div>
                     @if($options->count())
                         @foreach($options as $cn)
-                            <div class="form-group row social_{{ $cn->id }}">
+                            <div class="form-group row option_{{ $cn->id }}">
                                 <div class="col-sm-4">
                                     <input value="{{$cn->ar_name}}" class="form-control" name="options[ar_name][]" type="text" placeholder="{{__('Arabic Name')}}">
                                 </div>
@@ -122,7 +167,7 @@
                     <div class="form-group row">
                         <div class="add-other-option">
                             <?php $n = rand(1,50); ?>
-                            <div class="form-group row option_{{ $n }}">
+                            <div class="row option_{{ $n }}">
                                 <div class="col-sm-4">
                                     <input class="form-control" name="options[ar_name][]" type="text" placeholder="{{__('Arabic Name')}}">
                                 </div>
@@ -142,6 +187,10 @@
                         <div class="other-options"></div>
                         <a class="btn btn-success add-new-option col-sm-3" style="margin: 10px 40px;"> + @lang("Add New Option")</a>
                     </div>
+                </div>
+                <hr>
+                <div class="form-group row">
+                    {!! Inputs('file', 'files[]', 'Files', 'file-input files form-control', '', false, true) !!}
                 </div>
                 <div class="text-right">
                     {!! BackButton('Back', route('app.products.index')) !!}
@@ -168,9 +217,10 @@
             });
         @endforeach
     </script>
+    {{-- main image --}}
     <script>
         $(".main_image").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
             overwriteInitial: false,
             initialPreview: [
@@ -190,6 +240,7 @@
             return abort;
         });
     </script>
+    {{-- images --}}
     <script>
         var initialPreview = [];
         var initialPreviewConfig = [];
@@ -198,7 +249,7 @@
             initialPreviewConfig.push({caption: "{{$product_image->image}}", url: _url_+"app/products/remove_images/{{$product_image->id}}"});
         @endforeach
         $(".images").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
             overwriteInitial: false,
             initialPreview: initialPreview,
@@ -213,6 +264,59 @@
             return abort;
         });
     </script>
+    {{-- files --}}
+    <script>
+        var initialPreview = [];
+        var initialPreviewConfig = [];
+        @foreach($product->product_files as $product_file)
+            initialPreview.push("{{$product_file->file_path}}");
+            initialPreviewConfig.push({caption: "{{$product_file->file}}", url: _url_+"app/products/remove_files/{{$product_file->id}}"});
+        @endforeach
+        $(".files").fileinput({
+            allowedFileExtensions: ['pdf'],
+            initialCaption: "@lang('No File Selected')",
+            overwriteInitial: false,
+            initialPreview: initialPreview,
+            initialPreviewAsData: true,
+            initialPreviewFileType: 'image',
+            initialPreviewConfig: initialPreviewConfig,
+        }).on("filepredelete", function(jqXHR) {
+            var abort = true;
+            if (confirm("{{__('Are you sure you want to delete this image?')}}")) {
+                abort = false;
+            }
+            return abort;
+        });
+    </script>
+    {{-- features --}}
+    <script>
+        $(document).on('click', '.add-new-feature',function () {
+            var parent = $(this).data('parent');
+            var random = Math.floor(Math.random() * 100) + 1;
+            var ct = '<div class="form-group row feature_'+random+'">';
+            ct += '<div class="col-sm-5">';
+            ct += '<input class="form-control" name="features[ar_title][]" type="text" placeholder="'+"{{__('Arabic Title')}}"+'">';
+            ct += '</div>';
+            ct += '<div class="col-sm-5">';
+            ct += '<input class="form-control" name="features[en_title][]" type="text" placeholder="'+"{{__('English Title')}}"+'">';
+            ct += '</div>';
+            ct += '<div class="col-sm-1">';
+            ct += '<a class="btn btn-danger remove-feature" data-id="'+random+'">';
+            ct += '<center><b>X</b></center>';
+            ct += '</a>';
+            ct += '</div>';
+            $('.other-features').append(ct);
+        });
+
+        $(document).on('click', '.remove-feature',function () {
+            var id = $(this).attr('data-id');
+            $('.feature_'+id+' select').val('');
+            $('.feature_'+id+' input[name="features[ar_title][]"]').val('');
+            $('.feature_'+id+' input[name="features[en_title][]"]').val('');
+            $('.feature_'+id).hide();
+        });
+    </script>
+    {{-- options --}}
     <script>
         $(document).on('click', '.add-new-option',function () {
             var parent = $(this).data('parent');

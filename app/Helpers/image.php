@@ -48,8 +48,8 @@ if (!function_exists('SalokaUploads')) {
             mkdir($destinationPath, 0755, true);
         }
         if ($type != 'image') {
-            // $filename = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
-            $filename = $file->getClientOriginalName();
+            $filename = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
+            // $filename = $file->getClientOriginalName();
             $path     = $destinationPath;
             $file->move($destinationPath, $filename);
             return $destinationPath . '/' . $filename;

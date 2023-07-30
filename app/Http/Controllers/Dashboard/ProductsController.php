@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 // Models
 use App\Models\Products\Product;
 use App\Models\Products\ProductImages;
+use App\Models\Products\BasicFeatures;
+use App\Models\Products\ProductFiles;
 use App\Models\Categories\Category;
 use App\Models\Brands\Brand;
 // Requests
@@ -92,6 +94,22 @@ class ProductsController extends Controller {
                 }
             }
         }
+        if(request()->has('features') && $request->features != NULL && count($request->features) != 0){
+            BasicFeatures::where('product_id', $product->id)->delete();
+            foreach ($data['features']['ar_title'] as $key => $item) {
+                if ($data['features']['ar_title'][$key] && $data['features']['ar_title'][$key] != '' && $data['features']['ar_title'][$key] != ' ' && $data['features']['en_title'][$key] && $data['features']['en_title'][$key] != '' && $data['features']['en_title'][$key] != ' ') {
+                    BasicFeatures::create([
+                        'ar' => [
+                            'title' => $data['features']['ar_title'][$key]
+                        ],
+                        'en' => [
+                            'title' => $data['features']['en_title'][$key]
+                        ],
+                        'product_id' => $product->id,
+                    ]);
+                }
+            }
+        }
         return redirect()->route('app.products.index')->with('success', __('Data Saved Successfully'));
     }
 
@@ -103,6 +121,7 @@ class ProductsController extends Controller {
         $categories = Category::where('is_active', 1)->get();
         $brands = Brand::where('is_active', 1)->get();
         $options = $product->product_options;
+        $features = $product->product_features;
         return view('admin.products.edit',get_defined_vars());
     }
 
@@ -127,6 +146,20 @@ class ProductsController extends Controller {
                 ProductImages::create([
                     'product_id' => $product->id,
                     'image' => imageUpload($image, 'products/'.$product->id),
+                ]);
+            }
+        }
+        if (request()->has('files') && $request->files != NULL && count($request->files) != 0) {
+            foreach($product->product_files as $pro_file) {
+                DeleteFile($pro_file->file);
+                $pro_file->delete();
+            }
+            foreach ($data['files'] as $file) {
+                ProductFiles::create([
+                    'product_id' => $product->id,
+                    'name' => $file->getClientOriginalName(),
+                    'size' => $file->getSize()/1024, // KB
+                    'file' => fileUpload($file, 'products/'.$product->id),
                 ]);
             }
         }
@@ -187,6 +220,15 @@ class ProductsController extends Controller {
         $product_image->delete();
         return response()->json([
             'message' => __('Image Deleted Successfully'),
+        ]);
+    }
+
+    public function remove_files($product_file) {
+        $product_file = ProductFiles::find($product_file);
+        DeleteImage($product_file->file);
+        $product_file->delete();
+        return response()->json([
+            'message' => __('File Deleted Successfully'),
         ]);
     }
 }

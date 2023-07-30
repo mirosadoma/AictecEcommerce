@@ -93,6 +93,34 @@
                         {!! Inputs('file', 'images[]', 'Images', 'file-input images form-control', '', false, true) !!}
                     </div>
                 </div>
+                {{-- features --}}
+                <hr>
+                <div class="form-body">
+                    <div class="card-header">
+                        <h5 class="card-title" style="text-decoration: underline"> @lang("Basic Features") </h5>
+                    </div>
+                    <div class="form-group row">
+                        <div class="add-other-feature">
+                            <?php $n = rand(1,50); ?>
+                            <div class="form-group row feature_{{ $n }}">
+                                <div class="col-sm-5">
+                                    <input class="form-control" name="features[ar_title][]" type="text" placeholder="{{__('Arabic Title')}}">
+                                </div>
+                                <div class="col-sm-5">
+                                    <input class="form-control" name="features[en_title][]" type="text" placeholder="{{__('English Title')}}">
+                                </div>
+                                <div class="col-sm-1">
+                                    <a class="btn btn-danger remove-feature" data-id="{{$n}}">
+                                        <center><b>X</b></center>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="other-features"></div>
+                        <a class="btn btn-success add-new-feature col-sm-3" style="margin: 10px 40px;"> + @lang("Add New Feature")</a>
+                    </div>
+                </div>
+                {{-- options --}}
                 <hr>
                 <div class="form-body">
                     <div class="card-header">
@@ -122,6 +150,10 @@
                         <a class="btn btn-success add-new-option col-sm-3" style="margin: 10px 40px;"> + @lang("Add New Option")</a>
                     </div>
                 </div>
+                <hr>
+                <div class="form-group row">
+                    {!! Inputs('file', 'files[]', 'Files', 'file-input files form-control', '', false, true) !!}
+                </div>
                 <div class="text-right">
                     {!! BackButton('Back', route('app.products.index')) !!}
                     {!! SubmitButton('Save') !!}
@@ -146,15 +178,51 @@
                 extraPlugins: 'colorbutton'
             });
         @endforeach
+        // main image
         $(".main_image").fileinput({
             allowedFileExtensions: ['jpg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
         });
+        // images
         $(".images").fileinput({
             allowedFileExtensions: ['jpg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
         });
+        // files
+        $(".files").fileinput({
+            allowedFileExtensions: ['pdf'],
+            initialCaption: "@lang('No File Selected')",
+        });
     </script>
+    {{-- features --}}
+    <script>
+        $(document).on('click', '.add-new-feature',function () {
+            var parent = $(this).data('parent');
+            var random = Math.floor(Math.random() * 100) + 1;
+            var ct = '<div class="form-group row feature_'+random+'">';
+            ct += '<div class="col-sm-5">';
+            ct += '<input class="form-control" name="features[ar_title][]" type="text" placeholder="'+"{{__('Arabic Title')}}"+'">';
+            ct += '</div>';
+            ct += '<div class="col-sm-5">';
+            ct += '<input class="form-control" name="features[en_title][]" type="text" placeholder="'+"{{__('English Title')}}"+'">';
+            ct += '</div>';
+            ct += '<div class="col-sm-1">';
+            ct += '<a class="btn btn-danger remove-feature" data-id="'+random+'">';
+            ct += '<center><b>X</b></center>';
+            ct += '</a>';
+            ct += '</div>';
+            $('.other-features').append(ct);
+        });
+
+        $(document).on('click', '.remove-feature',function () {
+            var id = $(this).attr('data-id');
+            $('.feature_'+id+' select').val('');
+            $('.feature_'+id+' input[name="features[ar_title][]"]').val('');
+            $('.feature_'+id+' input[name="features[en_title][]"]').val('');
+            $('.feature_'+id).hide();
+        });
+    </script>
+    {{-- options --}}
     <script>
         $(document).on('click', '.add-new-option',function () {
             var parent = $(this).data('parent');
