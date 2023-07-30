@@ -148,7 +148,8 @@ if (!function_exists('BackButton')) {
 if (!function_exists('assetAdmin')) {
     function assetAdmin($value, $type = 'css')
     {
-        return ($type == 'css') ? '<link href="/assets/admin/' . $value . '" rel="stylesheet" type="text/css">' : '<script src="/assets/admin/' . $value . '"></script>';
+        return ($type == 'css') ? '<link href="'.env("APP_URL").'assets/admin/' . $value . '" rel="stylesheet" type="text/css">' : '<script src="'.env("APP_URL").'assets/admin/' . $value . '"></script>';
+        // return ($type == 'css') ? '<link href="/assets/admin/' . $value . '" rel="stylesheet" type="text/css">' : '<script src="/assets/admin/' . $value . '"></script>';
     }
 }
 

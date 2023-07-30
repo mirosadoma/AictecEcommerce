@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('type')->default('client');
             $table->timestamp('deleted_at')->nullable();
             $table->tinyInteger('is_dark')->default(0);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

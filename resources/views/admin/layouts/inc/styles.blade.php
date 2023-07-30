@@ -165,7 +165,7 @@
         color: #fff !important;
     }
 </style>
-<link rel="stylesheet" href="/assets/bootstrap-icons-1.5.0/bootstrap-icons.css" crossorigin="anonymous">
+<link rel="stylesheet" href="{{url('assets/bootstrap-icons-1.5.0/bootstrap-icons.css')}}" crossorigin="anonymous">
 {!! assetAdmin('app-assets/fileinput/css/fileinput.min.css','css') !!}
 <!-- END: Custom CSS-->
 {{--<!-- /global stylesheets -->--}}
