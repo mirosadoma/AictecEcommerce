@@ -125,9 +125,12 @@ class API {
         $fullErrors = [];
         if ($this->formatErrors === true) {
             foreach ($errors as $key => $message) {
+                // $fullErrors[] = [
+                //     'key' => $key,
+                //     'value' => $message,
+                // ];
                 $fullErrors[] = [
-                    'key' => $key,
-                    'value' => $message,
+                    $key => $message,
                 ];
             }
             return $fullErrors;
