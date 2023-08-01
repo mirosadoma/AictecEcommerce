@@ -177,7 +177,7 @@ class AuthController extends Controller {
             'password'      => Hash::make($request->password),
         ]);
         return (new API)
-            ->isError(__('Successfully Reset Password, Go To Login Now'))
+            ->isOk(__('Successfully Reset Password, Go To Login Now'))
             ->build();
     }
 
