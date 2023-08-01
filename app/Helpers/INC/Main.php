@@ -90,11 +90,43 @@ return [
         'count'         => \App\Models\Orders\Order::count()
     ],
     [
-        'title'         => __('Banks'),
+        'title'         => __('Claims'),
         'icon'          => 'fa fa-bar-chart-o',
         'color'         => 'blue',
-        'url'           => route('app.banks.index'),
-        'permission'    => 'banks',
-        'count'         => \App\Models\Banks\Bank::where('is_active', 1)->count()
+        'url'           => route('app.claims.index'),
+        'permission'    => 'claims',
+        'count'         => \App\Models\Claims\Claim::count()
+    ],
+    [
+        'title'         => __('ContactUs'),
+        'icon'          => 'fa fa-bar-chart-o',
+        'color'         => 'blue',
+        'url'           => route('app.contactus.index'),
+        'permission'    => 'contact_us',
+        'count'         => \App\Models\ContactUs\ContactUs::count()
+    ],
+    [
+        'title'         => __('Cities'),
+        'icon'          => 'fa fa-bar-chart-o',
+        'color'         => 'blue',
+        'url'           => route('app.cities.index'),
+        'permission'    => 'cities',
+        'count'         => \App\Models\Cities\City::count()
+    ],
+    [
+        'title'         => __('Districts'),
+        'icon'          => 'fa fa-bar-chart-o',
+        'color'         => 'blue',
+        'url'           => route('app.districts.index'),
+        'permission'    => 'districts',
+        'count'         => \App\Models\Districts\District::count()
+    ],
+    [
+        'title'         => __('Newsletters'),
+        'icon'          => 'fa fa-bar-chart-o',
+        'color'         => 'blue',
+        'url'           => route('app.newsletters.index'),
+        'permission'    => 'newsletters',
+        'count'         => \App\Models\Newsletters\Newsletter::count()
     ],
 ];

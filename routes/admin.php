@@ -18,7 +18,12 @@ use App\Http\Controllers\Dashboard\BannersController;
 use App\Http\Controllers\Dashboard\ShippingCompaniesController;
 use App\Http\Controllers\Dashboard\CouponsController;
 use App\Http\Controllers\Dashboard\OrdersController;
-use App\Http\Controllers\Dashboard\BanksController;
+use App\Http\Controllers\Dashboard\ClaimsController;
+use App\Http\Controllers\Dashboard\ContactUsController;
+use App\Http\Controllers\Dashboard\CitiesController;
+use App\Http\Controllers\Dashboard\DistrictsController;
+use App\Http\Controllers\Dashboard\NewslettersController;
+use App\Http\Controllers\Dashboard\PaymentMethodsImagesController;
 
 // Dashboard
 Route::get('/app/login', [DashboardAuthController::class, 'loginPage'])->name('login'); // Done
@@ -99,10 +104,29 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
 
     // Orders Area
     Route::resource('orders', OrdersController::class); // Done
+	Route::get('/order_print/{order}', [OrdersController::class, 'order_print']);
+	Route::get('/orders_export', [OrdersController::class, 'orders_export'])->name('orders_export');
 
-    // Banks Area
-    Route::resource('banks', BanksController::class); // Done
-    Route::get('banks/is_active/{coupon}', [BanksController::class, 'is_active'])->name('banks.is_active'); // Done
+    // Claims Area
+    Route::resource('claims', ClaimsController::class);
+
+    // ContactUs Area
+    Route::resource('contactus', ContactUsController::class);
+
+    // Cities Area
+    Route::resource('cities', CitiesController::class);
+
+    // Districts Area
+    Route::resource('districts', DistrictsController::class);
+
+    // Newsletters Area
+    Route::resource('newsletters', NewslettersController::class); // Done
+    Route::get('newsletters_export', [NewslettersController::class, 'export'])->name('newsletters.export'); // Done
+
+    // Payment Methods Image
+    Route::resource('payment_methods_images', PaymentMethodsImagesController::class); // Done
+    Route::get('payment_methods_images/is_active/{payment_methods_image}', [PaymentMethodsImagesController::class, 'is_active'])->name('payment_methods_images.is_active'); // Done
+    Route::get('payment_methods_images/remove_image/{payment_methods_image}', [PaymentMethodsImagesController::class, 'remove_image'])->name('payment_methods_images.remove_image'); // Done
 
     Route::get('/403', function(){
         return view('403');

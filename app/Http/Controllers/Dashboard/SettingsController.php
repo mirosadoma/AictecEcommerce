@@ -45,18 +45,19 @@ class SettingsController extends Controller {
                 'en.title'              => 'required|string|between:2,500',
                 'ar.address'            => 'required|string|between:2,1000',
                 'en.address'            => 'required|string|between:2,1000',
-                'ar.seo_keywords'       => 'required',
-                'en.seo_keywords'       => 'required',
-                'ar.seo_description'    => 'required|string|between:2,200000',
-                'en.seo_description'    => 'required|string|between:2,200000',
                 'email'                 => 'required|email:filter|between:2,200',
                 'phone'                 => 'required',
                 // 'phone'                 => 'required|digits:9|regex:/^(5)?([0-9]){2}([0-9]){6}$/',
+                'tax'                   => 'required',
+                'delivery_charge'       => 'required',
                 // 'appstore'              => 'required|between:2,200',
                 // 'googleplay'            => 'required|between:2,200',
                 'logo'                  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
                 'footer_logo'           => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
                 'icon'                  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            ],[],[
+                'delivery_charge'       => __('Delivery Charge'),
+                'tax'                   => __('Tax'),
             ])->validate();
             $setting = SiteConfig::first();
             if (request()->has('logo') && $request->logo != NULL) {

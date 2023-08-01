@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Auth;
 // Requests
 use App\Http\Requests\Api\Profile\ProfileRequest;
 use App\Http\Requests\Api\Profile\NewPasswordRequest;
+use App\Http\Requests\Api\Profile\AddAddressRequest;
 // Resources
 use App\Http\Resources\Api\ClientResources;
+use App\Http\Resources\Api\AddressResources;
 // Models
 use App\Models\SendSms;
+use App\Models\Addressess\Address;
 use App\Support\API;
 use Hash;
 
@@ -70,6 +73,22 @@ class ProfileController extends Controller {
         return (new API)
             ->isOk(__('Password Reset successfully'))
             ->setData(new ClientResources($user))
+            ->build();
+    }
+
+    public function add_address(AddAddressRequest $request){
+        $user = Auth::guard('api')->user();
+        if (!$user) {
+            return (new API)
+                ->isError(__('Please Login First'))
+                ->build();
+        }
+        $data = $request->all();
+        $data['user_id'] = $user->id;
+        $address = Address::create($data);
+        return (new API)
+            ->isOk(__('Data Saved Successfully'))
+            ->setData(new AddressResources($address))
             ->build();
     }
 }

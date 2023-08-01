@@ -17,8 +17,8 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->longText('payment_methods')->nullable();
-            $table->longText('tax')->nullable();
+            $table->string('tax')->nullable();
+            $table->string('delivery_charge')->nullable();
             $table->string('logo')->nullable();
             $table->string('footer_logo')->nullable();
             $table->string('icon')->nullable();
@@ -31,7 +31,7 @@ class CreateSettingsTable extends Migration
             $table->string('title')->nullable();
             $table->string('address')->nullable();
             $table->string('locale')->index();
-            $table->unsignedBigInteger('site_config_id');
+            $table->unsignedBigInteger('site_config_id')->nullable();
             $table->foreign('site_config_id')->references('id')->on('site_config')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(['site_config_id', 'locale']);
             $table->timestamps();

@@ -50,7 +50,7 @@ class CouponsController extends Controller {
             return abort(403);
         }
         $data = $request->all();
-        $data['is_active']      = 1;
+        $data['is_active'] = 1;
         Coupon::create($data);
         return redirect()->route('app.coupons.index')->with('success', __('Data Saved Successfully'));
     }

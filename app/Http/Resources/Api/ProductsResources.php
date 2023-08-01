@@ -28,6 +28,7 @@ class ProductsResources extends JsonResource
             'title'             => (string) $this->title,
             'small_description' => (string) $this->small_description,
             'price'             => (float) $this->price,
+            'model'             => (string) $this->model,
             'old_price'         => (float) $this->old_price,
             'is_fav'            => (float) $is_fav,
             'main_image'        => (string) $this->main_image_path,

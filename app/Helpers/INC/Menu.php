@@ -259,27 +259,97 @@ $data = [
                 'url'           => route('app.orders.index'),
                 'permission'    => 'view'
             ],
-            // [
-            //     'title'         => 'All Orders',
-            //     'url'           => route('app.orders.index'),
-            //     'permission'    => 'view'
-            // ]
         ]
     ],
     [
-        'title'         => 'Banks',
+        'title'         => 'Claims',
         'icon'          => 'grid',
         'order'         => 13,
-        'permission'    => 'banks',
+        'permission'    => 'claims',
         'items'         => [
             [
-                'title'         => 'All Banks',
-                'url'           => route('app.banks.index'),
+                'title'         => 'All Claims',
+                'url'           => route('app.claims.index'),
+                'permission'    => 'view'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'ContactUs',
+        'icon'          => 'grid',
+        'order'         => 14,
+        'permission'    => 'contact_us',
+        'items'         => [
+            [
+                'title'         => 'All ContactUs',
+                'url'           => route('app.contactus.index'),
+                'permission'    => 'view'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Cities',
+        'icon'          => 'grid',
+        'order'         => 15,
+        'permission'    => 'cities',
+        'items'         => [
+            [
+                'title'         => 'All Cities',
+                'url'           => route('app.cities.index'),
                 'permission'    => 'view'
             ],
             [
-                'title'         => 'Add New Bank',
-                'url'           => route('app.banks.create'),
+                'title'         => 'Add New City',
+                'url'           => route('app.cities.create'),
+                'permission'    => 'create'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Districts',
+        'icon'          => 'grid',
+        'order'         => 16,
+        'permission'    => 'districts',
+        'items'         => [
+            [
+                'title'         => 'All Districts',
+                'url'           => route('app.districts.index'),
+                'permission'    => 'view'
+            ],
+            [
+                'title'         => 'Add New District',
+                'url'           => route('app.districts.create'),
+                'permission'    => 'create'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Newsletters',
+        'icon'          => 'grid',
+        'order'         => 17,
+        'permission'    => 'newsletters',
+        'items'         => [
+            [
+                'title'         => 'Newsletters',
+                'url'           => route('app.newsletters.index'),
+                'permission'    => 'view'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Payment Methods Images',
+        'icon'          => 'grid',
+        'order'         => 18,
+        'permission'    => 'payment_methods_images',
+        'items'         => [
+            [
+                'title'         => 'All Payment Methods Images',
+                'url'           => route('app.payment_methods_images.index'),
+                'permission'    => 'view'
+            ],
+            [
+                'title'         => 'Add New Payment Methods Image',
+                'url'           => route('app.payment_methods_images.create'),
                 'permission'    => 'create'
             ]
         ]

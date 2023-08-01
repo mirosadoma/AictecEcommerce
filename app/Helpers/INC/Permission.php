@@ -68,9 +68,34 @@ return [
     ],
     'orders'  => [
         'view',
+        'exel',
+    ],
+    'claims'  => [
+        'view',
+        'update',
         'delete',
     ],
-    'banks'  => [
+    'contact_us'  => [
+        'view',
+        'update',
+        'delete',
+    ],
+    'cities'  => [
+        'view',
+        'create',
+        'update',
+        'delete',
+    ],
+    'districts'  => [
+        'view',
+        'create',
+        'update',
+        'delete',
+    ],
+    'newsletters'  => [
+        'view',
+    ],
+    'payment_methods_images'  => [
         'view',
         'create',
         'update',

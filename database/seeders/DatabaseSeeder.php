@@ -13,7 +13,12 @@ use Database\Seeders\BannersSeeder;
 use Database\Seeders\ShippingCompaniesSeeder;
 use Database\Seeders\CouponsSeeder;
 use Database\Seeders\ProductsSeeder;
-use Database\Seeders\BanksSeeder;
+use Database\Seeders\ContactUsSeeder;
+use Database\Seeders\ClaimsSeeder;
+use Database\Seeders\CitiesSeeder;
+use Database\Seeders\DistrictsSeeder;
+use Database\Seeders\NewslettersSeeder;
+use Database\Seeders\PaymentMethodsImagesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,7 +40,12 @@ class DatabaseSeeder extends Seeder
             ShippingCompaniesSeeder::class,
             CouponsSeeder::class,
             ProductsSeeder::class,
-            BanksSeeder::class,
+            ContactUsSeeder::class,
+            ClaimsSeeder::class,
+            CitiesSeeder::class,
+            DistrictsSeeder::class,
+            NewslettersSeeder::class,
+            PaymentMethodsImagesSeeder::class,
         ]);
     }
 }

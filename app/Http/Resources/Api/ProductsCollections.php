@@ -34,7 +34,7 @@ class ProductsCollections extends JsonResource
             ];
         }
 
-        $simillar_products = Product::where('brand_id', $this->brand_id)->where('model', $this->model)->where('category_id', $this->category_id)->take(12)->get();
+        $simillar_products = Product::where('brand_id', $this->brand_id)->where('category_id', $this->category_id)->take(12)->get();
 
         $result = [
             'id'                    => (int) $this->id,

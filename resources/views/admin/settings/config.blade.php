@@ -59,6 +59,18 @@
                             <input type="number" name="phone" value="{{$setting->phone??''}}" class="form-control">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 control-label text-semibold">@lang('Tax')</label>
+                        <div class="col-lg-10">
+                            <input type="number" name="tax" value="{{$setting->tax??''}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-2 control-label text-semibold">@lang('Delivery Charge')</label>
+                        <div class="col-lg-10">
+                            <input type="number" name="delivery_charge" value="{{$setting->delivery_charge??''}}" class="form-control">
+                        </div>
+                    </div>
                     {{-- <div class="form-group row">
                         <label class="col-lg-2 control-label text-semibold">@lang('App Store')</label>
                         <div class="col-lg-10">

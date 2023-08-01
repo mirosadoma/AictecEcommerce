@@ -61,7 +61,7 @@
     {!! JsValidator::formRequest('App\Http\Requests\Dashboard\Companies\UpdateRequest') !!}
     <script>
         $(".file-input").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
             overwriteInitial: false,
             initialPreview: [

@@ -81,6 +81,20 @@ class ProductsController extends Controller {
                 ]);
             }
         }
+        if (request()->has('files') && $request->files != NULL && count($request->files) != 0) {
+            foreach(ProductFiles::where('product_id', $product->id)->get() as $pro_file) {
+                DeleteImage($pro_file->file);
+                $pro_file->delete();
+            }
+            foreach ($data['files'] as $file) {
+                ProductFiles::create([
+                    'product_id' => $product->id,
+                    'name' => $file->getClientOriginalName(),
+                    'size' => $file->getSize()/1024, // KB
+                    'file' => fileUpload($file, 'products/'.$product->id),
+                ]);
+            }
+        }
         if(request()->has('options') && $request->options != NULL && count($request->options) != 0){
             ProductOptions::where('product_id', $product->id)->delete();
             foreach ($data['options']['ar_name'] as $key => $item) {

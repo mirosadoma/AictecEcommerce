@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Addressess\Address;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,6 +33,11 @@ class User extends Authenticatable implements JWTSubject
     public function products()
     {
         return $this->hasMany(Product::class, 'user_id');
+    }
+
+    public function addressess()
+    {
+        return $this->hasMany(Address::class, 'user_id');
     }
 
     public function favorites()

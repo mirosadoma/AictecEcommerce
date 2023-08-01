@@ -27,7 +27,7 @@ class CreateCouponsTable extends Migration
             $table->id();
             $table->longText('name')->nullable();
             $table->string('locale')->index();
-            $table->unsignedBigInteger('coupon_id');
+            $table->unsignedBigInteger('coupon_id')->nullable();
             $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->unique(['coupon_id', 'locale']);
             $table->timestamps();

@@ -180,12 +180,12 @@
         @endforeach
         // main image
         $(".main_image").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
         });
         // images
         $(".images").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
         });
         // files

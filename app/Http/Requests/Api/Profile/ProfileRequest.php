@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Api\Profile;
 
-use Illuminate\Contracts\Validation\Validator;
 use App\Support\JsonFormRequest as FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProfileRequest extends FormRequest
 {

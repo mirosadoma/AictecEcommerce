@@ -68,7 +68,7 @@
     {!! JsValidator::formRequest('App\Http\Requests\Dashboard\Admins\StoreRequest') !!}
     <script>
         $(".file-input").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
         });
     </script>

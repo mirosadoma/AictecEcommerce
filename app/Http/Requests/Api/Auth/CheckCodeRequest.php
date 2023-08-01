@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Api\Auth;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Support\JsonFormRequest as FormRequest;
 
 class CheckCodeRequest extends FormRequest

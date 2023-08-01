@@ -46,7 +46,7 @@
     {!! JsValidator::formRequest('App\Http\Requests\Dashboard\Brands\UpdateRequest') !!}
     <script>
         $(".image").fileinput({
-            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
             initialCaption: "@lang('No File Selected')",
             overwriteInitial: false,
             initialPreview: [

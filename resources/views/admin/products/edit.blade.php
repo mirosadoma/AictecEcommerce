@@ -278,7 +278,7 @@
             overwriteInitial: false,
             initialPreview: initialPreview,
             initialPreviewAsData: true,
-            initialPreviewFileType: 'image',
+            initialPreviewFileType: 'file',
             initialPreviewConfig: initialPreviewConfig,
         }).on("filepredelete", function(jqXHR) {
             var abort = true;
