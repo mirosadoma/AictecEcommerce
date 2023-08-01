@@ -21,6 +21,7 @@ class SiteSettingsResources extends JsonResource
             'email'             => (string) $this->email,
             'phone'             => (string) $this->phone,
             'tax'               => (float) $this->tax,
+            'delivery_charge'   => (float) $this->delivery_charge,
             'logo'              => (string) $this->logo_path,
             'icon'              => (string) $this->icon_path,
             'footer_logo'       => (string) $this->footer_logo_path,

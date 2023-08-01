@@ -22,7 +22,7 @@ class Product extends Model {
 
     public function getMainImagePathAttribute()
     {
-        return ($this->main_image && file_exists(str_replace('/', '\\',public_path($this->main_image)))) ? url($this->main_image) : url('assets/logo.png');
+        return ($this->main_image && file_exists(str_replace('/', '\\',public_path($this->main_image)))) ? url($this->main_image) : url('assets/WhatsApp Image 2023-08-01 at 4.45.06 PM.jpeg');
     }
 
     public function category()

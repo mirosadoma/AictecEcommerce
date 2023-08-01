@@ -11,6 +11,6 @@ class Banner extends Model {
 
     public function getImagePathAttribute()
     {
-        return ($this->image && file_exists(str_replace('/', '\\',public_path($this->image)))) ? url($this->image) : url('assets/logo.png');
+        return ($this->image && file_exists(str_replace('/', '\\',public_path($this->image)))) ? url($this->image) : url('assets/WhatsApp Image 2023-08-01 at 4.43.28 PM.jpeg');
     }
 }

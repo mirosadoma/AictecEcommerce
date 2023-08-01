@@ -19,17 +19,17 @@ class SiteConfig extends Model {
 
     public function getLogoPathAttribute()
     {
-        return ($this->logo && file_exists(str_replace('/', '\\',public_path($this->logo)))) ? url($this->logo) : url('assets/logo.png');
+        return ($this->logo && file_exists(str_replace('/', '\\',public_path($this->logo)))) ? url($this->logo) : url('assets/aictec-shop-logo-01.svg');
     }
 
     public function getFooterLogoPathAttribute()
     {
-        return ($this->footer_logo && file_exists(str_replace('/', '\\',public_path($this->footer_logo)))) ? url($this->footer_logo) : url('assets/logo.png');
+        return ($this->footer_logo && file_exists(str_replace('/', '\\',public_path($this->footer_logo)))) ? url($this->footer_logo) : url('assets/aictec-shop-logo-02.svg');
     }
 
     public function getIconPathAttribute()
     {
-        return ($this->icon && file_exists(str_replace('/', '\\',public_path($this->icon)))) ? url($this->icon) : url('assets/logo.png');
+        return ($this->icon && file_exists(str_replace('/', '\\',public_path($this->icon)))) ? url($this->icon) : url('assets/aictec-shop-logo-01.svg');
     }
 
     public function getPhoneNumberAttribute()
