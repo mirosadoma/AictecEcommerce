@@ -116,7 +116,7 @@ class MainController extends Controller {
     public function search(){
         $products = Product::query()->where('is_active', 1);
         if (request()->has("search_key") && !empty(request('search_key'))) {
-            $products->whereTranslationLike("title","%".request('search_key')."%")->orWhere('model', 'LIKE', '%'.request('search_key').'%')->orWhere('number', request('number'));
+            $products->whereTranslationLike("title","%".request('search_key')."%")->orWhere('model', 'LIKE', '%'.request('search_key').'%');
         }
         $products = $products->orderBy('id', "DESC")->paginate();
         return (new API)
