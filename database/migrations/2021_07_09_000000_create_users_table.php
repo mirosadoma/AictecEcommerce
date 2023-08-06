@@ -28,9 +28,18 @@ class CreateUsersTable extends Migration
             $table->string('social_id')->nullable();
             $table->string('social_type')->nullable();
             $table->string('type')->default('client');
+            $table->string('wallet')->default(0)->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->tinyInteger('is_dark')->default(0);
             $table->rememberToken();
+            $table->timestamps();
+        });
+        Schema::create('wallet_logs', function (Blueprint $table) {
+            $table->id();
+            $table->string('amount')->nullable();
+            $table->enum('status', ['IN', 'OUT'])->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -44,6 +53,7 @@ class CreateUsersTable extends Migration
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('wallet_logs');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

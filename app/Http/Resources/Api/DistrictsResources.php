@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Components\Advertises\Resources\Api\AdvertiseResources;
 
 class DistrictsResources extends JsonResource
 {

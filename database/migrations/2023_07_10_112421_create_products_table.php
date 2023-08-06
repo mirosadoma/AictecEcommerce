@@ -80,6 +80,23 @@ class CreateProductsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
+        Schema::create('product_logs', function (Blueprint $table) {
+            $table->id();
+            $table->string('quantity')->nullable();
+            $table->enum('status', ['IN', 'OUT'])->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
+        });
+        Schema::create('product_notifications', function (Blueprint $table) {
+            $table->id();
+            $table->string('quantity')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -97,6 +114,8 @@ class CreateProductsTable extends Migration
         Schema::dropIfExists('pro_basic_features_translations');
         Schema::dropIfExists('product_images');
         Schema::dropIfExists('products_files');
+        Schema::dropIfExists('product_logs');
+        Schema::dropIfExists('product_notifications');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

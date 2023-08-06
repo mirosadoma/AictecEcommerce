@@ -20,9 +20,15 @@ class ForgetRequest extends FormRequest
 
     public function attributes()
     {
-        return [
-            'phone'                  => __('Phone'),
-        ];
+        if (is_numeric(request('email_or_phone'))) {
+            return [
+                'email_or_phone'                 => __('Phone'),
+            ];
+        } else {
+            return [
+                'email_or_phone'                 => __('Email'),
+            ];
+        }
     }
 
     /**
@@ -32,8 +38,14 @@ class ForgetRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'phone'                 => ['required', 'exists:users,phone', 'regex:/^(009665|9665|\+9665|05|5)?([0-9]){8}$/'],
-        ];
+        if (is_numeric(request('email_or_phone'))) {
+            return [
+                'email_or_phone'                 => ['required', 'exists:users,phone', 'regex:/^(009665|9665|\+9665|05|5)?([0-9]){8}$/'],
+            ];
+        } else {
+            return [
+                'email_or_phone'                 => ['required', 'exists:users,email', 'email'],
+            ];
+        }
     }
 }

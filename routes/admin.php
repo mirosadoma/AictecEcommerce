@@ -24,6 +24,7 @@ use App\Http\Controllers\Dashboard\CitiesController;
 use App\Http\Controllers\Dashboard\DistrictsController;
 use App\Http\Controllers\Dashboard\NewslettersController;
 use App\Http\Controllers\Dashboard\PaymentMethodsImagesController;
+use App\Http\Controllers\Dashboard\EmailsController;
 
 // Dashboard
 Route::get('/app/login', [DashboardAuthController::class, 'loginPage'])->name('login'); // Done
@@ -83,6 +84,9 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('brands/remove_image/{brand}', [BrandsController::class, 'remove_image'])->name('brands.remove_image'); // Done
 
     // Products Area
+    Route::get('products/add_quantity', [ProductsController::class, 'add_quantity'])->name('products.add_quantity'); // Done
+    Route::post('products/save_quantity', [ProductsController::class, 'save_quantity'])->name('products.save_quantity'); // Done
+    Route::get('products/notifications', [ProductsController::class, 'notifications'])->name('products.notifications'); // Done
     Route::resource('products', ProductsController::class); // Done
     Route::get('products/is_active/{product}', [ProductsController::class, 'is_active'])->name('products.is_active'); // Done
     Route::get('products/remove_main_image/{product}', [ProductsController::class, 'remove_main_image'])->name('products.remove_main_image'); // Done
@@ -94,24 +98,22 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('banners/is_active/{banner}', [BannersController::class, 'is_active'])->name('banners.is_active'); // Done
     Route::get('banners/remove_image/{banner}', [BannersController::class, 'remove_image'])->name('banners.remove_image'); // Done
 
-    // ShippingCompanies Area
-    Route::resource('shipping_companies', ShippingCompaniesController::class); // Done
-    Route::get('shipping_companies/is_active/{shipping_company}', [ShippingCompaniesController::class, 'is_active'])->name('shipping_companies.is_active'); // Done
-
     // Coupons Area
     Route::resource('coupons', CouponsController::class); // Done
     Route::get('coupons/is_active/{coupon}', [CouponsController::class, 'is_active'])->name('coupons.is_active'); // Done
 
     // Orders Area
     Route::resource('orders', OrdersController::class); // Done
-	Route::get('/order_print/{order}', [OrdersController::class, 'order_print']);
 	Route::get('/orders_export', [OrdersController::class, 'orders_export'])->name('orders_export');
+	// Route::get('/order_print/{order}', [OrdersController::class, 'order_print']);
 
     // Claims Area
     Route::resource('claims', ClaimsController::class);
+    Route::get('claims_export', [ClaimsController::class, 'export'])->name('claims.export'); // Done
 
     // ContactUs Area
     Route::resource('contactus', ContactUsController::class);
+    Route::get('contactus_export', [ContactUsController::class, 'export'])->name('contactus.export'); // Done
 
     // Cities Area
     Route::resource('cities', CitiesController::class);
@@ -127,6 +129,12 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::resource('payment_methods_images', PaymentMethodsImagesController::class); // Done
     Route::get('payment_methods_images/is_active/{payment_methods_image}', [PaymentMethodsImagesController::class, 'is_active'])->name('payment_methods_images.is_active'); // Done
     Route::get('payment_methods_images/remove_image/{payment_methods_image}', [PaymentMethodsImagesController::class, 'remove_image'])->name('payment_methods_images.remove_image'); // Done
+
+    // Emails Area
+    Route::get('emails', [EmailsController::class, 'index'])->name('emails.index'); // Done
+    Route::get('emails/send', [EmailsController::class, 'send'])->name('emails.send'); // Done
+    Route::post('emails/store', [EmailsController::class, 'store'])->name('emails.store'); // Done
+    Route::delete('emails/destroy/{email}', [EmailsController::class, 'destroy'])->name('emails.destroy'); // Done
 
     Route::get('/403', function(){
         return view('403');

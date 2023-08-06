@@ -45,16 +45,12 @@ return [
     'products'  => [
         'view',
         'create',
+        'add_quantity',
         'update',
         'delete',
+        'notifications',
     ],
     'banners'  => [
-        'view',
-        'create',
-        'update',
-        'delete',
-    ],
-    'shipping_companies'  => [
         'view',
         'create',
         'update',
@@ -99,6 +95,11 @@ return [
         'view',
         'create',
         'update',
+        'delete',
+    ],
+    'emails'  => [
+        'view',
+        'send',
         'delete',
     ],
 ];

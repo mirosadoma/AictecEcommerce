@@ -29,7 +29,6 @@ class UpdateRequest extends FormRequest
             'model'                     => __('Model'),
             'price'                     => __('Price'),
             'old_price'                 => __('Old Price'),
-            'quantity'                  => __('Quantity'),
             'category_id'               => __('Category'),
             'brand_id'                  => __('Brand'),
         ];
@@ -54,7 +53,6 @@ class UpdateRequest extends FormRequest
             'model'                 => 'required',
             'price'                 => 'required|numeric',
             'old_price'             => 'required|numeric',
-            'quantity'              => 'required|numeric',
             'category_id'           => 'required|exists:categories,id|not_in:null,0',
             'brand_id'              => 'required|exists:brands,id|not_in:null,0',
         ];

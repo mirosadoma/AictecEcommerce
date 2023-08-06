@@ -18,6 +18,7 @@
                         <div class="card-title">
                             <button class="btn btn-primary btn-round waves-effect waves-float waves-light" title="{{__("Search")}}" style="padding: 10px 25px;" type="button" onclick="$('.dt_adv_search').submit()"><i data-feather="database"></i></button>
                             <button class="btn btn-warning btn-round waves-effect waves-float waves-light form-reset" title="{{__("Reset Search Data")}}" style="padding: 10px 25px;" type="button" onclick="resetForm();"><i data-feather="minus-circle"></i></button>
+                            <a href="{{route('app.claims.export')}}" class="btn btn-instagram btn-round waves-effect waves-float waves-light">@lang("Export Exel File")</a>
                         </div>
                     </div>
                     <!--Search Form -->

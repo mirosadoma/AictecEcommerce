@@ -18,19 +18,23 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('number')->nullable();
             $table->float('sub_total')->default(0.0);
             $table->float('tax')->default(0.0);
+            $table->float('grand_total')->default(0.0);
+            $table->float('discount')->default(0.0);
+            $table->float('payment')->default(0.0);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('shipping_company_id')->nullable();
-            $table->foreign('shipping_company_id')->references('id')->on('shipping_companies')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addressess')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('coupon_id')->nullable();
             $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->string('payment_token')->nullable();
-            $table->string('payment_method')->nullable();
-            $table->string('status')->nullable();
+            $table->enum('payment_method', ['CreditCard', 'CashOnDelivery', 'Wallet','Coupon'])->nullable();
+            $table->enum('status', ['payment_pendding', 'paid', 'in_process', 'assigned', 'delivered', 'cancelled'])->nullable();
+            $table->string('wallet')->nullable();
+            $table->float('delivery_charge')->default(0.0);
             $table->float('final_total')->default(0.0);
             $table->tinyInteger('installation_service')->default(0); // خدمة التركيب
+            $table->longText('cancel_reson')->nullable();
             $table->timestamps();
         });
         Schema::create('order_products', function (Blueprint $table) {
@@ -41,6 +45,17 @@ class CreateOrdersTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('product_id')->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
+        });
+        Schema::create('orders_coupons', function (Blueprint $table) {
+            $table->id();
+            $table->float('product_discount')->default(0.0);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('coupon_id')->nullable();
+            $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -55,6 +70,7 @@ class CreateOrdersTable extends Migration
         \DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('order_products');
+        Schema::dropIfExists('orders_coupons');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

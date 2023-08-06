@@ -83,9 +83,6 @@
                     <div class="form-group row">
                         {!! Inputs('text', 'old_price', 'Old Price', 'form-control', old('old_price', $product->old_price)) !!}
                     </div>
-                    <div class="form-group row">
-                        {!! Inputs('text', 'quantity', 'Quantity', 'form-control', old('quantity', $product->quantity)) !!}
-                    </div>
                     <hr>
                     <div class="form-group row">
                         {!! Inputs('file', 'main_image', 'Main Image', 'file-input main_image form-control', $product->main_image_path) !!}

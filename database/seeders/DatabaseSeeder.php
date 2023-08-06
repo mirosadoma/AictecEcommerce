@@ -10,7 +10,6 @@ use Database\Seeders\RolesSeeder;
 use Database\Seeders\CategoriesSeeder;
 use Database\Seeders\BrandsSeeder;
 use Database\Seeders\BannersSeeder;
-use Database\Seeders\ShippingCompaniesSeeder;
 use Database\Seeders\CouponsSeeder;
 use Database\Seeders\ProductsSeeder;
 use Database\Seeders\ContactUsSeeder;
@@ -37,7 +36,6 @@ class DatabaseSeeder extends Seeder
             CategoriesSeeder::class,
             BrandsSeeder::class,
             BannersSeeder::class,
-            ShippingCompaniesSeeder::class,
             CouponsSeeder::class,
             ProductsSeeder::class,
             ContactUsSeeder::class,

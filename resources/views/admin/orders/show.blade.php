@@ -2,14 +2,15 @@
 use App\Models\Orders\Order;
 $order_statuses = [
     Order::STATUS_PAYMENTPENDDING,
-    Order::STATUS_PLACED,
+    Order::STATUS_PAID,
     Order::STATUS_IN_PROCESS,
-    Order::STATUS_FIFNISHED,
-    Order::STATUS_CANCELED,
+    Order::STATUS_ASSIGNED,
+    Order::STATUS_DELIVERED,
+    Order::STATUS_CANCELLED,
 ];
 ?>
 @extends('admin.layouts.master')
-@section('head_title'){{__('Shipping Companies')}}@endsection
+@section('head_title'){{__('Orders')}}@endsection
 @push('styles')
     <style>
         .changeStatus{
@@ -25,13 +26,17 @@ $order_statuses = [
 @section('content')
 @include('admin.layouts.inc.breadcrumb', ['array' => [
     [
-        'name'  =>  __('Shipping Companies'),
-        'route' =>  'shipping_companies.index',
+        'name'  =>  __('Orders'),
+        'route' =>  'orders.index',
+    ],
+    [
+        'name'  =>  __('Show'),
+        'route' =>  'orders.show',
     ],
 ],'button' => [
-        'title' => __('Add Shipping Company'),
-        'route' =>  'shipping_companies.create',
-        'icon'  => 'plus'
+        'title' => __('Back To Orders'),
+        'route' =>  'orders.index',
+        'icon'  => 'arrow-left'
 ]])
 
 <div class="content-body">
@@ -43,10 +48,10 @@ $order_statuses = [
                     <div class="card-header">
                         <h5 class="card-title"> @lang("Order Data") </h5>
                         <div class="heading-elements" style="display: flex;">
-                            <?php $link = route('app.orders.print', $order->id); ?>
+                            {{-- <?php //$link = route('app.orders.print', $order->id); ?>
                             <a class="btn btn-primary" onClick="MyWindow=window.open('{!! $link !!}','MyWindow','width=1000,height=500'); return false;" type="button" class="btn btn-dark legitRipple">
                                @lang('Print')
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                     <div class="card-body table-responsive">
@@ -132,10 +137,10 @@ $order_statuses = [
                                     <tr>
                                         <th {!! \table_width_head(6) !!}>@lang("Status")</th>
                                         <td>
-                                            @if($order->status == Order::STATUS_FIFNISHED)
-                                                @lang('Finished')
-                                            @elseif($order->status == Order::STATUS_CANCEL)
-                                                @lang('Canceled')
+                                            @if($order->status == Order::STATUS_DELIVERED)
+                                                @lang('Delivered')
+                                            @elseif($order->status == Order::STATUS_CANCELLED)
+                                                @lang('Cancelled')
                                             @else
                                                 <div class="form-group">
                                                     <div class="col-lg-12">

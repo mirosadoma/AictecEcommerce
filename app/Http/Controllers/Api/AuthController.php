@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
 // Requests
 use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Http\Requests\Api\Auth\LoginRequest;
@@ -38,12 +39,12 @@ class AuthController extends Controller {
                     ->isError(__('This user not active from adminstrator'))
                     ->build();
             }
-            // if(is_null($user->phone_verified_at)) {
-            //     auth('api')->logout();
-            //     return (new API)
-            //         ->isError(__('This user not active from adminstrator'))
-            //         ->build();
-            // }
+            if(is_null($user->phone_verified_at)) {
+                auth('api')->logout();
+                return (new API)
+                    ->isError(__('This user not active from adminstrator'))
+                    ->build();
+            }
             $auth_data = $this->CreateNewToken($token);
             $user = Auth::guard('api')->user();
 
@@ -94,14 +95,22 @@ class AuthController extends Controller {
         ];
         $info['type'] = 'client';
         $user = User::create($info);
+        $verification_code = generate_code();
+        $user->update(['verification_code' => $verification_code]);
+        $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
+        try {
+            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
+        } catch (\Exception $th) {
+            Log::info($th->getMessage());
+        }
         return (new API)
-            ->isOk(__('Your data has been received'))
-            ->setData(new ClientResources($user))
+            ->isOk(__('Your data has been received').' '.__('And').' '.__('The activation code has been successfully sent'))
+            ->setData(['user'=>new ClientResources($user), 'verification_code'=>$user->verification_code])
             ->build();
     }
 
     public function resend_code(Request $request){
-        $user = User::where('phone', $request->phone)->first();
+        $user = User::wherePhone($request->phone)->first();
         if(!$user) {
             return (new API)
                 ->isError(__('This user not found'))
@@ -111,9 +120,9 @@ class AuthController extends Controller {
         $user->update(['verification_code' => $verification_code]);
         $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
         try {
-            (new SMS)->setPhone($user->phone)->SetMessage($msg_send. $user->verification_code)->build();
-        } catch (\Throwable $th) {
-            // return $th;
+            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
+        } catch (\Exception $th) {
+            Log::info($th->getMessage());
         }
         return (new API)
             ->isOk(__('The activation code has been successfully sent'))
@@ -146,7 +155,11 @@ class AuthController extends Controller {
     }
 
     public function forget(ForgetRequest $request){
-        $user = User::wherePhone($request->phone)->first();
+        if (is_numeric($request->email_or_phone)) {
+            $user = User::wherePhone($request->email_or_phone)->first();
+        } else {
+            $user = User::whereEmail($request->email_or_phone)->first();
+        }
         if(!$user) {
             return (new API)
                 ->isError(__('This user not found'))
@@ -156,9 +169,9 @@ class AuthController extends Controller {
         $user->update(['verification_code' => $verification_code]);
         $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
         try {
-            (new SMS)->setPhone($user->phone)->SetMessage($msg_send. $user->verification_code)->build();
-        } catch (\Throwable $th) {
-            // return $th;
+            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
+        } catch (\Exception $th) {
+            Log::info($th->getMessage());
         }
         return (new API)
             ->isOk(__('Activation code has been sent successfully'))

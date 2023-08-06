@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ClaimsExport;
 // Models
 use App\Models\Claims\Claim;
-use Mail;
-use App\Mail\SendReply;
+use App\Jobs\ReplyJob;
 use Carbon\Carbon;
 use Auth;
 // Requests
@@ -56,15 +57,14 @@ class ClaimsController extends Controller {
             'reply_owner_id'    => Auth::guard('admin')->user()->id,
             'reply_date'        => Carbon::now()
         ]);
-        // $data['user_name'] = $claim->name;
-        // $data['logo'] = asset(app_settings()->logo ?? 'webSite/images/Component 20 – 11.png');
-        // $data['reply'] = $request->reply;
-        // try {
-        //     // hint send code to mail
-        //     Mail::to($claim->email, $claim->name)->send(new SendReply($data));
-        // }catch (\Exception $e){
-        //     return $e->getMessage();
-        // }
+        // mail
+        $data['user_name'] = $claim->name;
+        $data['user_email'] = $claim->email;
+        $data['project_name'] = __("Aictec Ecommerce");
+        $data['welcome_msg'] = __("Welcome");
+        $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+        $data['reply'] = $request->reply;
+        dispatch(new ReplyJob($data, $claim));
         return redirect()->back()->with('success', __('The contact has been answered successfully'));
     }
 
@@ -75,5 +75,10 @@ class ClaimsController extends Controller {
         $claim = Claim::find($claim);
         $claim->delete();
         return redirect()->route('app.claims.index')->with('success', __('Data Deleted Successfully'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new ClaimsExport, 'claims.xlsx');
     }
 }

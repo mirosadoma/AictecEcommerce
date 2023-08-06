@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\ShippingCompanies;
+namespace App\Http\Requests\Dashboard\Products;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class SaveQuantityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,14 +20,12 @@ class UpdateRequest extends FormRequest
     {
         $langs = [];
         $return = [
-            'name'                  => __('Name'),
-            'price'                 => __('Price'),
+            'quantity'                  => __('Quantity'),
+            'products'                  => __('Products'),
         ];
         foreach(app_languages() as $key=>$value) {
-            if (count($langs)) {
-                foreach($langs as $K=>$V) {
-                    $return[$key.".".$K] = __($value['name']. " " .$V);
-                }
+            foreach($langs as $K=>$V) {
+                $return[$key.".".$K] = __($value['name']. " " .$V);
             }
         }
         return $return;
@@ -41,8 +39,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'              => "required|string|between:2,500",
-            'price'             => 'required|numeric|digits_between:2,10',
+            'quantity'              => 'required|numeric',
+            'products'              => 'required|array',
         ];
         $lang_rules = [];
         foreach(app_languages() as $key => $value){

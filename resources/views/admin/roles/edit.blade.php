@@ -55,7 +55,9 @@
                         @endif
                     @endforeach
                     <div class="btn {{$class}} check-all">
-                        <h4 class="card-title text-white m-0">@lang(ucfirst($item))</h4>
+                        <h4 class="card-title text-white m-0">
+                            @lang(ucwords(strtolower(str_replace('_',' ',$item))))
+                        </h4>
                     </div>
                     <div class="comment-widgets">
                         <div class="card-body">
@@ -64,7 +66,7 @@
                                     {{-- <input name="permissions[]" type="checkbox" class="custom-control-input" id="{{$item.'.'.$permission}}" value="{{$item.'.'.$permission}}" @if(isset($check_roles) && $role->hasPermissionTo($item.'.'.$permission)) checked @endif > --}}
                                     <input name="permissions[]" type="checkbox" class="custom-control-input" id="{{$item.'.'.$permission}}" value="{{$item.'.'.$permission}}" @if(isset($check_roles) && in_array($item.'.'.$permission,$check_roles)) checked @endif >
                                     <label class="custom-control-label" for="{{$item.'.'.$permission}}">
-                                    @lang(ucfirst($permission))
+                                        @lang(ucwords(strtolower(str_replace('_',' ',$permission))))
                                     </label>
                                 </div>
                             @empty

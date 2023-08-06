@@ -9,13 +9,11 @@ use Illuminate\Support\Facades\Auth;
 // Requests
 use App\Http\Requests\Api\Profile\ProfileRequest;
 use App\Http\Requests\Api\Profile\NewPasswordRequest;
-use App\Http\Requests\Api\Profile\AddAddressRequest;
 // Resources
 use App\Http\Resources\Api\ClientResources;
-use App\Http\Resources\Api\AddressResources;
+use App\Http\Resources\Api\OrdersResources;
+use App\Models\Orders\Order;
 // Models
-use App\Models\SendSms;
-use App\Models\Addressess\Address;
 use App\Support\API;
 use Hash;
 
@@ -76,19 +74,23 @@ class ProfileController extends Controller {
             ->build();
     }
 
-    public function add_address(AddAddressRequest $request){
+    public function my_orders(){
         $user = Auth::guard('api')->user();
         if (!$user) {
             return (new API)
                 ->isError(__('Please Login First'))
                 ->build();
         }
-        $data = $request->all();
-        $data['user_id'] = $user->id;
-        $address = Address::create($data);
+        $orders = [];
+        if (request('status') == 'in_process') {
+            $orders = $user->orders()->whereIn('status', [Order::STATUS_PAID,Order::STATUS_IN_PROCESS,Order::STATUS_ASSIGNED])->paginate();
+        }else{
+            $orders = $user->orders()->where('status', request('status'))->paginate();
+        }
         return (new API)
-            ->isOk(__('Data Saved Successfully'))
-            ->setData(new AddressResources($address))
+            ->isOk(__('My Orders'))
+            ->setData(OrdersResources::collection($orders))
+            ->addAttribute("paginate",api_model_set_paginate($orders))
             ->build();
     }
 }

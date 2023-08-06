@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Dashboard\ShippingCompanies;
+namespace App\Http\Requests\Dashboard\Emails;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -20,14 +20,16 @@ class StoreRequest extends FormRequest
     {
         $langs = [];
         $return = [
-            'name'                  => __('Name'),
-            'price'                 => __('Price'),
+            'email_type'            => __('Email Type'),
+            'clients'               => __('Clients'),
+            'lists'                 => __('Lists'),
+            'one_client'            => __('Client'),
+            'one_list'              => __('List'),
+            'content'               => __('Content'),
         ];
         foreach(app_languages() as $key=>$value) {
-            if (count($langs)) {
-                foreach($langs as $K=>$V) {
-                    $return[$key.".".$K] = __($value['name']. " " .$V);
-                }
+            foreach($langs as $K=>$V) {
+                $return[$key.".".$K] = __($value['name']. " " .$V);
             }
         }
         return $return;
@@ -41,8 +43,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'              => "required|string|between:2,500",
-            'price'             => 'required|numeric|digits_between:2,10',
+            'email_type'            => 'required',
+            'clients'               => 'required_if:email_type,one_client',
+            'lists'                 => 'required_if:email_type,one_list',
+            'content'               => 'required',
         ];
         $lang_rules = [];
         foreach(app_languages() as $key => $value){

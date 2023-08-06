@@ -29,7 +29,7 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->from(config('mail.from.address', 'leenalkhair.com'))
+        return $this->from(config('mail.from.address', 'aictect.com'))
                     ->view('emails.send_email');
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Api\ProductsImagesResources;
 use App\Http\Resources\Api\ProductsOptionsResources;
 use App\Http\Resources\Api\ProductsResources;
+use App\Http\Resources\Api\ProductsFeaturesResources;
 
 
 class ProductsCollections extends JsonResource
@@ -40,7 +41,9 @@ class ProductsCollections extends JsonResource
             'id'                    => (int) $this->id,
             'is_fav'                => (int) $is_fav,
             'brand'                 => (array) $brand,
+            'quantity'              => (int) $this->quantity??0,
             'title'                 => (string) $this->title??"",
+            'category'              => (string) $this->category->name??"",
             'small_description'     => (string) $this->small_description??"",
             'model'                 => (string) $this->model??"",
             'price'                 => (float) $this->price,
@@ -48,9 +51,11 @@ class ProductsCollections extends JsonResource
             'main_image'            => (string) $this->main_image_path??"",
             'images'                => (array) ($this->product_images->count()) ? ProductsImagesResources::collection($this->product_images) : [],
             'description'           => (string) $this->description??"",
-            'additional_options'    => (array) ($this->product_images->count()) ? ProductsOptionsResources::collection($this->product_options) : [],
+            'basic_features'        => (array) ($this->product_features->count()) ? ProductsFeaturesResources::collection($this->product_features) : [],
+            'additional_options'    => (array) ($this->product_options->count()) ? ProductsOptionsResources::collection($this->product_options) : [],
+            'files'                 => (array) ($this->product_files->count()) ? ProductsFilesResources::collection($this->product_files) : [],
             'simillar_products'     => (array) ($simillar_products->count()) ? ProductsResources::collection($simillar_products) : [],
-            'created_at'            => (string) $this->created_at->diffForHumans() ?? "",
+            'created_at'            => (string) $this->created_at ? $this->created_at->diffForHumans() : "",
         ];
         return $result;
     }

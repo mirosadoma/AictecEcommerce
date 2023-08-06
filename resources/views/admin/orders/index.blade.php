@@ -1,16 +1,12 @@
 @extends('admin.layouts.master')
-@section('head_title'){{__('Shipping Companies')}}@endsection
+@section('head_title'){{__('Orders')}}@endsection
 @section('content')
 @include('admin.layouts.inc.breadcrumb', ['array' => [
     [
-        'name'  =>  __('Shipping Companies'),
-        'route' =>  'shipping_companies.index',
+        'name'  =>  __('Orders'),
+        'route' =>  'orders.index',
     ],
-],'button' => [
-        'title' => __('Add Shipping Company'),
-        'route' =>  'shipping_companies.create',
-        'icon'  => 'plus'
-]])
+],'button' => []])
 
 <div class="content-body">
     <!-- Advanced Search -->
@@ -24,7 +20,7 @@
                             <button class="btn btn-primary btn-round waves-effect waves-float waves-light" title="{{__("Search")}}" style="padding: 10px 25px;" type="button" onclick="$('.dt_adv_search').submit()"><i data-feather="database"></i></button>
                             <button class="btn btn-warning btn-round waves-effect waves-float waves-light form-reset" title="{{__("Reset Search Data")}}" style="padding: 10px 25px;" type="button" onclick="resetForm();"><i data-feather="minus-circle"></i></button>
                             @if (admin_can_item('orders', 'exel') == "true")
-                                <a class="btn btn-info btn-round waves-effect waves-float waves-light form-reset" title="{{__("Export To Exel")}}" style="padding: 10px 25px;" href="{{route('app.orders_export')}}"><i data-feather="download"></i></a>
+                                <button class="btn btn-info btn-round waves-effect waves-float waves-light form-reset" title="{{__("Export To Exel")}}" style="padding: 10px 25px;" onclick="export_data()"><i data-feather="download"></i></button>
                             @endif
                         </div>
                     </div>
@@ -78,15 +74,15 @@
                                 <tr>
                                     <th {!! \table_width_head(1) !!}>#</th>
                                     <th>@lang("Client")</th>
-                                    <th {!! \table_width_head(3) !!}>@lang("City")</th>
-                                    <th {!! \table_width_head(3) !!}>@lang("District")</th>
+                                    <th {!! \table_width_head(5) !!}>@lang("City")</th>
+                                    <th {!! \table_width_head(5) !!}>@lang("District")</th>
                                     <th {!! \table_width_head(3) !!}>@lang("Number")</th>
-                                    <th {!! \table_width_head(7) !!}>@lang("Payment Method")</th>
+                                    <th {!! \table_width_head(5) !!}>@lang("Payment Method")</th>
                                     <th {!! \table_width_head(3) !!}>@lang("Status")</th>
                                     <th {!! \table_width_head(5) !!}>@lang("Sub Total")</th>
                                     <th {!! \table_width_head(5) !!}>@lang("Tax")</th>
                                     <th {!! \table_width_head(7) !!}>@lang("Grand Total")</th>
-                                    <th {!! \table_width_head(7) !!}>@lang("Final Total")</th>
+                                    <th {!! \table_width_head(5) !!}>@lang("Final Total")</th>
                                     <th {!! \table_width_head(5) !!}>@lang('Created At')</th>
                                     <th {!! \table_width_head(2) !!}>@lang('Actions')</th>
                                 </tr>
@@ -97,10 +93,11 @@
                                     <tr>
                                         <td>{{$item->id}}</td>
                                         <td><a href="{{ route('app.clients.edit' , [$item->user_id]) }}">{{ $item->user->name ?? "-------" }}</a></td>
-                                        <td>{{$item->city->name ?? "-------"}}</td>
-                                        <td>{{$item->district->name ?? "-------"}}</td>
-                                        <td>{{$item->payment_method ?? "-------"}}</td>
-                                        <td>{{order::getOrderStatuses($item->status) ?? "-------"}}</span></td>
+                                        <td>{{$item->address->city->name ?? "-------"}}</td>
+                                        <td>{{$item->address->district->name ?? "-------"}}</td>
+                                        <td>{{$item->number ?? "-------"}}</td>
+                                        <td>{{__($item->payment_method) ?? "-------"}}</td>
+                                        <td>{{__(\App\Models\Orders\Order::getOrderStatuses($item->status)) ?? "-------"}}</span></td>
                                         <td>{{$item->sub_total}} @lang("R.S")</td>
                                         <td>{{$item->tax}} @lang("R.S")</td>
                                         <td>{{$item->grand_total}} @lang("R.S")</td>
@@ -135,9 +132,18 @@
 @endsection
 @push('scripts')
     <script>
-        function print_details(order_id) {
-            x = window.open('{!!url('/' . app()->getLocale() . '/app/order_print/')!!}' + '/' + order_id);
-            x.print();
+        function export_data() {
+            var filter = "{{request()->filter}}";
+            if (filter == 1) {
+                var url = _url_+'app/orders_export'+'?user=&city_id=&district_id=&status=paid&created_at=&filter=1';
+            }else{
+                var url = "{{route('app.orders_export')}}";
+            }
+            window.location.href = url;
         }
+        // function print_details(order_id) {
+        //     x = window.open('{!!url('/' . app()->getLocale() . '/app/order_print/')!!}' + '/' + order_id);
+        //     x.print();
+        // }
     </script>
 @endpush

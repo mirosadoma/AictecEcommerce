@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShippingCompaniesTable extends Migration
+class CreateEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateShippingCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_companies', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('price')->nullable();
-            $table->tinyInteger('is_active')->default(0);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }
@@ -30,7 +30,7 @@ class CreateShippingCompaniesTable extends Migration
     public function down()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('shipping_companies');
+        Schema::dropIfExists('emails');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

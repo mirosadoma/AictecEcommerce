@@ -191,6 +191,11 @@ $data = [
                 'title'         => 'Add New Product',
                 'url'           => route('app.products.create'),
                 'permission'    => 'create'
+            ],
+            [
+                'title'         => 'Add Quantity',
+                'url'           => route('app.products.add_quantity'),
+                'permission'    => 'add_quantity'
             ]
         ]
     ],
@@ -213,20 +218,20 @@ $data = [
         ]
     ],
     [
-        'title'         => 'Shipping Companies',
+        'title'         => 'Emails',
         'icon'          => 'grid',
-        'order'         => 10,
-        'permission'    => 'shipping_companies',
+        'order'         => 6,
+        'permission'    => 'emails',
         'items'         => [
             [
-                'title'         => 'All Shipping Companies',
-                'url'           => route('app.shipping_companies.index'),
+                'title'         => 'All Emails',
+                'url'           => route('app.emails.index'),
                 'permission'    => 'view'
             ],
             [
-                'title'         => 'Add New Shipping Company',
-                'url'           => route('app.shipping_companies.create'),
-                'permission'    => 'create'
+                'title'         => 'Send Email',
+                'url'           => route('app.emails.send'),
+                'permission'    => 'send'
             ]
         ]
     ],

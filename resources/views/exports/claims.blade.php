@@ -2,12 +2,10 @@
     <thead>
     <tr>
         <th>@lang("ID")</th>
+        <th>@lang("Claimer")</th>
         <th>@lang("Name")</th>
         <th>@lang("Email")</th>
         <th>@lang("Phone")</th>
-        <th>@lang("City")</th>
-        <th>@lang("Area")</th>
-        <th>@lang("Company")</th>
         <th>@lang("Message")</th>
         <th>@lang("Created At")</th>
         <th>@lang("Reply")</th>
@@ -20,12 +18,10 @@
     @foreach($all_data as $value)
         <tr>
             <td>{{ $value['id'] }}</td>
+            <td>{{ $value['claimer'] }}</td>
             <td>{{ $value['name'] }}</td>
             <td>{{ $value['email'] }}</td>
             <td>{{ $value['phone'] }}</td>
-            <td>{{ $value['city'] }}</td>
-            <td>{{ $value['area'] }}</td>
-            <td>{{ $value['company'] }}</td>
             <td>{{ $value['message'] }}</td>
             <td>{{ $value['created_at'] }}</td>
             <td>{{ $value['reply'] }}</td>

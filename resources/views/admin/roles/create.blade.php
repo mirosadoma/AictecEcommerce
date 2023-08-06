@@ -47,7 +47,9 @@
             <div class="col-lg-4 col-md-6 col-sm-12 col-xl-3">
                 <div class="card">
                     <div class="btn btn-primary check-all" data-num="{{count($permissions)}}">
-                        <h4 class="card-title text-white m-0">@lang(ucfirst($item))</h4>
+                        <h4 class="card-title text-white m-0">
+                            @lang(ucwords(strtolower(str_replace('_',' ',$item))))
+                        </h4>
                     </div>
                     <div class="comment-widgets">
                         <div class="card-body">
@@ -55,7 +57,7 @@
                                 <div class="custom-control custom-checkbox my-1 mr-sm-2">
                                     <input name="permissions[]" type="checkbox" class="custom-control-input" id="{{$item.'.'.$permission}}" value="{{$item.'.'.$permission}}">
                                     <label class="custom-control-label" for="{{$item.'.'.$permission}}">
-                                    @lang(ucfirst($permission))
+                                        @lang(ucwords(strtolower(str_replace('_',' ',$permission))))
                                     </label>
                                 </div>
                             @empty

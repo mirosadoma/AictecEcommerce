@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AddressessController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\MainController;
 use App\Http\Controllers\Api\OrdersController;
+use App\Support\Urway;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,14 +33,14 @@ Route::group(['middleware'=>'api'], function () {
         Route::post('check_code',[AuthController::Class,'check_code']); // done
         Route::post('reset_password',[AuthController::Class,'reset_password']); // done
         Route::post('logout',[AuthController::Class,'logout']); // done
-        //socials
-        Route::group(['middleware' => 'web'], function() {
-            Route::any('authorized/google',[AuthController::Class,'redirectToGoogle']); // done
-            Route::any('authorized/google/callback',[AuthController::Class,'handleGoogleCallback']); // done
+        // //socials
+        // Route::group(['middleware' => 'web'], function() {
+        //     Route::any('authorized/google',[AuthController::Class,'redirectToGoogle']); // done
+        //     Route::any('authorized/google/callback',[AuthController::Class,'handleGoogleCallback']); // done
 
-            Route::get('twitter', [AuthController::Class,'redirectToTwitter']);
-            Route::get('twitter/callback', [AuthController::Class,'handleTwitterCallback']);
-        });
+        //     Route::get('twitter', [AuthController::Class,'redirectToTwitter']);
+        //     Route::get('twitter/callback', [AuthController::Class,'handleTwitterCallback']);
+        // });
     });
     // Main
     Route::group(['prefix'=>'main'], function () {
@@ -73,6 +74,8 @@ Route::group(['middleware'=>'api'], function () {
             // Favorites
             Route::get('/my_favorites', [FavoritesController::Class,'my_favorites']); // Done
             Route::post('/update_favorites/{address}', [FavoritesController::Class,'update_favorites']); // Done
+            // My Orders
+            Route::get('/my_orders', [ProfileController::Class,'my_orders']); // Done
         });
         // orders
         Route::group(['prefix'=>'main'], function () {
@@ -80,12 +83,19 @@ Route::group(['middleware'=>'api'], function () {
         });
         // orders
         Route::group(['prefix'=>'orders'], function () {
-            Route::post('/check_coupon', [OrdersController::Class,'check_coupon']);//////////////////////
-            Route::post('/check_out', [OrdersController::Class,'check_out']);//////////////////////
-
+            Route::post('/notify_me', [OrdersController::Class,'notify_me']);
+            Route::post('/check_coupon', [OrdersController::Class,'check_coupon']);
+            Route::post('/check_out', [OrdersController::Class,'check_out']);
+            Route::post('/cancel/{order}', [OrdersController::Class,'cancel']);
+            Route::post('/repayOrder/{order}', [OrdersController::Class,'repayOrder']);
         });
     });
 
+    Route::get('/check_urway',function(){
+        return (new Urway)->verify_payment();
+    });
+    Route::get('/success_payment', [OrdersController::Class,'success_payment']);
+    Route::get('/failed_payment', [OrdersController::Class,'failed_payment']);
 
     // Route::controller(TwitterController::class)->group(function(){
     //     Route::get('auth/twitter', 'redirectToTwitter')->name('auth.twitter');

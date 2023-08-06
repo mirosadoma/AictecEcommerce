@@ -60,8 +60,12 @@
                                         <td> {{$item->name ?? '-------'}} </td>
                                         <td> {{$item->created_at}} </td>
                                         <td>
-                                            {!! editForm('cities', $item) !!}
-                                            {!! deleteForm('cities', $item) !!}
+                                            @if ($item->id != 1)
+                                                {!! editForm('cities', $item) !!}
+                                                {!! deleteForm('cities', $item) !!}
+                                            @else
+                                                -------
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

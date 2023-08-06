@@ -36,13 +36,17 @@ class OrdersController extends Controller {
                 $lists->whereDate('created_at', request('created_at'));
             }
             if (request()->has('city_id') && !empty(request('city_id'))) {
-                $lists = $lists->whereHas('city', function($q) {
-                    return $q->where('city_id', request('city_id'));
+                $lists = $lists->whereHas('address', function($query) {
+                    $query->whereHas('city', function($q) {
+                        return $q->where('city_id', request('city_id'));
+                    });
                 });
             }
             if (request()->has('district_id') && !empty(request('district_id'))) {
-                $lists = $lists->whereHas('district', function($q) {
-                    return $q->where('district_id', request('district_id'));
+                $lists = $lists->whereHas('address', function($query) {
+                    $query->whereHas('district', function($q) {
+                        return $q->where('district_id', request('district_id'));
+                    });
                 });
             }
         }
@@ -56,7 +60,6 @@ class OrdersController extends Controller {
     public function show($order)
     {
         $order = Order::where('id', $order)->first();
-        dd($order);
         if (!$order) {
             abort(404);
         }
@@ -87,15 +90,14 @@ class OrdersController extends Controller {
         ];
     }
 
-    public function order_print(Order $order) {
-        dd($order);
-        return view('admin.orders.print', get_defined_vars());
+    public function orders_export() {
+        return Excel::download(new OrdersExport(), 'orders.xlsx');
     }
 
-    public function orders_export() {
-        dd('export');
-        return Excel::download(new OrdersExport(now()->year), 'orders.xlsx');
-    }
+    // public function order_print(Order $order) {
+    //     dd($order);
+    //     return view('admin.orders.print', get_defined_vars());
+    // }
 
     // public function order_details_print($id){
     //     $order = Order::find($id);

@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Products\ProductOptions;
 use Illuminate\Http\Request;
 // Models
 use App\Models\Products\Product;
 use App\Models\Products\ProductImages;
 use App\Models\Products\BasicFeatures;
 use App\Models\Products\ProductFiles;
+use App\Models\Products\ProductOptions;
+use App\Models\Products\ProductLogs;
 use App\Models\Categories\Category;
 use App\Models\Brands\Brand;
 // Requests
 use App\Http\Requests\Dashboard\Products\StoreRequest;
 use App\Http\Requests\Dashboard\Products\UpdateRequest;
+use App\Http\Requests\Dashboard\Products\SaveQuantityRequest;
+use App\Models\Products\ProductNotification;
+use App\Support\SMS;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller {
 
@@ -69,6 +74,11 @@ class ProductsController extends Controller {
         $data['is_active']      = 1;
         $data['user_id']        = \Auth()->guard('admin')->user()->id;
         $product = Product::create($data);
+        ProductLogs::create([
+            'product_id'    => $product->id,
+            'quantity'      => $request->quantity,
+            'status'        => 'IN'
+        ]);
         if (request()->has('images') && $request->images != NULL && count($request->images) != 0) {
             foreach(ProductImages::where('product_id', $product->id)->get() as $pro_image) {
                 DeleteImage($pro_image->image);
@@ -244,5 +254,63 @@ class ProductsController extends Controller {
         return response()->json([
             'message' => __('File Deleted Successfully'),
         ]);
+    }
+
+    public function add_quantity() {
+        if (!permissionCheck('products.add_quantity')) {
+            return abort(403);
+        }
+        $products = Product::where('is_active', 1)->get();
+        return view('admin.products.add_quantity',get_defined_vars());
+    }
+
+    public function save_quantity(SaveQuantityRequest $request) {
+        if (isset($request->products) && count($request->products)) {
+            foreach ($request->products as $product) {
+                $product = Product::find($product);
+                if ($product) {
+
+                    ProductLogs::create([
+                        'product_id'    => $product->id,
+                        'quantity'      => $request->quantity,
+                        'status'        => 'IN'
+                    ]);
+                    $product->update(['quantity' => $product->quantity+$request->quantity]);
+                    $product_notifications = ProductNotification::where('product_id', $product->id)->orderBy('created_at', 'desc')->get();
+                    foreach ($product_notifications as $product_notification) {
+                        if ($product->quantity >= $product_notification->quantity) {
+                            // Send SMS
+                            $user = $product_notification->user;
+                            $ar_msg = '
+                                تم توفر الكمية المطلوبه لهذا المنتج من فضلك قم بالدخول لهذا الرابط لإستكمال التسوق ,
+                                http://localhost:4200/store/productsDetails/'.$product->id.'
+                            ';
+                            $en_msg = '
+                            The required quantity for this product is available. Please enter this link to complete the shopping ,
+                                http://localhost:4200/store/productsDetails/'.$product->id.'
+                            ';
+                            $msg_send = api_msg($request , $ar_msg , $en_msg);
+                            try {
+                                (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send)->build();
+                            } catch (\Exception $th) {
+                                Log::info($th->getMessage());
+                            }
+                            $product_notification->delete();
+                        }
+                    }
+                }
+            }
+            return redirect()->back()->with('success', __('Data Updated Successfully'));
+        } else {
+            return redirect()->back()->with('success', __('No Products Found, Please Choose Product'));
+        }
+    }
+
+    public function notifications(){
+        if (!permissionCheck('products.notifications')) {
+            return abort(403);
+        }
+        $lists = ProductNotification::orderBy('id', "DESC")->paginate();
+        return view('admin.products.notifications',get_defined_vars());
     }
 }

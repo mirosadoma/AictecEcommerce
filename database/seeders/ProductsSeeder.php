@@ -10,6 +10,7 @@ use App\Models\Products\ProductOptions;
 use App\Models\Products\ProductFiles;
 use App\Models\Brands\Brand;
 use App\Models\Categories\Category;
+use App\Models\Products\ProductLogs;
 use App\Models\User;
 
 class ProductsSeeder extends Seeder
@@ -51,6 +52,11 @@ class ProductsSeeder extends Seeder
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 1,
+        ]);
         Product::create([
             'ar'                        => [
                 'title'             => 'مننتج 2',
@@ -80,6 +86,11 @@ class ProductsSeeder extends Seeder
             'is_active'             => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
+        ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 2,
         ]);
         Product::create([
             'ar'                        => [
@@ -111,6 +122,11 @@ class ProductsSeeder extends Seeder
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 3,
+        ]);
         Product::create([
             'ar'                        => [
                 'title'             => 'مننتج 4',
@@ -140,6 +156,11 @@ class ProductsSeeder extends Seeder
             'is_active'             => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
+        ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 4,
         ]);
         Product::create([
             'ar'                        => [
@@ -171,6 +192,11 @@ class ProductsSeeder extends Seeder
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 5,
+        ]);
         Product::create([
             'ar'                        => [
                 'title'             => 'مننتج 6',
@@ -200,6 +226,11 @@ class ProductsSeeder extends Seeder
             'is_active'             => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
+        ]);
+        ProductLogs::create([
+            'quantity' => 30,
+            'status' => 'IN',
+            'product_id' => 6,
         ]);
         BasicFeatures::create([
             'ar'                        => [

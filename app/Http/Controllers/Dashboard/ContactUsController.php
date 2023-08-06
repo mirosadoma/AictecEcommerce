@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ContactUsExport;
+use App\Jobs\ReplyJob;
 // Models
 use App\Models\ContactUs\ContactUs;
-use Mail;
-use App\Mail\SendReply;
 use Carbon\Carbon;
 use Auth;
 // Requests
@@ -56,15 +57,14 @@ class ContactUsController extends Controller {
             'reply_owner_id'    => Auth::guard('admin')->user()->id,
             'reply_date'        => Carbon::now()
         ]);
-        // $data['user_name'] = $contact_us->name;
-        // $data['logo'] = asset(app_settings()->logo ?? 'webSite/images/Component 20 – 11.png');
-        // $data['reply'] = $request->reply;
-        // try {
-        //     // hint send code to mail
-        //     Mail::to($contact_us->email, $contact_us->name)->send(new SendReply($data));
-        // }catch (\Exception $e){
-        //     return $e->getMessage();
-        // }
+        // mail
+        $data['user_name'] = $contact_us->name;
+        $data['user_email'] = $contact_us->email;
+        $data['project_name'] = __("Aictec Ecommerce");
+        $data['welcome_msg'] = __("Welcome");
+        $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+        $data['reply'] = $request->reply;
+        dispatch(new ReplyJob($data, $contact_us));
         return redirect()->back()->with('success', __('The contact has been answered successfully'));
     }
 
@@ -75,5 +75,10 @@ class ContactUsController extends Controller {
         $contact_us = ContactUs::find($contact_us);
         $contact_us->delete();
         return redirect()->route('app.contactus.index')->with('success', __('Data Deleted Successfully'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new ContactUsExport, 'contact_us.xlsx');
     }
 }

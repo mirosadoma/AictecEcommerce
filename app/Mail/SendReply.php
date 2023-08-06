@@ -29,7 +29,7 @@ class SendReply extends Mailable
      */
     public function build()
     {
-        return $this->from(config('mail.from.address', 'shaheenplus.com'))
+        return $this->from(config('mail.from.address', 'aictect.com'))
                     ->view('emails.send_reply');
     }
 }

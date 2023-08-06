@@ -22,6 +22,7 @@ class AdminsSeeder extends Seeder
             'phone'                 => '512345678',
             'is_active'             => 1,
             'type'                  => 'admin',
+            'wallet'                => 0,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);

@@ -23,6 +23,7 @@ class UsersSeeder extends Seeder
             'password'              => \Hash::make('123456'),
             'is_active'             => 1,
             'type'                  => 'client',
+            'wallet'                => 0,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
@@ -36,6 +37,7 @@ class UsersSeeder extends Seeder
             'company_name'          => 'AICTEC',
             'is_active'             => 1,
             'type'                  => 'company',
+            'wallet'                => 0,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);

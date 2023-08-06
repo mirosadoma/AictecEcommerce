@@ -29,20 +29,21 @@ class SMS {
     }
 
     public function setMessage($message) {
-        $this->message = "كود تحقق منصة لينكر : ".$message;
+        $this->message = $message;
         return $this;
     }
 
     public function getFields() {
-        $field = [
+        $fields = [
             "userName"      =>  $this->userName,
             "apiKey"        =>  $this->apiKey,
             "numbers"       =>  $this->phone,
             "userSender"    =>  $this->sender,
             "msg"           =>  $this->message,
-            "msgEncoding"   =>  "UTF8"
+            "msgEncoding"   =>  "UTF8",
+            "timeToSend"    => "now",
         ];
-        return $field;
+        return $fields;
     }
 
     public function build() {

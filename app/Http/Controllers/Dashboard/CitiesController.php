@@ -49,6 +49,9 @@ class CitiesController extends Controller {
             return abort(403);
         }
         $city = City::find($city);
+        if ($city->id == 1){
+            return redirect()->back()->with('error', __('You cannot update this city'));
+        }
         return view('admin.cities.edit',get_defined_vars());
     }
 
@@ -57,6 +60,9 @@ class CitiesController extends Controller {
             return abort(403);
         }
         $city = City::find($city);
+        if ($city->id == 1){
+            return redirect()->back()->with('error', __('You cannot update this city'));
+        }
         $city->update($request->all());
         return redirect()->route('app.cities.index')->with('success', __('Data Updated Successfully'));
     }
@@ -67,6 +73,9 @@ class CitiesController extends Controller {
         }
         $city = City::find($city);
         if ($city->districts->count()) {
+            return redirect()->back()->with('error', __('You cannot delete this city'));
+        }
+        if ($city->id == 1){
             return redirect()->back()->with('error', __('You cannot delete this city'));
         }
         $city->delete();

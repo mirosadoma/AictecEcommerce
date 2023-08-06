@@ -66,14 +66,6 @@ return [
         'count'         => \App\Models\Banners\Banner::where('is_active', 1)->count()
     ],
     [
-        'title'         => __('Shipping Companies'),
-        'icon'          => 'fa fa-bar-chart-o',
-        'color'         => 'blue',
-        'url'           => route('app.shipping_companies.index'),
-        'permission'    => 'shipping_companies',
-        'count'         => \App\Models\ShippingCompanies\ShippingCompany::where('is_active', 1)->count()
-    ],
-    [
         'title'         => __('Coupons'),
         'icon'          => 'fa fa-bar-chart-o',
         'color'         => 'blue',
