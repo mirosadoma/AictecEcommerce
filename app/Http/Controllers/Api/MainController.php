@@ -128,7 +128,7 @@ class MainController extends Controller {
                 ->build();
         }else{
             return (new API)
-                ->isError(__('No Products Found'))
+                ->isOk(__('No Products Found'))
                 ->setData(ProductsResources::collection($products))
                 ->addAttribute("search_data",['products_count'=>$products->count(),'search_key' => request('search_key')])
                 ->addAttribute("paginate",api_model_set_paginate($products))
@@ -169,7 +169,7 @@ class MainController extends Controller {
                 ->build();
         }else{
             return (new API)
-                ->isError(__('No Products Found'))
+                ->isOk(__('No Products Found'))
                 ->setData(ProductsResources::collection($products))
                 ->addAttribute("filter_data",[
                     'products_count'=>$products->count(),
