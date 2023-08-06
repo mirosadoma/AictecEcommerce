@@ -610,6 +610,7 @@
     "The order has been sent before and the quantity has been adjusted back to the requested quantity": "تم إرسال الطلب من قبل وتم تعديل الكمية مرة أخرى إلى الكمية المطلوبة",
     "Add Quantity": "إضافة كمية",
     "No Products Found, Please Choose Product": "لايوجد منتجات , من فضلك إختار منتج",
+    "No Products Found": "لايوجد منتجات",
     "CreditCard": "بطاقة دفع",
     "CashOnDelivery": "نقداً عند الإستلام",
     "Wallet": "محفظة",

@@ -30,6 +30,7 @@ class CategoriesSeeder extends Seeder
                 'updated_at'        => Carbon::now(),
             ],
             'is_active'             => 1,
+            'in_site'               => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);
@@ -49,6 +50,7 @@ class CategoriesSeeder extends Seeder
                 'updated_at'        => Carbon::now(),
             ],
             'is_active'             => 1,
+            'in_site'               => 1,
             'created_at'            => Carbon::now(),
             'updated_at'            => Carbon::now(),
         ]);

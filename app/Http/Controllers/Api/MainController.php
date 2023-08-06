@@ -119,12 +119,22 @@ class MainController extends Controller {
             $products->whereTranslationLike("title","%".request('search_key')."%")->orWhere('model', 'LIKE', '%'.request('search_key').'%');
         }
         $products = $products->orderBy('id', "DESC")->paginate();
-        return (new API)
-            ->isOk(__('Search Reasult'))
-            ->setData(ProductsResources::collection($products))
-            ->addAttribute("search_data",['products_count'=>$products->count(),'search_key' => request('search_key')])
-            ->addAttribute("paginate",api_model_set_paginate($products))
-            ->build();
+        if($products->count()){
+            return (new API)
+                ->isOk(__('Search Reasult'))
+                ->setData(ProductsResources::collection($products))
+                ->addAttribute("search_data",['products_count'=>$products->count(),'search_key' => request('search_key')])
+                ->addAttribute("paginate",api_model_set_paginate($products))
+                ->build();
+        }else{
+            return (new API)
+                ->isError(__('No Products Found'))
+                ->setData(ProductsResources::collection($products))
+                ->addAttribute("search_data",['products_count'=>$products->count(),'search_key' => request('search_key')])
+                ->addAttribute("paginate",api_model_set_paginate($products))
+                ->build();
+        }
+
     }
 
     public function products_filter(){
@@ -143,19 +153,36 @@ class MainController extends Controller {
         }else{
             $products = $products->orderBy('id', "DESC")->paginate();
         }
-        return (new API)
-            ->isOk(__('Search Reasult'))
-            ->setData(ProductsResources::collection($products))
-            ->addAttribute("filter_data",[
-                'products_count'=>$products->count(),
-                'brand_id'      => request('brand_id'),
-                'category_id'   => request('category_id'),
-                'min_price'     => request('min_price'),
-                'max_price'     => request('max_price'),
-                'price_sort'    => request('price_sort'),
-            ])
-            ->addAttribute("paginate",api_model_set_paginate($products))
-            ->build();
+        if($products->count()){
+            return (new API)
+                ->isOk(__('Search Reasult'))
+                ->setData(ProductsResources::collection($products))
+                ->addAttribute("filter_data",[
+                    'products_count'=>$products->count(),
+                    'brand_id'      => request('brand_id'),
+                    'category_id'   => request('category_id'),
+                    'min_price'     => request('min_price'),
+                    'max_price'     => request('max_price'),
+                    'price_sort'    => request('price_sort'),
+                ])
+                ->addAttribute("paginate",api_model_set_paginate($products))
+                ->build();
+        }else{
+            return (new API)
+                ->isError(__('No Products Found'))
+                ->setData(ProductsResources::collection($products))
+                ->addAttribute("filter_data",[
+                    'products_count'=>$products->count(),
+                    'brand_id'      => request('brand_id'),
+                    'category_id'   => request('category_id'),
+                    'min_price'     => request('min_price'),
+                    'max_price'     => request('max_price'),
+                    'price_sort'    => request('price_sort'),
+                ])
+                ->addAttribute("paginate",api_model_set_paginate($products))
+                ->build();
+        }
+
     }
 
     public function add_newsletter(NewsletterRequest $request) {
