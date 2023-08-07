@@ -44,6 +44,7 @@ Route::group(['middleware'=>'api'], function () {
     });
     // Main
     Route::group(['prefix'=>'main'], function () {
+        Route::any('products_range_price',[MainController::Class,'products_range_price']); // done
         Route::any('site_settings',[MainController::Class,'site_settings']); // done
         Route::any('search',[MainController::Class,'search']); // done
         Route::any('products_filter',[MainController::Class,'products_filter']); // done

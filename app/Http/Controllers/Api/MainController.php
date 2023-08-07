@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use App\Support\API;
 // Requests
 use App\Http\Requests\Api\Main\NewsletterRequest;
@@ -30,12 +28,23 @@ use App\Models\Claims\Claim;
 use App\Models\Claims\Reason;
 use App\Models\ContactUs\ContactUs;
 use App\Models\Newsletters\Newsletter;
-use App\Models\Orders\OrderProducts;
 use App\Models\PaymentMethodsImages\PaymentMethodsImage;
 
 // use App\Models\User;
 
 class MainController extends Controller {
+
+    public function products_range_price(){
+        $min_price = Product::where('is_active', 1)->orderBy('price', 'asc')->first()->price;
+        $max_price = Product::where('is_active', 1)->orderBy('price', 'desc')->first()->price;
+        return (new API)
+            ->isOk(__('Products Range Price'))
+            ->setData([
+                'min_price' => $min_price,
+                'max_price' => $max_price,
+            ])
+            ->build();
+    }
 
     public function site_settings(){
         $setting = SiteConfig::first();
