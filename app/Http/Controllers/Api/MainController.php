@@ -150,12 +150,15 @@ class MainController extends Controller {
         $products = Product::query()->where('is_active', 1);
         if (request()->has("brand_id") && !empty(request('brand_id'))) {
             $products->where("brand_id",request('brand_id'));
-        }elseif (request()->has("category_id") && !empty(request('category_id'))) {
+        }
+        if (request()->has("category_id") && !empty(request('category_id'))) {
             $products->where("category_id",request('category_id'));
-        }elseif (request()->has("min_price") && !empty(request('min_price'))) {
-            $products->where("price",'>',request('min_price'));
-        }elseif (request()->has("max_price") && !empty(request('max_price'))) {
-            $products->where("price",'<',request('max_price'));
+        }
+        if (request()->has("min_price") && !empty(request('min_price'))) {
+            $products->where("price",'>=',request('min_price'));
+        }
+        if (request()->has("max_price") && !empty(request('max_price'))) {
+            $products->where("price",'<=',request('max_price'));
         }
         if (request()->has("price_sort") && !empty(request('price_sort'))) {
             $products = $products->orderBy('price', request('price_sort'))->paginate();
