@@ -85,6 +85,9 @@
                     <div class="form-group row">
                         {!! Inputs('text', 'quantity', 'Quantity', 'form-control') !!}
                     </div>
+                    <div class="form-group row">
+                        {!! Inputs('text', 'weight', 'Weight', 'form-control') !!}
+                    </div>
                     <hr>
                     <div class="form-group row">
                         {!! Inputs('file', 'main_image', 'Main Image', 'file-input main_image form-control') !!}

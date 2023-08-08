@@ -173,9 +173,10 @@
             flex-direction: column;
         }
 
-        .thanks span {
+        .thanks p {
             font-size: 12px;
             font-weight: bold;
+            text-align: center;
         }
 
         .thanks img {
@@ -192,132 +193,114 @@
 <body>
 <div class="bill-cont">
     <div class="bill-head">
-        <h3 class="main-title">{{ $order->user->name ?? __('Guest') }}</h3>
-        <p class="main-desc">@lang('User Phone'):{{ $order->user->phone ?? "----------" }} </p>
-        <p class="main-desc">@lang('User Email'):{{ $order->user->email ?? "----------" }} </p>
-        <p class="main-desc">@lang('User Address'):{{ $order->user->address ?? '' }} </p>
-        <?php $link = 'https://www.google.com/maps/dir/?api=1&destination=' . $order->lat . ',' . $order->lng;?>
+        <h3 class="main-title">{{ $order->user->name ?? "" }}</h3>
+        <p class="main-desc">@lang('Phone'):{{ $order->user->phone ?? "----------" }} </p>
+        <p class="main-desc">@lang('Email'):{{ $order->user->email ?? "----------" }} </p>
+        {{-- <p class="main-desc">@lang('Address'):{{ $order->address-> ?? '' }} </p> --}}
+        <?php $link = 'https://www.google.com/maps/dir/?api=1&destination=' . $order->address->lat . ',' . $order->address->lng;?>
         <p style="display: block; text-align: center; direction: ltr; margin: 0 0 10px 0;">
             <img src="https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl={{urlencode($link)}}" alt="">
-            {{-- <br>
-            <a href="{{$link}}">{{$link}}</a> --}}
+            <br>
+            <a href="{{$link}}">{{$link}}</a>
         </p>
-        <p class="main-desc">@lang('Order Address'):{{ $order->address ?? "----------" }} </p>
-        <p class="main-desc">@lang('Invoice Id'):{{ $order->invoice_id }} </p>
     </div>
-    <div class="table-head">
-        <p class="table-sub"><b>@lang('Order ID') : </b> <span>{{ $order->id }}</span></p>
-        <p class="table-sub"><b>@lang('Remaining date') : </b> <span>{{ $order->remaining_date }}</span></p>
-    </div>
-    <div class="table-head">
-        <p class="table-sub"><b>@lang('Payment Type') : </b> <span>{{ __($order->payment_type) ?? "----------" }}</span></p>
-        <p class="table-sub"><b>@lang('Type') : </b> <span>{{ __($order->type) ?? "----------" }}</span></p>
-    </div>
-    <div class="table-head">
-        <p class="table-sub"><b>@lang('Booking Type') : </b> <span>
-        @if($order->booking_type == "main_price")
-            {{__("Normal")}}
-        @elseif($order->booking_type == "fast_price")
-            {{__("Fast")}}
-        @else
-            ----------
-        @endif
-        </span></p>
-        {{-- <p class="table-sub"><b>@lang('Booking Type') : </b> <span>{{ __($order->booking_type) ?? "----------" }}</span></p> --}}
-        <p class="table-sub"><b>@lang('Period') : </b> <span>{{ __($order->period->period) ?? "----------" }}</span></p>
-    </div>
-    {{-- Start Services --}}
-    @if ($orderServices->count())
-        <div class="bill-head">
-            <p class="main-desc">
-                <b style="text-decoration: underline">@lang("Services")</b>
-            </p>
-        </div>
-        <table class="items">
-            <tr>
-                <th>@lang('Name')</th>
-                <th>@lang('Price')</th>
-                <th>@lang('Discount')</th>
-                <th>@lang('Count Indiveduals')</th>
-            </tr>
-            @forelse ($orderServices as $service)
-                <?php $count_indeviduals = \DB::table('order_services')->where('service_id', $service->id)->where('order_id', $order->id)->first(); ?>
-                <td>{{ $service->name }}</td>
-                <td>
-                    @if ($order->booking_type == "main_price")
-                        {{$service->main_price}}
-                    @elseif($order->booking_type == "fast_price")
-                        {{$service->fast_price}}
-                    {{-- @elseif($order->booking_type == "vip_price")
-                        {{$service->vip_price}} --}}
-                    @endif
-                </td>
-                <td>{{ $service->discount }}</td>
-                <td>{{ $count_indeviduals->count }}</td>
-            @empty
-                <td colspan="4" class="text-center">@lang("No Services Found")</td>
-            @endforelse
-        </table>
-    @endif
-    {{-- End Services --}}
-    {{-- Start Offers --}}
-    @if ($orderOffers->count())
-        <div class="bill-head">
-            <p class="main-desc">
-                <b style="text-decoration: underline">@lang("Offers")</b>
-            </p>
-        </div>
-        <table class="items">
-            <tr>
-                <th>@lang('Name')</th>
-                <th>@lang('Price')</th>
-            </tr>
-            @forelse ($orderOffers as $offer)
-                <td>{{ $offer->name }}</td>
-                <td>
-                    @if ($order->booking_type == "main_price")
-                        {{$offer->main_price}}
-                    @elseif($order->booking_type == "fast_price")
-                        {{$offer->fast_price}}
-                    {{-- @elseif($order->booking_type == "vip_price")
-                        {{$offer->vip_price}} --}}
-                    @endif
-                </td>
-            @empty
-                <td colspan="2" class="text-center">@lang("No Offers Found")</td>
-            @endforelse
-        </table>
-    @endif
-    {{-- End Offers --}}
-    <hr style="border-style: solid;">
     <table class="items">
         <tr class="bud">
-            <td colspan="3">@lang('Total')</td>
-            <td>{{ $order->total ?? "0" }}{{ app_settings()->currency }} </td>
+            <td  style="text-align: right;padding: 15px 20px 0;">
+                <div class="table-head">
+                    <p class="table-sub"><b>@lang('Order ID') : </b> <span>{{ $order->id }}</span></p><br>
+                </div>
+            </td>
+            <td  style="text-align: right;padding: 15px 20px 0;">
+                <div class="table-head">
+                    <p class="table-sub"><b>@lang('Payment Method') : </b> <span>{{ __($order->payment_method) ?? "----------" }}</span></p><br>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td  style="text-align: right;padding: 0 20px;">
+                <div class="table-head">
+                    <p class="table-sub"><b>@lang('Order Number') : </b> <span>{{ $order->number }}</span></p>
+                </div>
+            </td>
+            <td  style="text-align: right;padding: 0 20px;">
+                <div class="table-head">
+                    <p class="table-sub"><b>@lang('Status') : </b> <span>{{ __(\App\Models\Orders\Order::getOrderStatuses($order->status)) ?? "----------" }}</span></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    {{-- Start Products --}}
+    <hr style="border-style: solid;">
+    @if ($order->products->count())
+        <div class="bill-head">
+            <p class="main-desc">
+                <b style="text-decoration: underline">@lang("Products")</b>
+            </p>
+        </div>
+    @endif
+    <table class="items">
+        <tr class="bud">
+            <td  style="text-align: right;padding-right: 40px">@lang('Name')</td>
+            <td  style="text-align: right;padding-right: 40px">@lang('Price')</td>
+            <td  style="text-align: right;padding-right: 40px">@lang('Quantity')</td>
+        </tr>
+        <tr>
+            @forelse ($order->products as $product)
+                <td style="text-align: right;padding-right: 40px">{{ $product->title }}</td>
+                <td style="text-align: right;padding-right: 40px">{{ $product->price }}</td>
+                <td style="text-align: right;padding-right: 40px">{{ $product->quantity }}</td>
+            @empty
+                <td colspan="2" class="text-center">@lang("Not Founded")</td>
+            @endforelse
+        </tr>
+    </table>
+    {{-- End Products --}}
+    <hr style="border-style: solid;">
+    <div class="bill-head">
+        <p class="main-desc">
+            <b style="text-decoration: underline">@lang("Details")</b>
+        </p>
+    </div>
+    <table class="items">
+        <tr class="bud">
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Sub Total')</td>
+            <td  style="text-align: center">{{ $order->sub_total ?? "0" }}<span style="color:red"> @lang('Riyal Saudi')  </span></td>
         </tr>
         <tr class="bud">
-            <td colspan="3">@lang('Total Vat')</td>
-            <td>{{ $order->total_vat ?? "0" }} {{ app_settings()->currency }}</td>
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Tax')</td>
+            <td  style="text-align: center">{{ $order->tax ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
         </tr>
         <tr class="bud">
-            <td colspan="3">@lang('Total Application Ratio')</td>
-            <td>{{ $order->total_application_ratio ?? "0" }} {{ app_settings()->currency }}</td>
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Grand Total')</td>
+            <td  style="text-align: center">{{ $order->grand_total ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
         </tr>
         <tr class="bud">
-            <td colspan="3">@lang('Amount Paid')</td>
-            <td>{{ $order->amount_paid ?? "0" }} {{ app_settings()->currency }}</td>
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Discount')</td>
+            <td  style="text-align: center">{{ $order->discount ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
         </tr>
         <tr class="bud">
-            <td colspan="3">@lang('Amount Remaining')</td>
-            <td>{{ $order->amount_remaining ?? "0" }} {{ app_settings()->currency }}</td>
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Payment Total')</td>
+            <td  style="text-align: center">{{ $order->payment ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
+        </tr>
+        <tr class="bud">
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Wallet')</td>
+            <td  style="text-align: center">{{ $order->wallet ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
+        </tr>
+        <tr class="bud">
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Delivery Charge')</td>
+            <td  style="text-align: center">{{ $order->delivery_charge ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
+        </tr>
+        <tr class="bud">
+            <td  style="text-align: right;padding-right: 40px" colspan="3">@lang('Final Total')</td>
+            <td  style="text-align: center">{{ $order->final_total ?? "0" }} <span style="color:red"> @lang('Riyal Saudi') </span></td>
         </tr>
     </table>
     <div class="thanks">
-        <span>@lang('Thank you')</span>
-        <span>{{ app_settings()->address }}</span>
-        <span>{{ app_settings()->email }}</span>
-        <span>{{ app_settings()->phone }}</span>
-        <img src="{{ app_settings()->bill_logo_path }}" style="padding: 10px;width: 100px;" alt="@lang('Admin Logo')">
+        <p>@lang('Thank You')</p>
+        <p>{{ app_settings()->address }}</p>
+        <p>{{ app_settings()->email }}</p>
+        <p>{{ app_settings()->full_phone }}</p>
     </div>
 </div>
 </body>

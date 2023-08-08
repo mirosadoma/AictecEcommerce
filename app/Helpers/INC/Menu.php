@@ -20,13 +20,54 @@ $data = [
                 'title'         => 'Maintenance Mode',
                 'url'           => route('app.settings.maintenance'),
                 'permission'    => 'maintenance'
+            ],
+            [
+                'title'         => 'Terms and Conditions',
+                'url'           => route('app.settings.terms_and_conditions'),
+                'permission'    => 'terms_and_conditions'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Common Questions',
+        'icon'          => 'grid',
+        'order'         => 2,
+        'permission'    => 'common_questions',
+        'items'         => [
+            [
+                'title'         => 'All Common Questions',
+                'url'           => route('app.common_questions.index'),
+                'permission'    => 'view'
+            ],
+            [
+                'title'         => 'Add New Common Question',
+                'url'           => route('app.common_questions.create'),
+                'permission'    => 'create'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Help Center',
+        'icon'          => 'grid',
+        'order'         => 3,
+        'permission'    => 'help_center',
+        'items'         => [
+            [
+                'title'         => 'All Help Center',
+                'url'           => route('app.help_center.index'),
+                'permission'    => 'view'
+            ],
+            [
+                'title'         => 'Add',
+                'url'           => route('app.help_center.create'),
+                'permission'    => 'create'
             ]
         ]
     ],
     [
         'title'         => 'Roles',
         'icon'          => 'grid',
-        'order'         => 2,
+        'order'         => 4,
         'permission'    => 'roles',
         'items'         => [
             [
@@ -44,7 +85,7 @@ $data = [
     [
         'title'         => 'Admins',
         'icon'          => 'grid',
-        'order'         => 3,
+        'order'         => 5,
         'permission'    => 'admins',
         'items'         => [
             [
@@ -77,7 +118,7 @@ $data = [
     [
         'title'         => 'Clients',
         'icon'          => 'grid',
-        'order'         => 4,
+        'order'         => 6,
         'permission'    => 'clients',
         'items'         => [
             [
@@ -108,42 +149,9 @@ $data = [
         ]
     ],
     [
-        'title'         => 'Companies',
-        'icon'          => 'grid',
-        'order'         => 5,
-        'permission'    => 'companies',
-        'items'         => [
-            [
-                'title'         => 'All Companies',
-                'url'           => route('app.companies.index'),
-                'permission'    => 'view'
-            ],
-            [
-                'title'         => 'Activations',
-                'url'           => route('app.companies.index').'?type=active',
-                'permission'    => 'view'
-            ],
-            [
-                'title'         => 'Un Activations',
-                'url'           => route('app.companies.index').'?type=unactive',
-                'permission'    => 'view'
-            ],
-            [
-                'title'         => 'Deleted',
-                'url'           => route('app.companies.index').'?type=deleted',
-                'permission'    => 'view'
-            ],
-            [
-                'title'         => 'Add New Company',
-                'url'           => route('app.companies.create'),
-                'permission'    => 'create'
-            ]
-        ]
-    ],
-    [
         'title'         => 'Categories',
         'icon'          => 'grid',
-        'order'         => 6,
+        'order'         => 7,
         'permission'    => 'categories',
         'items'         => [
             [
@@ -161,7 +169,7 @@ $data = [
     [
         'title'         => 'Brands',
         'icon'          => 'grid',
-        'order'         => 7,
+        'order'         => 8,
         'permission'    => 'brands',
         'items'         => [
             [
@@ -179,7 +187,7 @@ $data = [
     [
         'title'         => 'Products',
         'icon'          => 'grid',
-        'order'         => 8,
+        'order'         => 9,
         'permission'    => 'products',
         'items'         => [
             [
@@ -202,7 +210,7 @@ $data = [
     [
         'title'         => 'Banners',
         'icon'          => 'grid',
-        'order'         => 9,
+        'order'         => 10,
         'permission'    => 'banners',
         'items'         => [
             [
@@ -220,7 +228,7 @@ $data = [
     [
         'title'         => 'Emails',
         'icon'          => 'grid',
-        'order'         => 6,
+        'order'         => 11,
         'permission'    => 'emails',
         'items'         => [
             [
@@ -238,7 +246,7 @@ $data = [
     [
         'title'         => 'Coupons',
         'icon'          => 'grid',
-        'order'         => 11,
+        'order'         => 12,
         'permission'    => 'coupons',
         'items'         => [
             [
@@ -256,7 +264,7 @@ $data = [
     [
         'title'         => 'Orders',
         'icon'          => 'grid',
-        'order'         => 12,
+        'order'         => 13,
         'permission'    => 'orders',
         'items'         => [
             [
@@ -269,7 +277,7 @@ $data = [
     [
         'title'         => 'Claims',
         'icon'          => 'grid',
-        'order'         => 13,
+        'order'         => 14,
         'permission'    => 'claims',
         'items'         => [
             [
@@ -282,7 +290,7 @@ $data = [
     [
         'title'         => 'ContactUs',
         'icon'          => 'grid',
-        'order'         => 14,
+        'order'         => 15,
         'permission'    => 'contact_us',
         'items'         => [
             [
@@ -295,7 +303,7 @@ $data = [
     [
         'title'         => 'Cities',
         'icon'          => 'grid',
-        'order'         => 15,
+        'order'         => 16,
         'permission'    => 'cities',
         'items'         => [
             [
@@ -313,7 +321,7 @@ $data = [
     [
         'title'         => 'Districts',
         'icon'          => 'grid',
-        'order'         => 16,
+        'order'         => 17,
         'permission'    => 'districts',
         'items'         => [
             [
@@ -331,7 +339,7 @@ $data = [
     [
         'title'         => 'Newsletters',
         'icon'          => 'grid',
-        'order'         => 17,
+        'order'         => 18,
         'permission'    => 'newsletters',
         'items'         => [
             [
@@ -344,7 +352,7 @@ $data = [
     [
         'title'         => 'Payment Methods Images',
         'icon'          => 'grid',
-        'order'         => 18,
+        'order'         => 19,
         'permission'    => 'payment_methods_images',
         'items'         => [
             [
@@ -356,6 +364,19 @@ $data = [
                 'title'         => 'Add New Payment Methods Image',
                 'url'           => route('app.payment_methods_images.create'),
                 'permission'    => 'create'
+            ]
+        ]
+    ],
+    [
+        'title'         => 'Offer Prices',
+        'icon'          => 'grid',
+        'order'         => 19,
+        'permission'    => 'offer_prices',
+        'items'         => [
+            [
+                'title'         => 'All Offer Prices',
+                'url'           => route('app.offer_prices.index'),
+                'permission'    => 'view'
             ]
         ]
     ],

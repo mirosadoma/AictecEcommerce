@@ -40,6 +40,7 @@ class SettingsSeeder extends Seeder
             'delivery_charge'           => 120,
             'close'                     => 0,
             'close_msg'                 => '<h1><em><span dir=\"rtl\"><big><strong>قريباً بإذن الله ......</strong></big></span></em></h1>',
+            'terms_and_conditions'      => '<h1><em><span dir=\"rtl\"><big><strong>Terms And Conditions</strong></big></span></em></h1>',
             'created_at'                => Carbon::now(),
             'updated_at'                => Carbon::now()
         ]);// SiteSocial

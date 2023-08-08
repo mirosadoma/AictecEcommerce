@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Jobs\EmailJob;
+use App\Jobs\SMSJob;
 // Models
 use App\Models\Emails\Email as ClientEmail;
 use App\Models\User;
 // Requests
 use App\Http\Requests\Dashboard\Emails\StoreRequest;
+use App\Support\SMS;
+use Illuminate\Support\Facades\Log;
 
 class EmailsController extends Controller {
 
@@ -45,38 +48,49 @@ class EmailsController extends Controller {
         if (!permissionCheck('emails.send')) {
             return abort(403);
         }
-
-        if ($request->email_type == "all_clients") {
+        if ($request->email_clients_type == "all_clients") {
             $clients = User::where('type', 'client')->get();
             foreach ($clients as $client) {
                 ClientEmail::create([
                     'content' => $request->content,
                     'user_id' => $client->id,
                 ]);
-                // mail
-                $data['user_name'] = $client->name;
-                $data['user_email'] = $client->email;
-                $data['project_name'] = __("Aictec Ecommerce");
-                $data['welcome_msg'] = __("Welcome");
-                $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
-                $data['content'] = $request->content;
-                dispatch(new EmailJob($data, $client));
+                if (in_array('sms',$request->email_type)) {
+                    // SMS
+                    dispatch(new SMSJob($client, $request->content));
+                }
+                if (in_array('email',$request->email_type)) {
+                    // Email
+                    $data['user_name'] = $client->name;
+                    $data['user_email'] = $client->email;
+                    $data['project_name'] = __("Aictec Ecommerce");
+                    $data['welcome_msg'] = __("Welcome");
+                    $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+                    $data['content'] = $request->content;
+                    dispatch(new EmailJob($data, $client));
+                }
             }
-        } elseif($request->email_type == "one_client") {
+        } elseif($request->email_clients_type == "one_client") {
             $clients = User::whereIn('id', $request->clients)->where('type', 'client')->get();
             foreach ($clients as $client) {
                 ClientEmail::create([
                     'content' => $request->content,
                     'user_id' => $client->id,
                 ]);
-                // mail
-                $data['user_name'] = $client->name;
-                $data['user_email'] = $client->email;
-                $data['project_name'] = __("Aictec Ecommerce");
-                $data['welcome_msg'] = __("Welcome");
-                $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
-                $data['content'] = $request->content;
-                dispatch(new EmailJob($data, $client));
+                if (in_array('sms',$request->email_type)) {
+                    // SMS
+                    dispatch(new SMSJob($client, $request->content));
+                }
+                if (in_array('email',$request->email_type)) {
+                    // Email
+                    $data['user_name'] = $client->name;
+                    $data['user_email'] = $client->email;
+                    $data['project_name'] = __("Aictec Ecommerce");
+                    $data['welcome_msg'] = __("Welcome");
+                    $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+                    $data['content'] = $request->content;
+                    dispatch(new EmailJob($data, $client));
+                }
             }
         }
         return redirect()->route('app.emails.index')->with('success', __('Data Saved Successfully'));

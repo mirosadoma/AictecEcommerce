@@ -21,6 +21,7 @@ class StoreRequest extends FormRequest
         $langs = [];
         $return = [
             'email_type'            => __('Email Type'),
+            'email_clients_type'    => __('Email Clients Type'),
             'clients'               => __('Clients'),
             'lists'                 => __('Lists'),
             'one_client'            => __('Client'),
@@ -44,6 +45,7 @@ class StoreRequest extends FormRequest
     {
         $rules = [
             'email_type'            => 'required',
+            'email_clients_type'    => 'required',
             'clients'               => 'required_if:email_type,one_client',
             'lists'                 => 'required_if:email_type,one_list',
             'content'               => 'required',

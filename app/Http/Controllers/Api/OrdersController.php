@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Support\API;
+use App\Support\Urway;
+use Illuminate\Support\Facades\DB;
+use App\Jobs\SMSJob;
+use App\Jobs\EmailJob;
 // Requests
 use App\Http\Requests\Api\Orders\CheckOutRequest;
 // Resources
@@ -12,16 +17,14 @@ use App\Http\Resources\Api\CouponResources;
 use App\Http\Resources\Api\OrdersResources;
 use App\Models\Addressess\Address;
 use App\Models\Coupons\Coupon;
+use App\Models\Coupons\UsersCoupons;
 // Models
 use App\Models\Orders\Order;
-use App\Models\Orders\OrderCoupons;
 use App\Models\Products\Product;
 use App\Models\Products\ProductLogs;
 use App\Models\Products\ProductNotification;
+use App\Models\User;
 use App\Models\WalletLogs;
-use App\Support\API;
-use App\Support\Urway;
-use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller {
 
@@ -91,9 +94,6 @@ class OrdersController extends Controller {
                     $processed_product["price"] = $prow->price;
                     $processed_product["quantity"] = intval($product["quantity"]);
 
-                    // $base_price = ($prow->price * 100) / (100 + $tax);
-                    // $item_tax = $prow->price - $base_price;
-
                     $item_tax = $prow->price * ($tax / 100);
                     $base_price = $prow->price;
                     $sub_total += ($product["quantity"] * $base_price);
@@ -110,12 +110,12 @@ class OrdersController extends Controller {
         $grand_total = $sub_total + $tax_total;
 
         if ($coupon_row) {
-            // $customer_coupons_count = OrderCoupons::where('user_id',$user->id)->where('coupon_id', $coupon_row->id)->count();
-            // if($customer_coupons_count){
-            //     return (new API)
-            //         ->isError(__('This coupon is used before'))
-            //         ->build();
-            // }
+            $users_coupons_count = UsersCoupons::where('user_id',$user->id)->where('coupon_id', $coupon_row->id)->count();
+            if($users_coupons_count){
+                return (new API)
+                    ->isError(__('This coupon is used before'))
+                    ->build();
+            }
             if ($coupon_row->type == "amount") {
                 $discount = $coupon_row->value;
             } else if($coupon_row->type == "percentage"){
@@ -222,13 +222,11 @@ class OrdersController extends Controller {
         if($order){
             // save Customer Promo if found
             if($apply_coupon){
-                OrderCoupons::create([
-                    'product_discount' => $discount,
+                UsersCoupons::create([
                     'user_id' => $user->id,
                     'order_id' => $order->id,
                     'coupon_id' => $coupon_row->id,
                 ]);
-                // CustomerPromo::create(['promo_id' => $promo_row->id, 'customer_id' => $customer_id, 'order_id' => $order->id]);
             }
             // Saving order and products details
             foreach ($processed_products as $processed_product) {
@@ -356,20 +354,26 @@ class OrdersController extends Controller {
     public function success_payment(){
         $order = Order::where('number', request('order_number'))->first();
         $order->update(['status' => Order::STATUS_PAID]);
-        // $customer = User::find($order->user_id);
-        // $system_settings = app_settings();
-        // $data = [
-        //     'order_number' => $order->number
-        // ]
-        // try{
-        //     Mail::to($customer->email)->send(new \App\Mail\BerryMarket($data));
-        // }catch (\Exception $ex) {
-        // }
+        $user = User::find($order->user_id);
+        $ar_msg = 'تم سداد المبلغ المطلوب للطلب رقم ('.$order->number.') بنجاح';
+        $en_msg = 'The required amount has been paid for Order Number ('.$order->number.') Successfully';
+        $msg_send = check_locale($ar_msg , $en_msg);
+        // SMS
+        dispatch(new SMSJob($user, $msg_send));
+        // Email
+        $data['user_name'] = $user->name;
+        $data['user_email'] = $user->email;
+        $data['project_name'] = __("Aictec Ecommerce");
+        $data['welcome_msg'] = __("Welcome");
+        $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+        $data['content'] = $msg_send;
+        dispatch(new EmailJob($data, $user));
         return (new API)
-            ->isOk(__('Data Updated Successfully'))
+            ->isOk(__('Payment completed successfully'))
             ->setData(['order_id' => $order->id])
             ->build();
     }
+    
     public function failed_payment(){
         return (new API)
             ->isError(__('The payment process failed'))

@@ -4,6 +4,7 @@ return [
         'config',
         'social',
         'maintenance',
+        'terms_and_conditions',
         'update',
     ],
     'roles'  => [
@@ -19,12 +20,6 @@ return [
         'delete',
     ],
     'clients'  => [
-        'view',
-        'create',
-        'update',
-        'delete',
-    ],
-    'companies'  => [
         'view',
         'create',
         'update',
@@ -101,5 +96,20 @@ return [
         'view',
         'send',
         'delete',
+    ],
+    'common_questions'  => [
+        'view',
+        'create',
+        'update',
+        'delete',
+    ],
+    'help_center'  => [
+        'view',
+        'create',
+        'update',
+        'delete',
+    ],
+    'offer_prices'  => [
+        'view',
     ],
 ];

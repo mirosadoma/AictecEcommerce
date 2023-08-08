@@ -23,7 +23,8 @@ class CreateSettingsTable extends Migration
             $table->string('footer_logo')->nullable();
             $table->string('icon')->nullable();
             $table->tinyInteger('close')->default(0);
-            $table->text('close_msg')->nullable();
+            $table->longText('close_msg')->nullable();
+            $table->longText('terms_and_conditions')->nullable();
             $table->timestamps();
         });
         Schema::create('site_config_translations', function (Blueprint $table) {

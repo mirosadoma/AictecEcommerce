@@ -263,6 +263,19 @@ if (!function_exists('api_msg')) {
     }
 }
 
+if (!function_exists('check_locale')) {
+    function check_locale($ar,$en){
+        if(app()->getLocale() == "ar"){
+            app()->setLocale('ar');
+            $msg = $ar;
+        }else{
+            app()->setLocale('en');
+            $msg = $en;
+        }
+        return $msg ;
+    }
+}
+
 if (!function_exists('api_model_set_paginate')) {
 
     function api_model_set_paginate($model)

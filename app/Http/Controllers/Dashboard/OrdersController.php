@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Support\CreatePdfFile;
 use Illuminate\Http\Request;
 // Models
 use App\Models\Orders\Order;
@@ -13,6 +14,8 @@ use App\Models\Cities\City;
 // use App\Models\Token;
 
 use App\Exports\OrdersExport;
+use App\Jobs\EmailJob;
+use App\Jobs\SMSJob;
 use App\Models\Districts\District;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -66,57 +69,140 @@ class OrdersController extends Controller {
         return view('admin.orders.show', get_defined_vars());
     }
 
-    public function changeStatus() {
+    public function order_change_status() {
 
         $order = Order::find(request('order_id'));
-        dd($order);
-        $order->status = request('status');
-        $order->save();
-        // $tokens = Token::where('user_id', $order->user->id)->pluck('device_token')->toArray();
-        //push notification
-        // $data = [
-        //     'title'         => "",
-        //     'message'       => __("order status changed"),
-        //     'type'          => "orders",
-        //     'element_id'    => $order->id
-        // ];
-        // push_send($tokens, $data);
-        // $notify_ar = "تم تغيير حالة الطلب";
-        // $notify_en = 'order status changed';
-        // Notification::send($order->user , new AccountNotification($notify_ar ,$notify_en , 'orders' , $order->id));
-        // $msg = api_msg(request() , $notify_ar ,$notify_en);
+        if (request('status') == Order::STATUS_PAYMENTPENDDING) {
+            $order->update(['status'=>request('status')]);
+        }elseif (request('status') == Order::STATUS_PAID) {
+            if (in_array($order->status, [Order::STATUS_IN_PROCESS,Order::STATUS_ASSIGNED,Order::STATUS_DELIVERED,Order::STATUS_CANCELLED])) {
+                return [
+                    'status'    => false,
+                    'msg'       => __("You Can't Change Order Status To This Status"),
+                ];
+            }
+            $order->update(['status'=>request('status')]);
+        }elseif (request('status') == Order::STATUS_IN_PROCESS){
+            if (in_array($order->status, [Order::STATUS_ASSIGNED,Order::STATUS_DELIVERED,Order::STATUS_CANCELLED])) {
+                return [
+                    'status'    => false,
+                    'msg'       => __("You Can't Change Order Status To This Status"),
+                ];
+            }
+            $order->update(['status'=>request('status')]);
+            $ar_msg = '
+                تغيير الحالة :
+                طلبك الآن تحت المعالجة
+            ';
+            $en_msg = '
+                Status change :
+                Your request is now being processed
+            ';
+            $msg_send = check_locale($ar_msg , $en_msg);
+            // SMS
+            dispatch(new SMSJob($order->user, $msg_send));
+            // Email
+            $data['user_name'] = $order->user->name;
+            $data['user_email'] = $order->user->email;
+            $data['project_name'] = __("Aictec Ecommerce");
+            $data['welcome_msg'] = __("Welcome");
+            $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+            $data['content'] = $msg_send;
+            dispatch(new EmailJob($data, $order->user));
+        }elseif (request('status') == Order::STATUS_ASSIGNED){
+            if (in_array($order->status, [Order::STATUS_DELIVERED,Order::STATUS_CANCELLED])) {
+                return [
+                    'status'    => false,
+                    'msg'       => __("You Can't Change Order Status To This Status"),
+                ];
+            }
+            $order->update(['status'=>request('status')]);
+            $ar_msg = '
+                تغيير الحالة :
+                طلبك الآن تم إستلامه من قبل شركة الشحن
+            ';
+            $en_msg = '
+                Status change :
+                Your order has now been received by the shipping company
+            ';
+            $msg_send = check_locale($ar_msg , $en_msg);
+            // SMS
+            dispatch(new SMSJob($order->user, $msg_send));
+            // Email
+            $data['user_name'] = $order->user->name;
+            $data['user_email'] = $order->user->email;
+            $data['project_name'] = __("Aictec Ecommerce");
+            $data['welcome_msg'] = __("Welcome");
+            $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+            $data['content'] = $msg_send;
+            dispatch(new EmailJob($data, $order->user));
+        }elseif (request('status') == Order::STATUS_DELIVERED){
+            if (in_array($order->status, [Order::STATUS_CANCELLED])) {
+                return [
+                    'status'    => false,
+                    'msg'       => __("You Can't Change Order Status To This Status"),
+                ];
+            }
+            $order->update(['status'=>request('status')]);
+            $ar_msg = '
+                تغيير الحالة :
+                طلبك الآن تم توصيله
+            ';
+            $en_msg = '
+                Status change :
+                Your order has now been delivered
+            ';
+            $msg_send = check_locale($ar_msg , $en_msg);
+            // SMS
+            dispatch(new SMSJob($order->user, $msg_send));
+            // Email
+            $data['user_name'] = $order->user->name;
+            $data['user_email'] = $order->user->email;
+            $data['project_name'] = __("Aictec Ecommerce");
+            $data['welcome_msg'] = __("Welcome");
+            $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+            $data['content'] = $msg_send;
+            dispatch(new EmailJob($data, $order->user));
+        }elseif (request('status') == Order::STATUS_CANCELLED){
+            $order->update(['status'=>request('status')]);
+            $ar_msg = '
+                تغيير الحالة :
+                تم إلغاء طلبك
+            ';
+            $en_msg = '
+                Status change :
+                Your order has been cancelled
+            ';
+            $msg_send = check_locale($ar_msg , $en_msg);
+            // SMS
+            dispatch(new SMSJob($order->user, $msg_send));
+            // Email
+            $data['user_name'] = $order->user->name;
+            $data['user_email'] = $order->user->email;
+            $data['project_name'] = __("Aictec Ecommerce");
+            $data['welcome_msg'] = __("Welcome");
+            $data['project_link'] = env('APP_URL', 'https://www.aictec.com/');
+            $data['content'] = $msg_send;
+            dispatch(new EmailJob($data, $order->user));
+        }
         return [
-            'status' => true,
+            'status'    => true,
+            'msg'       => __('Change Status Done'),
         ];
     }
-
     public function orders_export() {
         return Excel::download(new OrdersExport(), 'orders.xlsx');
     }
 
-    // public function order_print(Order $order) {
-    //     dd($order);
-    //     return view('admin.orders.print', get_defined_vars());
-    // }
+    public function order_print(Order $order) {
+        return view('admin.orders.print', get_defined_vars());
+    }
 
-    // public function order_details_print($id){
-    //     $order = Order::find($id);
-    //     if ($order->driver_id) {
-    //         $drivers = Driver::where("is_active", "yes")->orWhere("id", (int) $order->driver_id)->orderBy("arabic_name")->get();
-    //     }else{
-    //         $drivers = Driver::where("is_active", "yes")->orderBy("arabic_name")->get();
-    //     }
-    //     $title = "";
-    //     $order_phone = app('settings')->order_phone;
-    //     $tax_percentage = app('settings')->tax;
-    //     $generatedString = GenerateQrCode::fromArray([
-    //         new Seller(app('settings')->invoice_app_company_name), // seller name
-    //         new TaxNumber(app('settings')->invoice_app_tax_no), // seller tax number
-    //         new InvoiceDate($order->created_at), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-    //         new InvoiceTotalAmount($order->final_total), // invoice total amount
-    //         new InvoiceTaxAmount( $order->tax_total) // invoice tax amount
-    //         // TODO :: Support others tags
-    //     ])->render();
-    //     return view('admin.order.invoice', get_defined_vars());
-    // }
+    public function order_export_pdf($order) {
+        $order = Order::find($order);
+        $html = view('admin.orders.print', get_defined_vars())->render();
+        // $pdf = (new CreatePdfFile())->getPdf($html)->setWaterMark(app_settings()->logo_path);
+        $pdf = (new CreatePdfFile())->getPdf($html);
+        return $order ? response($pdf->output('orders.pdf', "D"), 200, ['Content-Type', 'application/pdf']) : redirect()->back()->with('error', __('No Data Founded'))->withInput();
+    }
 }

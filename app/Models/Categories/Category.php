@@ -2,6 +2,7 @@
 
 namespace App\Models\Categories;
 
+use App\Models\OfferPrices\OfferPricesData;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
 use App\Models\Products\Product;
@@ -23,5 +24,10 @@ class Category extends Model {
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');
+    }
+
+    public function offer_prices_data()
+    {
+        return $this->hasMany(OfferPricesData::class, 'category_id');
     }
 }

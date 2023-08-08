@@ -26,15 +26,28 @@
             <fieldset>
                 <div class="form-body">
                     <div class="form-group row">
+                        <label class="form-label col-sm-2" for="select2-basic">@lang('Type')</label>
+                        <div class="input-icon right col-sm-10">
+                            <label for="all_email" style="margin: 0 7px;">
+                                @lang("Email")
+                                <input type="checkbox" id="all_email" name="email_type[]" value="email">
+                            </label>
+                            <label for="one_sms" style="margin: 0 7px;">
+                                @lang("SMS")
+                                <input type="checkbox" id="one_sms" name="email_type[]" value="sms">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="form-label col-sm-2" for="select2-basic">@lang('Clients')</label>
                         <div class="input-icon right col-sm-10">
                             <label for="all_clients" style="margin: 0 7px;">
                                 @lang("All Clients")
-                                <input class="choose_client" id="all_clients" type="radio" name="email_type" value="all_clients">
+                                <input class="choose_client" id="all_clients" type="radio" name="email_clients_type" value="all_clients">
                             </label>
                             <label for="one_client" style="margin: 0 7px;">
                                 @lang("Clients")
-                                <input class="choose_client" id="one_client" type="radio" name="email_type" value="one_client">
+                                <input class="choose_client" id="one_client" type="radio" name="email_clients_type" value="one_client">
                             </label>
                         </div>
                     </div>

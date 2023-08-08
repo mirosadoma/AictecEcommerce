@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->string('wallet')->default(0)->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->tinyInteger('is_dark')->default(0);
+            $table->tinyInteger('accept_private')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

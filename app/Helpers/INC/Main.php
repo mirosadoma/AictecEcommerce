@@ -26,14 +26,6 @@ return [
         'count'         => \App\Models\User::where('type', 'client')->where('is_active', 1)->count()
     ],
     [
-        'title'         => __('Companies'),
-        'icon'          => 'fa fa-bar-chart-o',
-        'color'         => 'blue',
-        'url'           => route('app.companies.index'),
-        'permission'    => 'companies',
-        'count'         => \App\Models\User::where('type', 'company')->where('is_active', 1)->count()
-    ],
-    [
         'title'         => __('Categories'),
         'icon'          => 'fa fa-bar-chart-o',
         'color'         => 'blue',

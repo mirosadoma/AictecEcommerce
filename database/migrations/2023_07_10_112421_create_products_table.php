@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->float('price')->default(0.0);
             $table->float('old_price')->default(0.0);
             $table->string('quantity')->nullable();
+            $table->string('weight')->nullable(); // Kilo Grame
             $table->string('main_image')->nullable();
             $table->tinyInteger('is_active')->default(0);
             $table->unsignedBigInteger('user_id')->nullable();

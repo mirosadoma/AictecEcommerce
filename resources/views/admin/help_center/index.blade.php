@@ -1,14 +1,14 @@
 @extends('admin.layouts.master')
-@section('head_title'){{__('Banks')}}@endsection
+@section('head_title'){{__('Help Center')}}@endsection
 @section('content')
 @include('admin.layouts.inc.breadcrumb', ['array' => [
     [
-        'name'  =>  __('Banks'),
-        'route' =>  'banks.index',
+        'name'  =>  __('Help Center'),
+        'route' =>  'help_center.index',
     ],
 ],'button' => [
-        'title' => __('Add Bank'),
-        'route' =>  'banks.create',
+        'title' => __('Add'),
+        'route' =>  'help_center.create',
         'icon'  => 'plus'
 ]])
 
@@ -30,8 +30,8 @@
                         <form class="dt_adv_search" method="GET">
                             <div class="row g-1 mb-md-1">
                                 <div class="col-md-4">
-                                    <label class="form-label">@lang('Name')</label>
-                                    <input type="text" name="name" class="form-control dt-input dt-full-name" value="{{old('name', request('name'))}}" data-column="1" placeholder="{{__('Name')}}" data-column-index="0" />
+                                    <label class="form-label">@lang('Title')</label>
+                                    <input type="text" name="title" class="form-control dt-input dt-full-name" value="{{old('title', request('title'))}}" data-column="1" placeholder="{{__('Title')}}" data-column-index="0" />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="select2-basic">@lang('Status')</label>
@@ -55,10 +55,7 @@
                             <thead>
                                 <tr>
                                     <th {!! \table_width_head(1) !!}>#</th>
-                                    <th>@lang('Name')</th>
-                                    <th {!! \table_width_head(5) !!}>@lang('Iban')</th>
-                                    <th {!! \table_width_head(7) !!}>@lang('Account Number')</th>
-                                    <th {!! \table_width_head(7) !!}>@lang('Account Owner')</th>
+                                    <th>@lang('Title')</th>
                                     <th {!! \table_width_head(1) !!}>@lang('Status') </th>
                                     <th {!! \table_width_head(7) !!}>@lang('Created At')</th>
                                     <th {!! \table_width_head(5) !!}>@lang('Actions')</th>
@@ -69,27 +66,24 @@
                                 @foreach ($lists as $item)
                                     <tr>
                                         <td>{{$item->id}}</td>
-                                        <td> {{$item->name ?? '-------'}} </td>
-                                        <td> {{$item->iban ?? '-------'}} </td>
-                                        <td> {{$item->account_number ?? '-------'}} </td>
-                                        <td> {{$item->account_owner ?? '-------'}} </td>
+                                        <td> {{$item->title ?? '-------'}} </td>
                                         <td>
                                             @if($item->is_active == 0)
-                                                <a href="{{route('app.banks.is_active', $item->id)}}" class="label label-sm label-danger" title="{{__('Active')}}"> <i data-feather="x" stroke-width="7" style="color: red;"></i> </a>
+                                                <a href="{{route('app.help_center.is_active', $item->id)}}" class="label label-sm label-danger" title="{{__('Active')}}"> <i data-feather="x" stroke-width="7" style="color: red;"></i> </a>
                                             @else
-                                                <a href="{{route('app.banks.is_active', $item->id)}}" class="label label-sm label-success" title="{{__('Un Active')}}"> <i data-feather="check" stroke-width="7" style="color: #00b800;"></i> </a>
+                                                <a href="{{route('app.help_center.is_active', $item->id)}}" class="label label-sm label-success" title="{{__('Un Active')}}"> <i data-feather="check" stroke-width="7" style="color: #00b800;"></i> </a>
                                             @endif
                                         </td>
                                         <td> {{$item->created_at}} </td>
                                         <td>
-                                            {!! editForm('banks', $item) !!}
-                                            {!! deleteForm('banks', $item) !!}
+                                            {!! editForm('help_center', $item) !!}
+                                            {!! deleteForm('help_center', $item) !!}
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr class="no-records-found" style="text-align: center;">
-                                    <td colspan="7">@lang('No Data Founded')</td>
+                                    <td colspan="6">@lang('No Data Founded')</td>
                                 </tr>
                             @endif
                             </tbody>

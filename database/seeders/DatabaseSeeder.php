@@ -18,6 +18,8 @@ use Database\Seeders\CitiesSeeder;
 use Database\Seeders\DistrictsSeeder;
 use Database\Seeders\NewslettersSeeder;
 use Database\Seeders\PaymentMethodsImagesSeeder;
+use Database\Seeders\CommonQuestionsSeeder;
+use Database\Seeders\HelpCenterSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -44,6 +46,8 @@ class DatabaseSeeder extends Seeder
             DistrictsSeeder::class,
             NewslettersSeeder::class,
             PaymentMethodsImagesSeeder::class,
+            CommonQuestionsSeeder::class,
+            HelpCenterSeeder::class,
         ]);
     }
 }

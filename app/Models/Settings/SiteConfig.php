@@ -5,6 +5,7 @@ namespace App\Models\Settings;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
+use Str;
 
 class SiteConfig extends Model {
 
@@ -32,8 +33,19 @@ class SiteConfig extends Model {
         return ($this->icon && file_exists(str_replace('/', '\\',public_path($this->icon)))) ? url($this->icon) : url('assets/aictec-shop-logo-01.svg');
     }
 
-    public function getPhoneNumberAttribute()
+
+    public function getFullPhoneAttribute()
     {
-        return $this->phone ? "966".$this->phone . "+" : $this->phone;
+        $full_phone = $this->phone;
+        if (Str::length($this->phone) == 9) {
+            $full_phone = '+966'.$this->phone;
+        }elseif (Str::length($this->phone) == 10) {
+            $full_phone = '+966'.substr($this->phone, 1);
+        }elseif (Str::length($this->phone) == 12) {
+            $full_phone = $this->phone;
+        }else{
+            $full_phone = '+966'.$this->phone;
+        }
+        return $full_phone;
     }
 }

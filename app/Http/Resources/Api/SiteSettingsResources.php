@@ -18,14 +18,15 @@ class SiteSettingsResources extends JsonResource
     {
         $site_socials = SiteSocial::all();
         $data = [
-            'email'             => (string) $this->email,
-            'phone'             => (string) $this->phone,
-            'tax'               => (float) $this->tax,
-            'delivery_charge'   => (float) $this->delivery_charge,
-            'logo'              => (string) $this->logo_path,
-            'icon'              => (string) $this->icon_path,
-            'footer_logo'       => (string) $this->footer_logo_path,
-            'socials'           => (array) $site_socials->count() ? SiteSocialsResources::collection($site_socials) : [],
+            'email'                 => (string) $this->email,
+            'phone'                 => (string) $this->phone,
+            'tax'                   => (float) $this->tax,
+            'delivery_charge'       => (float) $this->delivery_charge,
+            'logo'                  => (string) $this->logo_path,
+            'icon'                  => (string) $this->icon_path,
+            'footer_logo'           => (string) $this->footer_logo_path,
+            'terms_and_conditions'  => (string) $this->terms_and_conditions??"",
+            'socials'               => (array) $site_socials->count() ? SiteSocialsResources::collection($site_socials) : [],
         ];
         return $data;
     }

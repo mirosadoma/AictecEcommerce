@@ -15,7 +15,6 @@ use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\BrandsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\BannersController;
-use App\Http\Controllers\Dashboard\ShippingCompaniesController;
 use App\Http\Controllers\Dashboard\CouponsController;
 use App\Http\Controllers\Dashboard\OrdersController;
 use App\Http\Controllers\Dashboard\ClaimsController;
@@ -25,6 +24,9 @@ use App\Http\Controllers\Dashboard\DistrictsController;
 use App\Http\Controllers\Dashboard\NewslettersController;
 use App\Http\Controllers\Dashboard\PaymentMethodsImagesController;
 use App\Http\Controllers\Dashboard\EmailsController;
+use App\Http\Controllers\Dashboard\QuestionsController;
+use App\Http\Controllers\Dashboard\HelpCenterController;
+use App\Http\Controllers\Dashboard\OfferPricesController;
 
 // Dashboard
 Route::get('/app/login', [DashboardAuthController::class, 'loginPage'])->name('login'); // Done
@@ -40,6 +42,7 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('settings/config', [SettingsController::class, 'config'])->name('settings.config'); // Done
     Route::get('settings/social', [SettingsController::class, 'social'])->name('settings.social'); // Done
     Route::get('settings/maintenance', [SettingsController::class, 'maintenance'])->name('settings.maintenance'); // Done
+    Route::get('settings/terms_and_conditions', [SettingsController::class, 'terms_and_conditions'])->name('settings.terms_and_conditions'); // Done
     Route::post('settings/update/{type}', [SettingsController::class, 'update'])->name('settings.update'); // Done
     Route::get('settings/remove_logo/{setting}', [SettingsController::class, 'remove_logo'])->name('settings.remove_logo'); // Done
     Route::get('settings/remove_footer_logo/{setting}', [SettingsController::class, 'remove_footer_logo'])->name('settings.remove_footer_logo'); // Done
@@ -62,13 +65,6 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('clients/restore/{client}', [ClientsController::class, 'restore'])->name('clients.restore'); // Done
     Route::get('clients/is_active/{client}', [ClientsController::class, 'is_active'])->name('clients.is_active'); // Done
     Route::get('clients/remove_image/{client}', [ClientsController::class, 'remove_image'])->name('clients.remove_image'); // Done
-
-    // Companies Area
-    Route::resource('companies', CompaniesController::class);
-    Route::get('companies/deleteForever/{company}', [CompaniesController::class, 'deleteForever'])->name('companies.deleteForever'); // Done
-    Route::get('companies/restore/{company}', [CompaniesController::class, 'restore'])->name('companies.restore'); // Done
-    Route::get('companies/is_active/{company}', [CompaniesController::class, 'is_active'])->name('companies.is_active'); // Done
-    Route::get('companies/remove_image/{company}', [CompaniesController::class, 'remove_image'])->name('companies.remove_image'); // Done
 
     // Addressess Area
     Route::resource('addressess', AddressessController::class);
@@ -105,7 +101,9 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     // Orders Area
     Route::resource('orders', OrdersController::class); // Done
 	Route::get('/orders_export', [OrdersController::class, 'orders_export'])->name('orders_export');
-	// Route::get('/order_print/{order}', [OrdersController::class, 'order_print']);
+	Route::get('/order_export_pdf/{order_id}', [OrdersController::class, 'order_export_pdf'])->name('order_export_pdf');
+	Route::get('/order_print/{order}', [OrdersController::class, 'order_print'])->name('order_print');
+	Route::get('/order_change_status', [OrdersController::class, 'order_change_status'])->name('order_change_status');
 
     // Claims Area
     Route::resource('claims', ClaimsController::class);
@@ -135,6 +133,19 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('emails/send', [EmailsController::class, 'send'])->name('emails.send'); // Done
     Route::post('emails/store', [EmailsController::class, 'store'])->name('emails.store'); // Done
     Route::delete('emails/destroy/{email}', [EmailsController::class, 'destroy'])->name('emails.destroy'); // Done
+
+    // Common Questions
+    Route::resource('common_questions', QuestionsController::class);
+    Route::get('common_questions/is_active/{question}', [QuestionsController::class, 'is_active'])->name('common_questions.is_active'); // Done
+
+    // Help Center
+    Route::resource('help_center', HelpCenterController::class);
+    Route::get('help_center/is_active/{question}', [HelpCenterController::class, 'is_active'])->name('help_center.is_active'); // Done
+
+    // Offer Prices
+    Route::get('offer_prices', [OfferPricesController::class,'index'])->name('offer_prices.index');
+    Route::get('offer_prices/{offer_price}', [OfferPricesController::class,'show'])->name('offer_prices.show');
+    Route::get('offer_prices_export/{offer_price}', [OfferPricesController::class, 'export'])->name('offer_prices.export'); // Done
 
     Route::get('/403', function(){
         return view('403');

@@ -17,6 +17,8 @@ use App\Http\Resources\Api\AllBannersResources;
 use App\Http\Resources\Api\ProductsResources;
 use App\Http\Resources\Api\SiteSettingsResources;
 use App\Http\Resources\Api\ProductsCollections;
+use App\Http\Resources\Api\CommonQuestionsResources;
+use App\Http\Resources\Api\HelpCenterResources;
 // Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Settings\SiteConfig;
@@ -27,8 +29,10 @@ use App\Models\Brands\Brand;
 use App\Models\Claims\Claim;
 use App\Models\Claims\Reason;
 use App\Models\ContactUs\ContactUs;
+use App\Models\HelpCenter\HelpCenter;
 use App\Models\Newsletters\Newsletter;
 use App\Models\PaymentMethodsImages\PaymentMethodsImage;
+use App\Models\Questions\Question;
 
 // use App\Models\User;
 
@@ -234,5 +238,21 @@ class MainController extends Controller {
         return (new API)
                 ->isOk(__('Data Saved Successfully'))
                 ->build();
+    }
+
+    public function common_questions(){
+        $common_questions = Question::where('is_active', 1)->orderBy('id', 'DESC')->get();
+        return (new API)
+            ->isOk(__('Common Questions'))
+            ->setData(CommonQuestionsResources::collection($common_questions))
+            ->build();
+    }
+
+    public function help_center(){
+        $help_center = HelpCenter::where('is_active', 1)->orderBy('id', 'DESC')->get();
+        return (new API)
+            ->isOk(__('Help Center'))
+            ->setData(HelpCenterResources::collection($help_center))
+            ->build();
     }
 }

@@ -21,6 +21,14 @@ $order_statuses = [
             padding: 5px 15px;
             font-size: 15px;
         }
+        .errorStatus{
+            color: #ffffff;
+            background: rgb(131, 12, 12);
+            display: block;
+            margin: 0 10px;
+            padding: 5px 15px;
+            font-size: 15px;
+        }
     </style>
 @endpush
 @section('content')
@@ -48,10 +56,13 @@ $order_statuses = [
                     <div class="card-header">
                         <h5 class="card-title"> @lang("Order Data") </h5>
                         <div class="heading-elements" style="display: flex;">
-                            {{-- <?php //$link = route('app.orders.print', $order->id); ?>
+                            <?php $link = route('app.order_print', $order->id); ?>
                             <a class="btn btn-primary" onClick="MyWindow=window.open('{!! $link !!}','MyWindow','width=1000,height=500'); return false;" type="button" class="btn btn-dark legitRipple">
                                @lang('Print')
-                            </a> --}}
+                            </a>
+                            <a class="btn btn-warning" style="margin: 0 10px;" href="{{route('app.order_export_pdf', $order->id)}}" type="button" class="btn btn-dark legitRipple">
+                               @lang('Export PDF')
+                            </a>
                         </div>
                     </div>
                     <div class="card-body table-responsive">
@@ -59,15 +70,15 @@ $order_statuses = [
                             <table class="table datatable-basic">
                                 <thead>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang("Order ID")</th>
+                                        <th {!! \table_width_head(8) !!}>@lang("Order ID")</th>
                                         <td>{{$order->id}}</td>
                                     </tr>
-                                    {{-- <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang("Remaining date")</th>
-                                        <td>{{$order->remaining_date ?? '----------'}}</td>
-                                    </tr> --}}
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang("Order Owner")</th>
+                                        <th {!! \table_width_head(8) !!}>@lang("Order Number")</th>
+                                        <td>{{$order->number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang("Order Owner")</th>
                                         <td>
                                             <table class="table table-bordered table-sm">
                                                 <tr>
@@ -94,48 +105,56 @@ $order_statuses = [
                                                             </a>
                                                         </td>
                                                     @else
-                                                        <td colspan="2">@lang("No User Phone Or Email Found")</td>
+                                                        <td colspan="3">@lang("No User Phone Or Email Found")</td>
                                                     @endif
                                                 </tr>
                                             </table>
                                         </td>
                                     </tr>
-                                    {{-- <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang("Vendor")</th>
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang("Address")</th>
                                         <td>
                                             <table class="table table-bordered table-sm">
                                                 <tr>
-                                                    <th colspan="4" class="text-center">@lang('Information')</th>
+                                                    <th colspan="10" class="text-center">@lang('Information')</th>
                                                 </tr>
                                                 <tr>
-                                                    <th>@lang('Name')</th>
-                                                    <th>@lang('Email')</th>
-                                                    <th>@lang('Phone')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('ID')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;"">@lang('User Name')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Full Name')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Phone')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Street Address')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Building Number')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Floor Number')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('Postal Code')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('City')</th>
+                                                    <th style="width: 150px; padding: 5px 0 !important; margin: 0 !important; text-align: center; vertical-align: middle;">@lang('District')</th>
                                                 </tr>
                                                 <tr>
-                                                    <td>
-                                                        {{ $order->user ? $order->vendor->name : __("No Vendor Name Found")}}
-                                                    </td>
-                                                    @if($order->vendor)
+                                                    @if($order->address)
+                                                        <td>{{ $order->address->id??'#'}} </td>
+                                                        <td>{{ $order->address->user ? $order->address->user->name : __("No User Name Found")}}</td>
+                                                        <td>{{ $order->address->full_name ?? "-----------" }}</td>
                                                         <td>
-                                                            <a href="mailto:{{ $order->vendor->email }}">
-                                                                {{ $order->vendor->email ?? "-----------" }}
+                                                            <a href="tel:{{ $order->address->phone }}">
+                                                                {{ $order->address->phone ?? "-----------" }}
                                                             </a>
                                                         </td>
-                                                        <td>
-                                                            <a href="tel:{{ $order->vendor->phone }}">
-                                                                {{ $order->vendor->phone ?? "-----------" }}
-                                                            </a>
-                                                        </td>
+                                                        <td>{{ $order->address->street_address ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->building_number ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->floor_number ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->postal_code ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->city->name ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->district->name ?? "-----------" }}</td>
                                                     @else
-                                                        <td colspan="2">@lang("No User Phone Or Email Found")</td>
+                                                        <td colspan="10">@lang("No Data Founded")</td>
                                                     @endif
                                                 </tr>
                                             </table>
                                         </td>
-                                    </tr> --}}
+                                    </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang("Status")</th>
+                                        <th {!! \table_width_head(8) !!}>@lang("Status")</th>
                                         <td>
                                             @if($order->status == Order::STATUS_DELIVERED)
                                                 @lang('Delivered')
@@ -148,7 +167,7 @@ $order_statuses = [
                                                             <option value="0" disabled>@lang("Choose")</option>
                                                             @foreach($order_statuses as $order_status)
                                                                 <option {{$order->status == $order_status ? 'selected' : ''}} value="{{$order_status}}">
-                                                                    @lang($order_status ?? "-------")
+                                                                    @lang(Order::getOrderStatuses($order_status) ?? "-------")
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -158,179 +177,110 @@ $order_statuses = [
                                             <span class="ajax-msg"></span>
                                         </td>
                                     </tr>
+                                    <tr class="cancel_reson" @if($order->status != Order::STATUS_CANCELLED) style="display: none" @endif>
+                                        <th {!! \table_width_head(8) !!}>@lang('Cancel Reson')</th>
+                                        <td>
+                                            {{$order->cancel_reson ? __($order->cancel_reson) : '-------------' }}
+                                        </td>
+                                    </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Payment Method')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Payment Method')</th>
                                         <td>
                                             @lang($order->payment_method)
                                         </td>
                                     </tr>
-                                    {{-- <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Type')</th>
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang('Coupon')</th>
                                         <td>
-                                            {{ __($order->type) ?? "----------" }}
+                                            {{$order->coupon->name}}  |  {{$order->coupon->code}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Booking Type')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Installation Service')</th>
                                         <td>
-                                            {{ __($order->booking_type) ?? "----------" }}
-                                        </td>
-                                    </tr> --}}
-                                    {{-- <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Period')</th>
-                                        <td>
-                                            <table class="table table-bordered table-sm">
-                                                <tr>
-                                                    <th colspan="4" class="text-center">@lang('Information')</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>@lang('Name')</th>
-                                                    <th>@lang('From')</th>
-                                                    <th>@lang('To')</th>
-                                                </tr>
-                                                <tr>
-                                                    @if($order->period)
-                                                        <td>
-                                                            @lang($order->period->period)
-                                                        </td>
-                                                        <td>
-                                                            {{ $order->period->from ?? "-----------" }}
-                                                        </td>
-                                                        <td>
-                                                            {{ $order->period->to ?? "-----------" }}
-                                                        </td>
-                                                    @else
-                                                        <td colspan="3">@lang("No Period Found")</td>
-                                                    @endif
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr> --}}
-                                    {{-- <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Total Vat')</th>
-                                        <td>
-                                            {{ $order->total_vat}} {{ __(app_settings()->currency) }}
+                                            {{($order->installation_service == 1) ? __('Yes') : __('No')}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Total Application Ratio')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Sub Total')</th>
                                         <td>
-                                            {{ $order->total_application_ratio}} {{ __(app_settings()->currency) }}
+                                            {{ $order->sub_total}} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Total Befor Vat And Application Ratio')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Tax')</th>
                                         <td>
-                                            {{ $order->total}} {{ __(app_settings()->currency) }}
+                                            {{ $order->tax}} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Total After Vat And Application Ratio')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Grand Total')</th>
                                         <td>
-                                            {{ $order->total + $order->total_vat + $order->total_application_ratio }} {{ __(app_settings()->currency) }}
+                                            {{ $order->grand_total}} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Amount Paid')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Discount')</th>
                                         <td>
-                                            {{ $order->amount_paid}} {{ __(app_settings()->currency) }}
+                                            {{ $order->discount }} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Amount Remaining')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Payment Total')</th>
                                         <td>
-                                            {{ $order->amount_remaining}} {{ __(app_settings()->currency) }}
+                                            {{ $order->payment}} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
-                                    </tr> --}}
-                                    {{-- @if($order->invoice_id)
-                                        <tr>
-                                            <th {!! \table_width_head(6) !!}>@lang('Invoice Id')</th>
-                                            <td>
-                                                {{ $order->invoice_id}}
-                                            </td>
-                                        </tr>
-                                    @endif --}}
-                                    {{-- @if($order->notes)
-                                        <tr>
-                                            <th {!! \table_width_head(6) !!}>@lang('Notes')</th>
-                                            <td>
-                                                {{ __($order->notes) ?? "----------" }}
-                                            </td>
-                                        </tr>
-                                    @endif --}}
-                                    {{-- @if ($orderServices->count())
-                                        <tr>
-                                            <th {!! \table_width_head(6) !!}>@lang("Services")</th>
-                                            <td>
-                                                <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <th colspan="6" class="text-center">@lang('Information')</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>@lang('Name')</th>
-                                                        <th>@lang('Main Price')</th>
-                                                        <th>@lang('Fast Price')</th>
-                                                        <th>@lang('Vip Price')</th>
-                                                        <th>@lang('Discount')</th>
-                                                        <th>@lang('Count Indiveduals')</th>
-                                                    </tr>
-                                                    <tr>
-                                                        @forelse ($orderServices as $service)
-                                                            <?php $count_indeviduals = \DB::table('order_services')->where('service_id', $service->id)->where('order_id', $order->id)->first(); ?>
-                                                            <td>{{ $service->name }}</td>
-                                                            <td>{{ $service->main_price }}</td>
-                                                            <td>{{ $service->fast_price }}</td>
-                                                            <td>{{ $service->discount }}</td>
-                                                            <td>{{ $count_indeviduals->count }}</td>
-                                                        @empty
-                                                            <td colspan="6" class="text-center">@lang("No Services Found")</td>
-                                                        @endforelse
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($orderOffers->count())
-                                        <tr>
-                                            <th {!! \table_width_head(6) !!}>@lang("Services")</th>
-                                            <td>
-                                                <table class="table table-bordered table-sm">
-                                                    <tr>
-                                                        <th colspan="4" class="text-center">@lang('Information')</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>@lang('Name')</th>
-                                                        <th>@lang('Main Price')</th>
-                                                        <th>@lang('Fast Price')</th>
-                                                        <th>@lang('Vip Price')</th>
-                                                    </tr>
-                                                    <tr>
-                                                        @forelse ($orderOffers as $offer)
-                                                            <td>{{ $offer->name }}</td>
-                                                            <td>{{ $offer->main_price }}</td>
-                                                            <td>{{ $offer->fast_price }}</td>
-                                                        @empty
-                                                            <td colspan="4" class="text-center">@lang("No Offers Found")</td>
-                                                        @endforelse
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    @endif --}}
+                                    </tr>
                                     <tr>
-                                        <th {!! \table_width_head(6) !!}>@lang('Address')</th>
+                                        <th {!! \table_width_head(8) !!}>@lang('Wallet')</th>
                                         <td>
-                                            @if ($order->address)
-                                                {{$order->address}}
-                                            @else
-                                                ----------
-                                            @endif
+                                            {{ $order->wallet}} <span style="color:red">@lang('Riyal Saudi')</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang('Delivery Charge')</th>
+                                        <td>
+                                            {{ $order->delivery_charge}} <span style="color:red">@lang('Riyal Saudi')</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang('Final Total')</th>
+                                        <td>
+                                            {{ $order->final_total}} <span style="color:red">@lang('Riyal Saudi')</span>
                                         </td>
                                     </tr>
                                     {{-- <tr>
                                         <th {!! \table_width_head(10) !!}>@lang("Geographical location")</th>
                                         <td><div id="mapi" style="height:300px;"></div></td>
                                     </tr> --}}
+                                    <tr>
+                                        <th {!! \table_width_head(8) !!}>@lang("Products")</th>
+                                        <td>
+                                            <table class="table table-bordered table-sm">
+                                                <tr>
+                                                    <th colspan="4" class="text-center">@lang('Information')</th>
+                                                </tr>
+                                                <tr>
+                                                    <th>@lang('Image')</th>
+                                                    <th>@lang('Name')</th>
+                                                    <th>@lang('Price')</th>
+                                                    <th>@lang('Quantity')</th>
+                                                </tr>
+                                                <tr>
+                                                    @if($order->order_products)
+                                                        @foreach ($order->order_products as $order_product)
+                                                            <td><img src="{{$order_product->product->main_image_path}}" style="width: 80px"></td>
+                                                            <td>{{$order_product->product->title}}</td>
+                                                            <td>{{$order_product->price}}</td>
+                                                            <td>{{$order_product->quantity}}</td>
+                                                        @endforeach
+                                                    @else
+                                                        <td colspan="4">@lang("No Data No Data Founded")</td>
+                                                    @endif
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -376,10 +326,12 @@ $order_statuses = [
     </script> --}}
     <script>
         $('#status').change(function (e) {
+            $('.cancel_reson').hide();
             var el = $(this);
             var parent = el.parent();
+            var url = _url_+"app/order_change_status";
             $.ajax({
-                url: _url_+"app/orders-change-status",
+                url: _url_+"app/order_change_status",
                 method: 'GET',
                 beforeSend: function (xhr) {
                     $('.ajax-msg').fadeIn();
@@ -392,11 +344,16 @@ $order_statuses = [
                 }
             }).done(function (res) {
                 if (res.status === true) {
-                    var msg = "@lang('Change Status Done')"
                     $('.ajax-msg').addClass("changeStatus");
-                    $('.ajax-msg').html(msg).delay(5000).fadeOut();
+                    $('.ajax-msg').html(res.msg).delay(5000).fadeOut();
+                }else{
+                    $('.ajax-msg').addClass("errorStatus");
+                    $('.ajax-msg').html(res.msg).delay(5000).fadeOut();
                 }
             });
+            if (el.val() == 'cancelled') {
+                $('.cancel_reson').show();
+            }
         });
     </script>
 @endpush

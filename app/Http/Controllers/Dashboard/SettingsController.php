@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Settings\SiteConfig;
 use App\Models\Settings\SiteSocial;
 use App\Models\Settings\SiteMaintenance;
+use App\Models\Settings\TermsAndCondition;
 
 class SettingsController extends Controller {
 
@@ -32,6 +33,13 @@ class SettingsController extends Controller {
         }
         $setting = SiteMaintenance::first();
         return view('admin.settings.maintenance',get_defined_vars());
+    }
+    public function terms_and_conditions() {
+        if (!permissionCheck('settings.terms_and_conditions')) {
+            return abort(403);
+        }
+        $setting = SiteMaintenance::first();
+        return view('admin.settings.terms_and_conditions',get_defined_vars());
     }
 
     public function update(Request $request, $type) {
@@ -93,6 +101,10 @@ class SettingsController extends Controller {
             return redirect()->back()->with('success', __('Data Updated Successfully'));
         }else if($type == 'maintenance'){
             $setting = SiteMaintenance::first();
+            $setting->update($data);
+            return redirect()->back()->with('success', __('Data Updated Successfully'));
+        }else if($type == 'terms_and_conditions'){
+            $setting = TermsAndCondition::first();
             $setting->update($data);
             return redirect()->back()->with('success', __('Data Updated Successfully'));
         }

@@ -17,9 +17,8 @@ use App\Models\Brands\Brand;
 use App\Http\Requests\Dashboard\Products\StoreRequest;
 use App\Http\Requests\Dashboard\Products\UpdateRequest;
 use App\Http\Requests\Dashboard\Products\SaveQuantityRequest;
+use App\Jobs\SMSJob;
 use App\Models\Products\ProductNotification;
-use App\Support\SMS;
-use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller {
 
@@ -289,12 +288,9 @@ class ProductsController extends Controller {
                             The required quantity for this product is available. Please enter this link to complete the shopping ,
                                 http://localhost:4200/store/productsDetails/'.$product->id.'
                             ';
-                            $msg_send = api_msg($request , $ar_msg , $en_msg);
-                            try {
-                                (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send)->build();
-                            } catch (\Exception $th) {
-                                Log::info($th->getMessage());
-                            }
+                            $msg_send = check_locale($ar_msg , $en_msg);
+                            // SMS
+                            dispatch(new SMSJob($user, $msg_send));
                             $product_notification->delete();
                         }
                     }

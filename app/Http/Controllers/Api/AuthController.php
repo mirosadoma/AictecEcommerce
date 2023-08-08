@@ -16,6 +16,7 @@ use App\Http\Requests\Api\Auth\CheckCodeRequest;
 use App\Http\Requests\Api\Auth\ResetRequest;
 // Resources
 use App\Http\Resources\Api\ClientResources;
+use App\Jobs\SMSJob;
 // Models
 use App\Support\SMS;
 use App\Models\User;
@@ -60,31 +61,6 @@ class AuthController extends Controller {
         }
     }
 
-    // public function login(LoginRequest $request)
-    // {
-    //     $authOnce = \Auth::guard('api')->once([
-    //         'email'    => $request->email,
-    //         'password' => $request->password,
-    //     ]);
-    //     if(!$authOnce) {
-    //         $msg = api_msg($request , 'بيانات الدخول غير صحيحة' ,'The login information is incorrect');
-    //         return response()->json(api_response($msg), $this->ErrorStatus);
-    //     }
-    //     $user = User::find(\Auth::guard('api')->getUser()->id);
-    //     if($user->is_active == 0) {
-    //         $msg = api_msg($request , 'هذا المستخدم غير مفعل من قبل الإدارة' ,'This user not active from adminstrator');
-    //         return response()->json(api_response($msg), $this->ErrorStatus);
-    //     }
-    //     if(is_null($user->phone_verified_at)) {
-    //         $msg = api_msg($request , 'لم يتم تأكيد كود التفعيل' ,'Activation code not confirmed');
-    //         return response()->json(api_response($msg), $this->ErrorStatus);
-    //     }
-    //     dd(\Auth::guard('api')->getToken());
-    //     $auth_data = $this->CreateNewToken(auth('api')->token());
-    //     $msg = api_msg($request , 'تم تسجيل الدخول بنجاح' ,'You are logged in successfully');
-    //     return response()->json(api_response($msg , ['auth_data'=>$auth_data,'user'=>new ClientResources($user)]), $this->successStatus);
-    // }
-
     public function register(RegisterRequest $request){
         $info = [
             'name'              =>  $request->name,
@@ -98,11 +74,8 @@ class AuthController extends Controller {
         $verification_code = generate_code();
         $user->update(['verification_code' => $verification_code]);
         $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
-        try {
-            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
-        } catch (\Exception $th) {
-            Log::info($th->getMessage());
-        }
+        // SMS
+        dispatch(new SMSJob($user, $msg_send. $user->verification_code));
         return (new API)
             ->isOk(__('Your data has been received').' '.__('And').' '.__('The activation code has been successfully sent'))
             ->setData(['user'=>new ClientResources($user), 'verification_code'=>$user->verification_code])
@@ -119,11 +92,8 @@ class AuthController extends Controller {
         $verification_code = generate_code();
         $user->update(['verification_code' => $verification_code]);
         $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
-        try {
-            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
-        } catch (\Exception $th) {
-            Log::info($th->getMessage());
-        }
+        // SMS
+        dispatch(new SMSJob($user, $msg_send. $user->verification_code));
         return (new API)
             ->isOk(__('The activation code has been successfully sent'))
             ->setData(['phone'=>$user->phone, 'verification_code'=>$user->verification_code])
@@ -168,11 +138,8 @@ class AuthController extends Controller {
         $verification_code = generate_code();
         $user->update(['verification_code' => $verification_code]);
         $msg_send = api_msg($request , 'رقم التأكيد هو  ' ,'Verfication Code Is  ');
-        try {
-            (new SMS)->setPhone($user->full_phone)->SetMessage($msg_send. $user->verification_code)->build();
-        } catch (\Exception $th) {
-            Log::info($th->getMessage());
-        }
+        // SMS
+        dispatch(new SMSJob($user, $msg_send. $user->verification_code));
         return (new API)
             ->isOk(__('Activation code has been sent successfully'))
             ->setData(['phone'=>$user->phone, 'verification_code'=>$user->verification_code])
