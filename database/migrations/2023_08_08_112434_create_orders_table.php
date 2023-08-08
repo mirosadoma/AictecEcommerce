@@ -58,6 +58,16 @@ class CreateOrdersTable extends Migration
             $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
+        Schema::create('users_coupons', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('coupon_id')->nullable();
+            $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -71,6 +81,7 @@ class CreateOrdersTable extends Migration
         Schema::dropIfExists('orders');
         Schema::dropIfExists('order_products');
         Schema::dropIfExists('orders_coupons');
+        Schema::dropIfExists('users_coupons');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

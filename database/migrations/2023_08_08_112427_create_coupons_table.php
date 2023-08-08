@@ -32,16 +32,6 @@ class CreateCouponsTable extends Migration
             $table->unique(['coupon_id', 'locale']);
             $table->timestamps();
         });
-        Schema::create('users_coupons', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('coupon_id')->nullable();
-            $table->foreign('coupon_id')->references('id')->on('coupons')->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->foreign('order_id')->references('id')->on('orders')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
-        });
     }
 
     /**
@@ -54,7 +44,6 @@ class CreateCouponsTable extends Migration
         \DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('coupons');
         Schema::dropIfExists('coupons_translations');
-        Schema::dropIfExists('users_coupons');
         \DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
