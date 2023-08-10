@@ -17,8 +17,8 @@ class OfferPricesController extends Controller {
         }
         $lists = OfferPrice::query();
         if (request()->has('filter') && request('filter') != 0) {
-            if (request()->has('help_center') && !empty(request('help_center'))) {
-                $lists->whereTranslationLike("help_center","%".request('help_center')."%");
+            if (request()->has('name') && !empty(request('name'))) {
+                $lists->where("name",'LIKE',"%".request('name')."%");
             }
             if (request()->has('number') && !is_null(request('number'))) {
                 $lists->where('number', request('number'));

@@ -29,26 +29,30 @@ class Urway {
 
         $data_array =  [
             'trackid'           => $idorder,
+            "transid"           => "",
             'terminalId'        => $terminalId,
 			'customerEmail'     => $user->email??" ",
+            "address"           => "Riyadh",
+            "city"              => "Riyadh",
+            "state"             => "",
+            "zipCode"           => "11611",
 			'customerName'      => $user->name??" ",
 			'customerIp'        => $ipp,
 			'action'            => "12",
-			// 'action'            => "1",  // action is always 1
-			'password'          => $password,
+			'instrumentType'    => "DEFAULT",
 			'merchantIp'        => $ipp,
+			'password'          => $password,
 			'currency'          => $currencycode,
 			'country'           => "SA",
-			'cardToken'         => "",
-			'tokenOperation'    => "A",
-			'tokenizationType'  => "0",
 			'amount'            => $amount,
-			"udf1"              => "",
-            // "udf2"              =>"https://urway.sa/urshop/scripts/response.php",//Response page URL
             "udf2"              => url('api/check_urway'),//Response page URL
             "udf3"              => "",
-            "udf4"              => "",
+            "udf1"              => "",
             "udf5"              => "",
+            "udf4"              => "",
+			'tokenizationType'  => "1",
+			'tokenOperation'    => "A",
+			'cardToken'         => "",
 			'requestHash'       => $hash  //generated Hash
         ];
         return $data_array;
