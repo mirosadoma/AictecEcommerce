@@ -35,7 +35,7 @@ class OrdersController extends Controller {
                 ->isError(__('Please Login First'))
                 ->build();
         }
-        $coupon = Coupon::where('is_active', 1)->where('id', $request->coupon_id)->first();
+        $coupon = Coupon::where('is_active', 1)->where('code', $request->code)->first();
         if (!$coupon) {
             return (new API)
                 ->isError(__('Coupon Not Found'))
@@ -373,7 +373,7 @@ class OrdersController extends Controller {
             ->setData(['order_id' => $order->id])
             ->build();
     }
-    
+
     public function failed_payment(){
         return (new API)
             ->isError(__('The payment process failed'))

@@ -36,6 +36,14 @@ class ProductsCollections extends JsonResource
         }
 
         $simillar_products = Product::where('brand_id', $this->brand_id)->where('category_id', $this->category_id)->take(12)->get();
+        $product_images = [];
+        $product_images_array = array_reverse($this->product_images()->pluck('image')->toArray());
+        foreach ($product_images_array as $value) {
+            $value = ($value) && file_exists(str_replace('/', '\\',public_path($value))) ? url($value) : url('assets/logo.png');
+            $product_images[] = (object)  ['image'=>$value];
+        }
+        $product_images[] = (object)  ['image'=>$this->main_image_path];
+        $product_images = array_reverse($product_images);
 
         $result = [
             'id'                    => (int) $this->id,
@@ -48,8 +56,8 @@ class ProductsCollections extends JsonResource
             'model'                 => (string) $this->model??"",
             'price'                 => (float) $this->price,
             'old_price'             => (float) $this->old_price,
-            'main_image'            => (string) $this->main_image_path??"",
-            'images'                => (array) ($this->product_images->count()) ? ProductsImagesResources::collection($this->product_images) : [],
+            // 'main_image'            => (string) $this->main_image_path??"",
+            'images'                => (array) $product_images,
             'description'           => (string) $this->description??"",
             'basic_features'        => (array) ($this->product_features->count()) ? ProductsFeaturesResources::collection($this->product_features) : [],
             'additional_options'    => (array) ($this->product_options->count()) ? ProductsOptionsResources::collection($this->product_options) : [],
