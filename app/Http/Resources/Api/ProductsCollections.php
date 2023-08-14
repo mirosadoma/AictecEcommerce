@@ -48,6 +48,8 @@ class ProductsCollections extends JsonResource
         $result = [
             'id'                    => (int) $this->id,
             'is_fav'                => (int) $is_fav,
+            'qty_count'             => (int) 1,
+            'show_btn'              => (bool) true,
             'brand'                 => (array) $brand,
             'quantity'              => (int) $this->quantity??0,
             'title'                 => (string) $this->title??"",
