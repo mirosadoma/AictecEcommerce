@@ -40,7 +40,7 @@ class FavoritesController extends Controller {
             return (new API)
                 ->isOk(__('Removed from favourites'))
                 ->setData([
-                    'id'        => $product->id,
+                    'id'        => $product,
                     'is_fav'    => 0
                 ])
                 ->build();
@@ -49,7 +49,7 @@ class FavoritesController extends Controller {
             return (new API)
                 ->isOk(__('Added to favourites'))
                 ->setData([
-                    'id'        => $product->id,
+                    'id'        => $product,
                     'is_fav'    => 1
                 ])
                 ->build();
