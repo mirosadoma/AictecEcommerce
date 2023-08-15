@@ -39,11 +39,19 @@ class FavoritesController extends Controller {
             $user->favorites()->detach($product);
             return (new API)
                 ->isOk(__('Removed from favourites'))
+                ->setData([
+                    'id'        => $product->id,
+                    'is_fav'    => 0
+                ])
                 ->build();
         } else {
             $user->favorites()->attach($product);
             return (new API)
                 ->isOk(__('Added to favourites'))
+                ->setData([
+                    'id'        => $product->id,
+                    'is_fav'    => 1
+                ])
                 ->build();
         }
     }
