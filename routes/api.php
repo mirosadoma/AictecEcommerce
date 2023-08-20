@@ -78,6 +78,7 @@ Route::group(['middleware'=>'api'], function () {
             Route::post('new_password', [ProfileController::Class,'new_password']); // Done
             // Addressess
             Route::get('view_address', [AddressessController::Class,'view_address']); // Done
+            Route::get('show_address/{address}', [AddressessController::Class,'show_address']); // Done
             Route::post('add_address', [AddressessController::Class,'add_address']); // Done
             Route::post('update_address/{address}', [AddressessController::Class,'update_address']); // Done
             Route::post('delete_address/{address}', [AddressessController::Class,'delete_address']); // Done

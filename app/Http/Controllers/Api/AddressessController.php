@@ -28,6 +28,19 @@ class AddressessController extends Controller {
             ->build();
     }
 
+    public function show_address(Address $address){
+        $user = Auth::guard('api')->user();
+        if (!$user) {
+            return (new API)
+                ->isError(__('Please Login First'))
+                ->build();
+        }
+        return (new API)
+            ->isOk(__('Your Address Data'))
+            ->setData(new AddressResources($address))
+            ->build();
+    }
+
     public function add_address(AddAddressRequest $request){
         $user = Auth::guard('api')->user();
         if (!$user) {
