@@ -3,7 +3,7 @@
 namespace App\Models\Addressess;
 
 use App\Models\Cities\City;
-use App\Models\Districts\District;
+use App\Models\Orders\Order;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 
@@ -22,8 +22,8 @@ class Address extends Model {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function district()
+    public function orders()
     {
-        return $this->belongsTo(District::class, 'district_id');
+        return $this->hasMany(Order::class, 'address_id');
     }
 }

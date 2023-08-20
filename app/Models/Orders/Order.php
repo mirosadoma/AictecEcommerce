@@ -7,7 +7,6 @@ use App\Models\ShippingCompanies\ShippingCompany;
 use App\Models\Addressess\Address;
 use App\Models\Cities\City;
 use App\Models\Coupons\Coupon;
-use App\Models\Districts\District;
 use App\Models\Orders\OrderProducts;
 use App\Models\Products\Product;
 use App\Models\User;
@@ -43,10 +42,6 @@ class Order extends Model {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function district()
-    {
-        return $this->belongsTo(District::class, 'district_id');
-    }
 
     public function user()
     {

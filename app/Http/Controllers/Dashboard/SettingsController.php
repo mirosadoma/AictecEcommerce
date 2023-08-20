@@ -10,6 +10,9 @@ use App\Models\Settings\SiteConfig;
 use App\Models\Settings\SiteSocial;
 use App\Models\Settings\SiteMaintenance;
 use App\Models\Settings\TermsAndCondition;
+use App\Models\Settings\DeliveryAdderss;
+use App\Models\Cities\City;
+use App\Support\Aymakan;
 
 class SettingsController extends Controller {
 
@@ -40,6 +43,15 @@ class SettingsController extends Controller {
         }
         $setting = SiteMaintenance::first();
         return view('admin.settings.terms_and_conditions',get_defined_vars());
+    }
+
+    public function delivery_adderss() {
+        if (!permissionCheck('settings.terms_and_conditions')) {
+            return abort(403);
+        }
+        $setting = DeliveryAdderss::first();
+        $cities = City::all();
+        return view('admin.settings.delivery_adderss',get_defined_vars());
     }
 
     public function update(Request $request, $type) {
@@ -106,6 +118,36 @@ class SettingsController extends Controller {
         }else if($type == 'terms_and_conditions'){
             $setting = TermsAndCondition::first();
             $setting->update($data);
+            return redirect()->back()->with('success', __('Data Updated Successfully'));
+        }else if($type == 'delivery_adderss'){
+            Validator::make($request->all(),[
+                'address_title'         => 'required',
+                'address_name'          => 'required',
+                'address_email'         => 'required',
+                'address_address'       => 'required',
+                'address_city'          => 'required|exists:cities,id',
+                'address_neighbourhood' => 'required',
+                'address_postcode'      => 'required',
+                'address_phone'         => 'required',
+                'address_description'   => 'required',
+            ],[],[
+                'address_title'         => __('Title'),
+                'address_name'          => __('Name'),
+                'address_email'         => __('Email'),
+                'address_address'       => __('Address'),
+                'address_city'          => __('City'),
+                'address_neighbourhood' => __('Address Neighbourhood'),
+                'address_postcode'      => __('Postal Code'),
+                'address_phone'         => __('Phone'),
+                'address_description'   => __('Description'),
+            ])->validate();
+            unset($data['_token']);
+
+            $setting = DeliveryAdderss::first();
+            $setting->update($data);
+
+            (new Aymakan())->addAddress($data);
+
             return redirect()->back()->with('success', __('Data Updated Successfully'));
         }
     }

@@ -48,6 +48,9 @@ class AddressessController extends Controller {
                 ->isError(__('Please Login First'))
                 ->build();
         }
+        if ($request->is_default == 1) {
+            $user->addressess()->where('is_default', 1)->update(['is_default'=>0]);
+        }
         $address = $user->addressess()->create($request->all());
         return (new API)
             ->isOk(__('Data Saved Successfully'))
@@ -61,6 +64,9 @@ class AddressessController extends Controller {
             return (new API)
                 ->isError(__('Please Login First'))
                 ->build();
+        }
+        if ($request->is_default == 1) {
+            $user->addressess()->where('is_default', 1)->update(['is_default'=>0]);
         }
         $address->update($request->all());
         return (new API)
@@ -76,10 +82,16 @@ class AddressessController extends Controller {
                 ->isError(__('Please Login First'))
                 ->build();
         }
-        $address->delete();
-        return (new API)
-            ->isOk(__('Data Deleted Successfully'))
-            ->setData(AddressResources::collection($user->addressess))
-            ->build();
+        if($address->orders->count()){
+            return (new API)
+                ->isOk(__("You cannot delete this address now, as it is associated with an order"))
+                ->build();
+        }else{
+            $address->delete();
+            return (new API)
+                ->isOk(__('Data Deleted Successfully'))
+                ->setData(AddressResources::collection($user->addressess))
+                ->build();
+        }
     }
 }

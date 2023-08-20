@@ -5,6 +5,7 @@ return [
         'social',
         'maintenance',
         'terms_and_conditions',
+        'delivery_adderss',
         'update',
     ],
     'roles'  => [
@@ -72,12 +73,6 @@ return [
         'delete',
     ],
     'cities'  => [
-        'view',
-        'create',
-        'update',
-        'delete',
-    ],
-    'districts'  => [
         'view',
         'create',
         'update',

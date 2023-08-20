@@ -32,9 +32,7 @@ class OrdersExport implements FromView
             }
             if (request()->has('district_id') && !empty(request('district_id'))) {
                 $orders = $orders->whereHas('address', function($query) {
-                    $query->whereHas('district', function($q) {
-                        return $q->where('district_id', request('district_id'));
-                    });
+                    return $query->where('district', 'LIKE', "%".request('district')."%");
                 });
             }
         }
@@ -65,7 +63,7 @@ class OrdersExport implements FromView
                 'lng' => $data->address->lng,
                 'google_address' => $data->address->google_address,
                 'city' => $data->address->city->name,
-                'district' => $data->address->district->name,
+                'district' => $data->address->district,
             ],
             'coupon' => [
                 'start_date' => $data->coupon->start_date,

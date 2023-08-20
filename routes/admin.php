@@ -20,7 +20,6 @@ use App\Http\Controllers\Dashboard\OrdersController;
 use App\Http\Controllers\Dashboard\ClaimsController;
 use App\Http\Controllers\Dashboard\ContactUsController;
 use App\Http\Controllers\Dashboard\CitiesController;
-use App\Http\Controllers\Dashboard\DistrictsController;
 use App\Http\Controllers\Dashboard\NewslettersController;
 use App\Http\Controllers\Dashboard\PaymentMethodsImagesController;
 use App\Http\Controllers\Dashboard\EmailsController;
@@ -43,6 +42,7 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
     Route::get('settings/social', [SettingsController::class, 'social'])->name('settings.social'); // Done
     Route::get('settings/maintenance', [SettingsController::class, 'maintenance'])->name('settings.maintenance'); // Done
     Route::get('settings/terms_and_conditions', [SettingsController::class, 'terms_and_conditions'])->name('settings.terms_and_conditions'); // Done
+    Route::get('settings/delivery_adderss', [SettingsController::class, 'delivery_adderss'])->name('settings.delivery_adderss'); // Done
     Route::post('settings/update/{type}', [SettingsController::class, 'update'])->name('settings.update'); // Done
     Route::get('settings/remove_logo/{setting}', [SettingsController::class, 'remove_logo'])->name('settings.remove_logo'); // Done
     Route::get('settings/remove_footer_logo/{setting}', [SettingsController::class, 'remove_footer_logo'])->name('settings.remove_footer_logo'); // Done
@@ -115,9 +115,6 @@ Route::middleware(['web','admin', 'localization'])->prefix(LaravelLocalization::
 
     // Cities Area
     Route::resource('cities', CitiesController::class);
-
-    // Districts Area
-    Route::resource('districts', DistrictsController::class);
 
     // Newsletters Area
     Route::resource('newsletters', NewslettersController::class); // Done

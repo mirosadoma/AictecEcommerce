@@ -22,11 +22,13 @@ class AddressResources extends JsonResource
             'building_number'   => (string) $this->building_number??"",
             'floor_number'      => (string) $this->floor_number??"",
             'postal_code'       => (string) $this->postal_code??"",
+            'is_default'        => (bool) $this->is_default??"",
+            'type'              => (string) $this->type??"",
             'lat'               => (string) $this->lat??"",
             'lng'               => (string) $this->lng??"",
             'google_address'    => (string) $this->google_address??"",
             'city_id'           => (string) $this->city->name??"",
-            'district_id'       => (string) $this->district->name??"",
+            'district'          => (string) $this->district??"",
         ];
     }
 }

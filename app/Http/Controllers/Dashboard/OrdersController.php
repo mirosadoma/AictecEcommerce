@@ -16,7 +16,6 @@ use App\Models\Cities\City;
 use App\Exports\OrdersExport;
 use App\Jobs\EmailJob;
 use App\Jobs\SMSJob;
-use App\Models\Districts\District;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OrdersController extends Controller {
@@ -47,15 +46,12 @@ class OrdersController extends Controller {
             }
             if (request()->has('district_id') && !empty(request('district_id'))) {
                 $lists = $lists->whereHas('address', function($query) {
-                    $query->whereHas('district', function($q) {
-                        return $q->where('district_id', request('district_id'));
-                    });
+                    return $query->where('district', 'LIKE', "%".request('district')."%");
                 });
             }
         }
 
         $cities = City::orderBy('id', "DESC")->get();
-        $districts = District::orderBy('id', "DESC")->get();
         $lists = $lists->orderBy('id', "DESC")->paginate();
         return view('admin.orders.index',get_defined_vars());
     }

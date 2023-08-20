@@ -145,7 +145,7 @@ $order_statuses = [
                                                         <td>{{ $order->address->floor_number ?? "-----------" }}</td>
                                                         <td>{{ $order->address->postal_code ?? "-----------" }}</td>
                                                         <td>{{ $order->address->city->name ?? "-----------" }}</td>
-                                                        <td>{{ $order->address->district->name ?? "-----------" }}</td>
+                                                        <td>{{ $order->address->district ?? "-----------" }}</td>
                                                     @else
                                                         <td colspan="10">@lang("No Data Founded")</td>
                                                     @endif

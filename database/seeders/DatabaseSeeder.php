@@ -15,7 +15,6 @@ use Database\Seeders\ProductsSeeder;
 use Database\Seeders\ContactUsSeeder;
 use Database\Seeders\ClaimsSeeder;
 use Database\Seeders\CitiesSeeder;
-use Database\Seeders\DistrictsSeeder;
 use Database\Seeders\NewslettersSeeder;
 use Database\Seeders\PaymentMethodsImagesSeeder;
 use Database\Seeders\CommonQuestionsSeeder;
@@ -43,7 +42,6 @@ class DatabaseSeeder extends Seeder
             ContactUsSeeder::class,
             ClaimsSeeder::class,
             CitiesSeeder::class,
-            DistrictsSeeder::class,
             NewslettersSeeder::class,
             PaymentMethodsImagesSeeder::class,
             CommonQuestionsSeeder::class,

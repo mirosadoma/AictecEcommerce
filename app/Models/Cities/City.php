@@ -4,7 +4,6 @@ namespace App\Models\Cities;
 
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Translatable;
-use App\Models\Districts\District;
 
 class City extends Model {
 
@@ -14,10 +13,4 @@ class City extends Model {
     public $translatedAttributes = ['name'];
     public $translationModel = 'App\Models\Cities\Translation\City';
     protected $guarded = ['id'];
-
-
-    public function districts()
-    {
-        return $this->hasMany(District::class, 'city_id');
-    }
 }

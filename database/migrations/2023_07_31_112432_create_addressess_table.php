@@ -21,6 +21,10 @@ class CreateAddressessTable extends Migration
             $table->string('building_number')->nullable();
             $table->string('floor_number')->nullable();
             $table->string('postal_code')->nullable();
+
+            $table->tinyInteger('is_default')->default(0);
+            $table->enum('type', ['home', 'company'])->nullable()->default('home');
+
             $table->string('lat')->nullable();
             $table->string('lng')->nullable();
             $table->string('google_address')->nullable();
@@ -28,8 +32,7 @@ class CreateAddressessTable extends Migration
             $table->unsignedBigInteger('city_id')->nullable();
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->unsignedBigInteger('district_id')->nullable();
-            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('district')->nullable();
 
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

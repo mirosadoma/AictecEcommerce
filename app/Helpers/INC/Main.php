@@ -98,14 +98,6 @@ return [
         'count'         => \App\Models\Cities\City::count()
     ],
     [
-        'title'         => __('Districts'),
-        'icon'          => 'fa fa-bar-chart-o',
-        'color'         => 'blue',
-        'url'           => route('app.districts.index'),
-        'permission'    => 'districts',
-        'count'         => \App\Models\Districts\District::count()
-    ],
-    [
         'title'         => __('Newsletters'),
         'icon'          => 'fa fa-bar-chart-o',
         'color'         => 'blue',

@@ -28,7 +28,9 @@ class AddAddressRequest extends FormRequest
             'floor_number'          => __('Floor Number'),
             'postal_code'           => __('Postal Code'),
             'city_id'               => __('City'),
-            'district_id'           => __('District'),
+            'district'              => __('District'),
+            'is_default'            => __('Is Default'),
+            'type'                  => __('Type'),
             'google_address'        => __('Google Address'),
         ];
     }
@@ -48,8 +50,10 @@ class AddAddressRequest extends FormRequest
             'floor_number'          => 'required',
             'postal_code'           => 'required',
             'city_id'               => 'required|numeric|exists:cities,id',
-            'district_id'           => 'required|numeric|exists:districts,id',
-            'google_address'        => 'required|string',
+            'district'              => 'required|string',
+            'is_default'            => 'required',
+            'type'                  => 'required|string|in:home,company',
+            'google_address'        => 'nullable|string',
         ];
     }
 }

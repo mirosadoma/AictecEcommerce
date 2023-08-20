@@ -42,13 +42,8 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" for="select3-basic">@lang('District')</label>
-                                    <select class="select-search" id="select3-basic" name="district_id">
-                                        <option value="">@lang("Choose")</option>
-                                        @foreach ($districts as $district)
-                                            <option value="{{$district->id}}" @if(!is_null(request('district_id')) && request('district_id') == $district->id) selected @endif>{{$district->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <label class="form-label">@lang('District')</label>
+                                    <input type="text" name="district" class="form-control dt-input dt-full-name" value="{{old('district', request('district'))}}" data-column="1" placeholder="{{__('District')}}" data-column-index="0" />
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="select1-basic">@lang('Status')</label>
@@ -94,7 +89,7 @@
                                         <td>{{$item->id}}</td>
                                         <td><a href="{{ route('app.clients.edit' , [$item->user_id]) }}">{{ $item->user->name ?? "-------" }}</a></td>
                                         <td>{{$item->address->city->name ?? "-------"}}</td>
-                                        <td>{{$item->address->district->name ?? "-------"}}</td>
+                                        <td>{{$item->address->district ?? "-------"}}</td>
                                         <td>{{$item->number ?? "-------"}}</td>
                                         <td>{{__($item->payment_method) ?? "-------"}}</td>
                                         <td>{{__(\App\Models\Orders\Order::getOrderStatuses($item->status)) ?? "-------"}}</span></td>
@@ -135,7 +130,7 @@
         function export_data() {
             var filter = "{{request()->filter}}";
             if (filter == 1) {
-                var url = _url_+'app/orders_export'+'?user=&city_id=&district_id=&status=paid&created_at=&filter=1';
+                var url = _url_+'app/orders_export'+'?user=&city_id=&district=&status=paid&created_at=&filter=1';
             }else{
                 var url = "{{route('app.orders_export')}}";
             }

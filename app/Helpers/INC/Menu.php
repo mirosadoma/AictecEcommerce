@@ -25,6 +25,11 @@ $data = [
                 'title'         => 'Terms and Conditions',
                 'url'           => route('app.settings.terms_and_conditions'),
                 'permission'    => 'terms_and_conditions'
+            ],
+            [
+                'title'         => 'Delivery Adderss',
+                'url'           => route('app.settings.delivery_adderss'),
+                'permission'    => 'delivery_adderss'
             ]
         ]
     ],
@@ -314,24 +319,6 @@ $data = [
             [
                 'title'         => 'Add New City',
                 'url'           => route('app.cities.create'),
-                'permission'    => 'create'
-            ]
-        ]
-    ],
-    [
-        'title'         => 'Districts',
-        'icon'          => 'grid',
-        'order'         => 17,
-        'permission'    => 'districts',
-        'items'         => [
-            [
-                'title'         => 'All Districts',
-                'url'           => route('app.districts.index'),
-                'permission'    => 'view'
-            ],
-            [
-                'title'         => 'Add New District',
-                'url'           => route('app.districts.create'),
                 'permission'    => 'create'
             ]
         ]
