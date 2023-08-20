@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Support\API;
 // Requests
 use App\Http\Requests\Api\Main\NewsletterRequest;
@@ -19,6 +20,7 @@ use App\Http\Resources\Api\SiteSettingsResources;
 use App\Http\Resources\Api\ProductsCollections;
 use App\Http\Resources\Api\CommonQuestionsResources;
 use App\Http\Resources\Api\HelpCenterResources;
+use App\Http\Resources\Api\CouponResources;
 // Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Settings\SiteConfig;
@@ -33,10 +35,24 @@ use App\Models\HelpCenter\HelpCenter;
 use App\Models\Newsletters\Newsletter;
 use App\Models\PaymentMethodsImages\PaymentMethodsImage;
 use App\Models\Questions\Question;
+use App\Models\Coupons\Coupon;
 
 // use App\Models\User;
 
 class MainController extends Controller {
+
+    public function check_coupon(Request $request){
+        $coupon = Coupon::where('is_active', 1)->where('code', $request->code)->first();
+        if (!$coupon) {
+            return (new API)
+                ->isError(__('Coupon Not Found'))
+                ->build();
+        }
+        return (new API)
+            ->isOk(__('Your Coupon Data'))
+            ->setData(new CouponResources($coupon))
+            ->build();
+    }
 
     public function products_range_price(){
         $min_price = Product::where('is_active', 1)->orderBy('price', 'asc')->first()->price;

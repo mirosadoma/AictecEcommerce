@@ -13,7 +13,6 @@ use App\Jobs\EmailJob;
 // Requests
 use App\Http\Requests\Api\Orders\CheckOutRequest;
 // Resources
-use App\Http\Resources\Api\CouponResources;
 use App\Http\Resources\Api\OrdersResources;
 use App\Models\Addressess\Address;
 use App\Models\Coupons\Coupon;
@@ -27,25 +26,6 @@ use App\Models\User;
 use App\Models\WalletLogs;
 
 class OrdersController extends Controller {
-
-    public function check_coupon(Request $request){
-        $user = Auth::guard('api')->user();
-        if (!$user) {
-            return (new API)
-                ->isError(__('Please Login First'))
-                ->build();
-        }
-        $coupon = Coupon::where('is_active', 1)->where('code', $request->code)->first();
-        if (!$coupon) {
-            return (new API)
-                ->isError(__('Coupon Not Found'))
-                ->build();
-        }
-        return (new API)
-            ->isOk(__('Your Coupon Data'))
-            ->setData(new CouponResources($coupon))
-            ->build();
-    }
 
     public function check_out(CheckOutRequest $request){
         $user = Auth::guard('api')->user();

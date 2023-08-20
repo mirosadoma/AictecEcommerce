@@ -61,6 +61,7 @@ Route::group(['middleware'=>'api'], function () {
         Route::get('show_product/{product}',[MainController::Class,'show_product']); // done
         Route::post('add_newsletter', [MainController::class, 'add_newsletter']); // Done
         Route::post('send_contact', [MainController::class, 'send_contact']); // Done
+        Route::post('check_coupon', [MainController::Class,'check_coupon']);
     });
     // Offer Prices
     Route::group(['prefix'=>'offer_prices'], function () {
@@ -93,7 +94,6 @@ Route::group(['middleware'=>'api'], function () {
         // orders
         Route::group(['prefix'=>'orders'], function () {
             Route::post('notify_me', [OrdersController::Class,'notify_me']);
-            Route::post('check_coupon', [OrdersController::Class,'check_coupon']);
             Route::post('check_out', [OrdersController::Class,'check_out']);
             Route::post('cancel/{order}', [OrdersController::Class,'cancel']);
             Route::post('repayOrder/{order}', [OrdersController::Class,'repayOrder']);

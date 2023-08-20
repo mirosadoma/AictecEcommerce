@@ -101,7 +101,8 @@ return [
     |
     */
 
-    'ttl' => env('JWT_TTL', 60),
+    'ttl' => env('JWT_TTL', 60*24*7),
+    // 'refresh_ttl' => env('JWT_TTL', null), // to not expire
 
     /*
     |--------------------------------------------------------------------------
@@ -150,7 +151,7 @@ return [
     'required_claims' => [
         'iss',
         'iat',
-        'exp',
+        'exp', // commit to not expire
         'nbf',
         'sub',
         'jti',
