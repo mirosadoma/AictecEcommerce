@@ -93,4 +93,19 @@ class ProfileController extends Controller {
             ->addAttribute("paginate",api_model_set_paginate($orders))
             ->build();
     }
+
+    public function get_wallet(){
+        $user = Auth::guard('api')->user();
+        if (!$user) {
+            return (new API)
+            ->isError(__('Please Login First'))
+            ->build();
+        }
+        return (new API)
+            ->isOk(__('My Wallet'))
+            ->setData([
+                'wallet' => floatval($user->wallet),
+            ])
+            ->build();
+    }
 }

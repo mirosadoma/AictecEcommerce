@@ -87,6 +87,7 @@ Route::group(['middleware'=>'api'], function () {
             Route::post('update_favorites/{address}', [FavoritesController::Class,'update_favorites']); // Done
             // My Orders
             Route::get('my_orders', [ProfileController::Class,'my_orders']); // Done
+            Route::get('get_wallet', [ProfileController::Class,'get_wallet']); // Done
         });
         // orders
         Route::group(['prefix'=>'main'], function () {
