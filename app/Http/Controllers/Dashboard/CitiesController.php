@@ -25,7 +25,7 @@ class CitiesController extends Controller {
                 $lists->whereDate('created_at', request('created_at'));
             }
         }
-        $lists = $lists->orderBy('id', "DESC")->paginate();
+        $lists = $lists->paginate();
         return view('admin.cities.index',get_defined_vars());
     }
 

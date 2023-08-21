@@ -21,14 +21,14 @@ class CitiesSeeder extends Seeder
             foreach ($cities as $value) {
                 City::create([
                     'ar'                    => [
-                        'name'              => $value->city_ar,
+                        'name'              => !empty($value->city_ar) ? $value->city_ar : $value->city_en,
                         'locale'            => 'ar',
                         'city_id'           => $n,
                         'created_at'        => Carbon::now(),
                         'updated_at'        => Carbon::now(),
                     ],
                     'en'                    => [
-                        'name'              => $value->city_en,
+                        'name'              => !empty($value->city_en) ? $value->city_en : $value->city_ar,
                         'locale'            => 'en',
                         'city_id'           => $n,
                         'created_at'        => Carbon::now(),
