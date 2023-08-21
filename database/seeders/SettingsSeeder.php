@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cities\City;
 use App\Models\Settings\SiteConfig;
 use App\Models\Settings\SiteSocial;
 use Illuminate\Database\Seeder;
@@ -41,6 +42,15 @@ class SettingsSeeder extends Seeder
             'close'                     => 0,
             'close_msg'                 => '<h1><em><span dir=\"rtl\"><big><strong>قريباً بإذن الله ......</strong></big></span></em></h1>',
             'terms_and_conditions'      => '<h1><em><span dir=\"rtl\"><big><strong>Terms And Conditions</strong></big></span></em></h1>',
+            'address_title'             => 'مستودع الرياض',
+            'address_name'              => 'kafroaster',
+            'address_email'             => 'marketing@kafroasters.net',
+            'address_address'           => 'Riyadh',
+            'address_city'              => City::first()->id,
+            'address_neighbourhood'     => 'Riyadh',
+            'address_postcode'          => '12211',
+            'address_phone'             => '0564211109',
+            'address_description'       => 'Test Order',
             'created_at'                => Carbon::now(),
             'updated_at'                => Carbon::now()
         ]);// SiteSocial

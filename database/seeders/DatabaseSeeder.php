@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminsSeeder::class,
             UsersSeeder::class,
+            CitiesSeeder::class,
             SettingsSeeder::class,
             RolesSeeder::class,
             CategoriesSeeder::class,
@@ -41,7 +42,6 @@ class DatabaseSeeder extends Seeder
             ProductsSeeder::class,
             ContactUsSeeder::class,
             ClaimsSeeder::class,
-            CitiesSeeder::class,
             NewslettersSeeder::class,
             PaymentMethodsImagesSeeder::class,
             CommonQuestionsSeeder::class,
