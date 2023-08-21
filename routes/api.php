@@ -62,6 +62,7 @@ Route::group(['middleware'=>'api'], function () {
         Route::post('add_newsletter', [MainController::class, 'add_newsletter']); // Done
         Route::post('send_contact', [MainController::class, 'send_contact']); // Done
         Route::post('check_coupon', [MainController::Class,'check_coupon']);
+        Route::get('view_cities', [MainController::Class,'view_cities']);
     });
     // Offer Prices
     Route::group(['prefix'=>'offer_prices'], function () {

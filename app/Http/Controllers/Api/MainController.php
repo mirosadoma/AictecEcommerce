@@ -21,6 +21,7 @@ use App\Http\Resources\Api\ProductsCollections;
 use App\Http\Resources\Api\CommonQuestionsResources;
 use App\Http\Resources\Api\HelpCenterResources;
 use App\Http\Resources\Api\CouponResources;
+use App\Http\Resources\Api\CitiesResources;
 // Models
 use Illuminate\Support\Facades\Auth;
 use App\Models\Settings\SiteConfig;
@@ -28,6 +29,7 @@ use App\Models\Categories\Category;
 use App\Models\Products\Product;
 use App\Models\Banners\Banner;
 use App\Models\Brands\Brand;
+use App\Models\Cities\City;
 use App\Models\Claims\Claim;
 use App\Models\Claims\Reason;
 use App\Models\ContactUs\ContactUs;
@@ -269,6 +271,14 @@ class MainController extends Controller {
         return (new API)
             ->isOk(__('Help Center'))
             ->setData(HelpCenterResources::collection($help_center))
+            ->build();
+    }
+
+    public function view_cities(){
+        $cities = City::orderBy('id', 'DESC')->get();
+        return (new API)
+            ->isOk(__('Help Center'))
+            ->setData(CitiesResources::collection($cities))
             ->build();
     }
 }

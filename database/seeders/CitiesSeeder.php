@@ -15,23 +15,30 @@ class CitiesSeeder extends Seeder
      */
     public function run()
     {
-        City::create([
-            'ar'                    => [
-                'name'              => 'الرياض',
-                'locale'            => 'ar',
-                'city_id'          => 1,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
-            ],
-            'en'                    => [
-                'name'              => 'Rhyad',
-                'locale'            => 'en',
-                'city_id'          => 1,
-                'created_at'        => Carbon::now(),
-                'updated_at'        => Carbon::now(),
-            ],
-            'created_at'            => Carbon::now(),
-            'updated_at'            => Carbon::now(),
-        ]);
+        $cities = json_decode(file_get_contents('https://dev-api.aymakan.com.sa/v2/cities'))->data->cities;
+        $n = 1;
+        if (count($cities) > 0) {
+            foreach ($cities as $value) {
+                City::create([
+                    'ar'                    => [
+                        'name'              => $value->city_ar,
+                        'locale'            => 'ar',
+                        'city_id'           => $n,
+                        'created_at'        => Carbon::now(),
+                        'updated_at'        => Carbon::now(),
+                    ],
+                    'en'                    => [
+                        'name'              => $value->city_en,
+                        'locale'            => 'en',
+                        'city_id'           => $n,
+                        'created_at'        => Carbon::now(),
+                        'updated_at'        => Carbon::now(),
+                    ],
+                    'created_at'            => Carbon::now(),
+                    'updated_at'            => Carbon::now(),
+                ]);
+                $n++;
+            }
+        }
     }
 }
