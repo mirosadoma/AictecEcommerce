@@ -277,7 +277,7 @@ class MainController extends Controller {
     public function view_cities(){
         $cities = City::orderBy('id', 'DESC')->get();
         return (new API)
-            ->isOk(__('Help Center'))
+            ->isOk(__('All Cities'))
             ->setData(CitiesResources::collection($cities))
             ->build();
     }
