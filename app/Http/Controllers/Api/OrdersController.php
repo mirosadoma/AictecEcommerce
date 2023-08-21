@@ -274,7 +274,9 @@ class OrdersController extends Controller {
             $response = [];
             $response["order_id"] = (int) $order->id;
             $response["number"] = (int) $order->number;
-            $response["payment_url"] = (string) (isset($call_response) && isset($call_response->targetUrl) && isset($call_response->payid)) ? $call_response->targetUrl . '?paymentid=' .  $call_response->payid : '';
+            if(isset($call_response) && isset($call_response->targetUrl) && isset($call_response->payid)){
+                $response["payment_url"] = (string) $call_response->targetUrl . '?paymentid=' .  $call_response->payid;
+            }
             return (new API)
                 ->isOk(__('Order Paid Successfully'))
                 ->setData($response)
