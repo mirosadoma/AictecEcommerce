@@ -35,8 +35,8 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                  => 'nullable|string|between:2,100',
-            'email'                 => 'nullable|email|max:255|unique:users,email,'.\Auth::guard('api')->user()->id,
+            'name'                  => 'required|string|between:2,100',
+            'email'                 => 'required|email|max:255|unique:users,email,'.\Auth::guard('api')->user()->id,
             'phone'                 => ['required', 'unique:users,phone,'.\Auth::guard('api')->user()->id, 'regex:/^(009665|9665|\+9665|05|5)?([0-9]){8}$/'],
         ];
     }

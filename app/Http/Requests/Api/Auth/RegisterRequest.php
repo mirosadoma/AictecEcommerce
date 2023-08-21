@@ -38,7 +38,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name'                  => 'required|string|between:2,100',
-            'email'                 => 'nullable|email:filter|max:255|unique:users,email',
+            'email'                 => 'required|email:filter|max:255|unique:users,email',
             'phone'                 => ['required', 'unique:users,phone', 'regex:/^(009665|9665|\+9665|05|5)?([0-9]){8}$/'],
             'password'              => 'required|min:4|max:50',
             'password_confirmation' => 'required_with:password|same:password',
