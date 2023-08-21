@@ -47,6 +47,10 @@ class SMS {
     }
 
     public function build() {
-        return Http::post($this->vendorUrl."/sendsms.php", $this->getFields())->json();
+        if (env('SMS_ENABLED') == "true") {
+            return Http::post($this->vendorUrl."/sendsms.php", $this->getFields())->json();
+        } else {
+            return true;
+        }
     }
 }
